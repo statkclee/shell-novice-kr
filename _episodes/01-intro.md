@@ -1,5 +1,5 @@
 ---
-title: "Introducing the Shell"
+title: "쉘 소개"
 teaching: 5
 exercises: 0
 questions:
@@ -18,7 +18,8 @@ keypoints:
 - "The shell's main advantages are its high action-to-keystroke ratio, its support for automating repetitive tasks, and its capacity to access networked machines."
 - "The shell's main disadvantages are its primarily textual nature and how cryptic its commands and operation can be."
 ---
-### Background
+
+### 배경
 At a high level, computers do four things:
 
 -   run programs
