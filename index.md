@@ -3,25 +3,20 @@ layout: lesson
 root: .
 ---
 
-The Unix shell has been around longer than most of its users have been alive.
-It has survived so long because it's a power tool
-that allows people to do complex things with just a few keystrokes.
-More importantly,
-it helps them combine existing programs in new ways
-and automate repetitive tasks
-so they aren't typing the same things over and over again.
-Use of the shell is fundamental to using a wide range of other powerful tools 
-and computing resources (including "high-performance computing" supercomputers).
-These lessons will start you on a path towards using these resources effectively.
+유닉스 쉘(Unix Shell)은 대부분의 컴퓨터 사용자가 살아온 것보다 오래 동안 존재했다. 
+오래동안 생존한 이유는 사용자로 하여금 단지 키보드 몇번 쳐서 복잡한 작업을 수행할 수 있게 하는 강력한 도구이기 때문이다. 
+좀더 중요하게는 기존의 프로그램을 새로운 방식으로 조합해서 반복적인 작업을 자동화함으로써, 동일한 작업을 반복적으로 하지 않게 만든다. 
+쉘 사용은 폭넓게 다양하고 강력한 도구와 컴퓨팅 자원(슈퍼컴퓨터와 “고성능 컴퓨팅(High Performance Computing, HPC)”이 포함)을 사용하는 근본이 된다.
 
-> ## Prerequisites
+이번 학습은 효과적으로 이런 자원을 사용하는 과정으로 시작한다.
+
+
+> ## 선수과목
 >
-> This lesson guides you through the basics of file systems and the
-> shell.  If you have stored files on a computer at all and recognize
-> the word “file” and either “directory” or “folder” (two common words
-> for the same thing), you're ready for this lesson.
->
-> If you're already comfortable manipulating files and directories,
-> searching for files with `grep` and `find`, and writing simple loops
-> and scripts, you probably want to explore the next lesson: [shell-extras](http://swcarpentry.github.io/shell-extras/).
+> 이번 학습에서 파일 시스템과 쉘 기초를 안내한다. 
+> 만약 컴퓨터에 파일을 저장한 적이 있고, “파일(file)”과 “디렉토리(directory)” 혹은 “폴더(folder)”라는 단어(동일한 것을 지칭하는 두 단어)을 인지했다면, 
+>  이번 학습에 준비가 되었다.
+> 만약 파일과 디렉토리를 조작하고, `grep` 과 `find` 명령어로 파일을 검색하고, 
+> 간단한 루프와 스크립트를 작성하는데 이미 편안하다면, 아마도 이번 학습에서 그다지 배울 것은 없다.
+> 아마도 [shell-extras](http://swcarpentry.github.io/shell-extras/) 과정이 도움이 될 것이다.
 {: .prereq}
