@@ -1,62 +1,68 @@
 ---
 layout: page
-title: Setup
+title: 학습준비(setup)
 root: .
 ---
 
-You need to download some files to follow this lesson:
+학습을 수행하는데 다음 파일을 다운로드 받는다:
 
-1. Download [data-shell.zip]({{ page.root }}/data/data-shell.zip) and move the file to your Desktop.
-2. Unzip/extract the file (ask your instructor if you need help with this step). You should end up with a new folder called **data-shell** on your Desktop.
-3. Open a terminal and type `cd`, then press the Enter key. That last step will make sure you start with your home folder as your working directory.
+1. [data-shell.zip]({{ page.root }}/data/data-shell.zip) 파일을 다운로드 받아서 바탕화면(Desktop)으로 이동한다.
+2. 다운로드 받은 파일 압축을 푼다.(도움이 필요한 경우 강사에게 도움을 요청한다.) 바탕화면에 **data-shell** 폴더가 새로 생성되어야 한다.
+3. 터미널을 열고 `cd`를 타이핑하고 엔터를 친다. 현재 작업 디렉토리로 홈 펄도로 이동하게 된다. 
 
-In the lesson, you will find out how to access the data in this folder.  
+이번 학습을 통해서, **data-shell** 폴더에 저장된 데이터에 접근하는 방법을 알게 된다.
 
-> ## Where to type commands: How to open a new shell
-> The shell is a program that enables us to send commands to the computer and receive output. It is also referred to as the terminal or command line.
+
+> ## 명령어를 타이핑하는 장소: 쉘을 새로 여는 방법
+> 쉘은 프로그램으로 명령을 컴퓨터에 전송하고 출력값을 받게하는 역할을 한다.
+> 터미널(terminal) 혹은 명령라인(commmand line)으로도 불린다.
+> 
+> 일부 컴퓨터 운영체제에 유닉스 쉘 프로그램이 기본내장되어 있다.
+> 아래에 (설치된 경우) 유닉스 쉘 프로그램을 열고 식별하는 방법을 기술되어 있다.
+> 
+> 유닉스 쉘 프로그램, 리눅스/유닉스 에뮬레이터, 서버에 유닉스 쉘에 접근하는 프로그램을 다운로드하고 식별하는 선택옵션도 존재한다.
 >
-> Some computers include a default Unix Shell program. 
-> The steps below describe some methods for identifying and opening a Unix Shell program if you already have one installed. 
-> There are also options for identifying and downloading a Unix Shell program, a Linux/UNIX emulator, or a program to access a Unix Shell on a server. 
+> 아래 선택옵션중 어떤 것도 해법이 되지 않는다면, 온라인 도움말을 참고한다: 유닉스 쉘 [your computer model] [your operating system].
 >
-> If none of the options below address your circumstances, try an online search for: Unix shell [your computer model] [your operating system].
+> ### 리눅스(Linux)
+> 리눅스 운영체제에 기본 설정된 유닉스 쉘은 배쉬(Bash)다.
+> 대부분의 리눅스 버전에서, [(Gnome) Terminal](https://help.gnome.org/users/gnome-terminal/stable/),
+> [(KDE) Konsole](https://konsole.kde.org/),
+> [xterm](https://en.wikipedia.org/wiki/Xterm) 을 실행해서 접근할 수 있다.
+> 응용프로그램 메뉴 혹은 검색창을 통해서도 가능하다.
+> 배쉬외에 다른 쉘이 장착되어 있다면, 터미널을 열고, `bash`를 실행하면 된다.
 >
-> ### Linux
-> The default Unix Shell for Linux operating systems is usually Bash.
-> On most versions of Linux, it is accessible by running the [(Gnome) Terminal](https://help.gnome.org/users/gnome-terminal/stable/)
-> or [(KDE) Konsole](https://konsole.kde.org/)
-> or [xterm](https://en.wikipedia.org/wiki/Xterm),
-> which can be found via the applications menu or the search bar.
-> If your machine is set up to use something other than bash, you can run it by opening a terminal and typing `bash`.
 >
-> ### Mac OS
-> For a Mac computer, the default Unix Shell is Bash,
-> and it is available via the Terminal Utilities program within your Applications folder.
+> ### 맥(Mac OS)
+> 맥 컴퓨터의 경우도 기본설정된 유닉스 쉘은 배쉬(Bash)다.
+> Application 폴더에 Terminal Utilities 프로그램을 실행하면 사용할 수 있다.
 >
-> To open Terminal, try one or both of the following:
-> * Go to your Applications. Within Applications, open the Utilities folder. Locate Terminal in the Utilities folder and open it.
-> * Use the Mac ‘Spotlight’ computer search function. Search for: `Terminal` and press <kbd>Return</kbd>.
+> 터미널을 열려면, 다음 선택지중 하나를 시도하면 된다:
 >
-> #### Reference 
+> * Applications으로 이동한다. Applications 에서, Utilities 폴더를 연다. Utilities 폴더에서 Terminal을 지정하고 열면 된다.
+> * 맥 ‘Spotlight’ 검색 기능을 사용하는 경우. `Terminal`을 검색어로 던지고 나서 <kbd>Return</kbd>를 친다.
+>
+> #### 참고문헌
 > [How to Use Terminal on a Mac](http://www.macworld.co.uk/feature/mac-software/how-use-terminal-on-mac-3608274/)
 >
-> ### Windows
-> Computers with Windows operating systems do not automatically have a Unix Shell program installed.
-> In this lesson, we encourage you to use an emulator included in Git for Windows, 
-> which gives you access to both Bash shell commands and Git. 
-> If you are attending a Software Carpentry workshop session, it is likely you have already received instructions on how to install Git for Windows.
+> ### 윈도우
+> 윈도우 운영체제를 갖춘 컴퓨터에는 자동으로 유닉스 쉘 프로그램이 설치되어 있지 않다.
+> 이번 학습에서 윈도우 사용자는 **Git for Windows**에 포함된 에뮬레이터를 사용하길 권장한다.
+> **Git for Windows**는 배쉬 쉘 명령과 Git을 동시에 사용할 수 있게 해 준다.
+> 소프트웨어 카펜트리 워크샵에 참석한 경험이 있다면, 이미 **Git for Windows**를 설치하는 방법을 알고 있을 것이다.
 >
-> Once installed, you can open a terminal by running the program Git Bash from the Windows start menu.
+> **Git for Windows** 설치가 끝나면, 윈도우 시작 메뉴에서 Git Bash 를 실행하게 되면 터미널이 열린다.
 >
-> Other solutions are available for running Bash commands on Windows. 
-> There is now a Bash shell command-line tool available for Windows 10. 
-> Additionally, you can run Bash commands on a remote computer or server that already has a Unix Shell, from your Windows machine. 
-> This can usually be done through a Secure Shell (SSH) client. 
-> One such client available for free for Windows computers is PuTTY. 
-> See the reference below for information on installing and using PuTTY, 
-> using the Windows 10 command-line tool, or installing and using a Unix/Linux emulator.
 >
-> #### Reference
+> 윈도우에서 배쉬 명령을 실행하는 다른 방법도 존재한다.
+> 윈도우 10에서는 배쉬 쉘 명령라인 툴이 가능하게 되었다.
+> 추가로, 윈도우 컴퓨터에서 유닉스 쉘이 장착된 원격 컴퓨터 혹은 서버에서 배쉬 명령어를 실행할 수도 있다.
+> 
+> 이 작업은 보통 Secure Shell (SSH) 클라이언트로 작업하게 된다.
+> 윈도우 컴퓨터에서 무료로 이용가능한 클라이언트 프로그램이 PuTTY다. 
+> PuTTY를 설치하고 사용하는 방법, 윈도우 10 명령-라인 도구, 유닉스/리눅스 에뮬레이터 설치 및 사용에  대한 도움말은 다음 참고문헌을 살펴보기 바란다.
+>
+> #### 참고문헌
 > * [Git for Windows](https://git-for-windows.github.io/)
 > * [How to Install Bash shell command-line tool on Windows 10](https://www.windowscentral.com/how-install-bash-shell-command-line-windows-10)
 > * [Install and Use the Linux Bash Shell on Windows 10](https://www.howtogeek.com/249966/how-to-install-and-use-the-linux-bash-shell-on-windows-10/)
