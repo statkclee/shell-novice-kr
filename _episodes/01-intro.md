@@ -103,61 +103,61 @@ bash-3.2$
 프롬프트로 다른 텍스트를 지정할 수도 있다. 가장 중요한 것:
 명령어를 타이핑할 때, *프롬프트를 타이핑하지 말고*, 인식되거나 수행할 수 있는 명령어만 타이핑한다.
 
+예제 두번째 줄에서 타이핑한 `ls -F /` 부분이 전형적인 구조를 보여주고 있다:
+**명령어(command)**, **플래그(flags)** (**선택옵션(options)** 혹은 **스위치(switches)**) 그리고 **인자(argument)**.
+플래그는 대쉬(`-`) 혹은 더블 대쉬(`--`)로 시작하는데 명령어의 행동에 변화를 준다.
+
+인자는 명령어에 작업할 대상을 일러준다(예를 들어, 파일명과 디렉토리).
+종종 플래그를 매개변수(parameter)라고도 부른다.
+명령어를 플래그 한개 이상, 인자도 한개 이상 사용하기도 한다:
+하지만, 명령어가 항상 인자 혹은 플래그를 요구하지는 않는다.
+
+상기 예제의 두번째 줄에서, **명령어는** `ls`, **플래그**는 `-F`, 
+**인자**는 `/`이 된다. 각각은 공백으로 뚜렸하게 구분된다:
+만약 `ls` 와 `-F` 사이 공백을 빼먹게 되면 쉘은 `ls-F` 명령어를 찾게 되는데,
+존재하지 않는 명령어다. 또한, 대문자도 문제가 될 수 있다:
+`LS` 명령어와 `ls` 명령어는 다르다.
+
+다음으로 명령어가 생성한 출력결과를 살펴보자.
+이번 경우에 `/` 폴더에 위치한 파일 목록을 출력하고 있다.
+금일 해당 출력결과가 무엇을 의미하는지 다룰 예정이다.
+맥OS를 사용하시는 참석자분들은 이번 출력결과를 이미 인지하고 있을지도 모른다.
+
+마지막으로, 쉘은 프롬프트를 출력하고 다음 명령어가 타이핑되도록 대기모드로 바뀐다.
+
+이번 학습예제에서 프롬프트가 `$ `이 된다. 명령어를 `PS1='$ '` 타이핑하게 되면 
+동일하게 프롬프트를 맞출 수 있다.
+하지만, 본인 취향에 맞추어 프롬프트를 둘 수도 있다 - 흔히 프롬프트에
+사용자명과 디렉토리 현재 위치정보를 포함하기도 하다.
+
+쉘 윈도우를 열고, `ls -F /` 명령어를 직접 타이핑한다.
+(공백과 대문자가 중요함으로 잊지 말자.)
+원하는 경우 프롬프트도 변경해도 좋다.
+
+### 쉘은 `ls` 와 플래그가 의미하는 바를 어떻게 알게 될까?
+
+모든 쉘 명령어는 컴퓨터 어딘가에 저장된 프로그램으로,
+쉘은 명령어를 검색해서 찾을 장소를 목록으로 이미 가지고 있다.
+(명령목록은 `PATH`로 불리는 **변수(variable)**에 기록되어 있지만,
+이 개념을 나중에 다룰 것이라 현재로서는 그다지 중요하지는 않다.)
+명령어, 플래그, 인자가 공백으로 구분된다는 점을 다시 상기하자.
+
+REPL(읽기-평가-출력(read-evaluate-print) 루프)를 좀더 살펴보자.
+"평가(evaluate)" 단계는 두가지 부분으로 구성됨에 주목한다:
 
 
-The part that you type,
-`ls -F /` in the second line of the example,
-typically has the following structure: a **command**,
-some **flags** (also called **options** or **switches**) and an **argument**.
-Flags start with a single dash (`-`) or two dashes (`--`), and change the behaviour of a command.
-Arguments tell the command what to operate on (e.g. files and directories).
-Sometimes flags and arguments are referred to as parameters.
-A command can be called with more than one flag and more than one argument: but a
-command doesn't always require an argument or a flag.
+1. 타이핑한 것을 읽어들인다(이번 예제에서 `ls -F /`)
+    쉘은 공백을 사용해서 명령어로 입력된 것을 명령어, 플래그, 인자로 쪼갠다.
+2. 평가(Evaluate):  
+    a. `ls` 라는 프로그램을 찾는다.  
+    b. 찾은 프로그램을 실행하고 프로그램이 인식하고 해석한 플래그와 인자를 전달한다.
+3. 프로그램 실행 결과를 출력한다.
 
-In the second line of the example above, our **command** is `ls`, with a **flag** `-F` and an
-**argument** `/`. Each part is separated by spaces: if you omit the space 
-between `ls` and `-F` the shell will look for a command called `ls-F`, which 
-doesn't exist. Also, capitalization matters: `LS` is different to `ls`. 
+그리고 나서, 프롬프트를 출력하고 또다른 명령어를 입력받도록 대기한다.
 
-Next we see the output that our command produced. In this case it is a listing 
-of files and folders in a location called `/` - we'll cover what all these mean 
-later today. Those using a macOS might recognize the output in this example.
-
-Finally, the shell again prints the prompt and waits for you to type the next 
-command.
-
-In the examples for this lesson, we'll show the prompt as `$ `. You can make your 
-prompt look the same by entering the command `PS1='$ '`. But you can also leave 
-your prompt as it is - often the prompt includes useful information about who and where 
-you are.
-
-Open a shell window and try entering `ls -F /` for yourself (don't forget that spaces
-and capitalization are important!). You can change the prompt too, if you like.
-
-### How does the shell know what `ls` and its flags mean?
-
-Every command is a program stored somewhere on the computer, and the shell keeps a
-list of places to search for commands (the list is in a **variable** called `PATH`, 
-but those are concepts we'll meet later and are not too important at the moment). Recall
-that commands, flags and arguments are separated by spaces.
-
-So let's look at the REPL (read-evaluate-print loop) in more detail. Notice that the
-"evaluate" step is made of two parts:
-
-1. Read what was typed (`ls -F /` in our example)  
-    The shell uses the spaces to split the line into the command, flags, and arguments
-2. Evaluate:  
-    a. Find a program called `ls`  
-    b. Execute it, passing it the flags and arguments (`-F` and `/`) to 
-       interpret as the program sees fit 
-3. Print the output produced by the program
-
-and then print the prompt and wait for you to enter another command.
-
-> ## Command not found 
-> If the shell can't find a program whose name is the command you typed, it 
-> will print an error message like:
+> ## Command not found 오류
+> 쉘이 타이핑한 명령어 이름을 갖는 프로그램을 찾을 수 없는 경우,
+> 다음과 같은 오류 메시지가 출력된다:
 > 
 > ~~~
 > $ ls-F
@@ -168,8 +168,8 @@ and then print the prompt and wait for you to enter another command.
 > ~~~
 > {: .output}
 > 
-> Usually this means that you have mis-typed the command - in this case we omitted
-> the space between `ls` and `-F`. 
+> 일반적으로 명령어를 잘못 타이핑했다는 의미가 된다 - 이 경우,
+> `ls` 와 `-F` 사이 공백을 빼먹어서 그렇다.
 {: .callout}
 
 ### 어려운가요?
