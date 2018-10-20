@@ -581,26 +581,29 @@ thesis/quotations.txt
 > 4.   `proteins-saved.dat`
 >
 > > ## 해답
-> > We start in the `/Users/jamie/data` directory, and create a new folder called `recombine`.
-> > The second line moves (`mv`) the file `proteins.dat` to the new folder (`recombine`).
-> > The third line makes a copy of the file we just moved.  The tricky part here is where the file was
-> > copied to.  Recall that `..` means "go up a level", so the copied file is now in `/Users/jamie`.
-> > Notice that `..` is interpreted with respect to the current working
-> > directory, **not** with respect to the location of the file being copied.
-> > So, the only thing that will show using ls (in `/Users/jamie/data`) is the recombine folder.
+> > `/Users/jamie/data` 디렉토리에서 출발해서, `recombine` 이름의 디렉토리를 새로 생성한다.
+> > 두번째 행은 `proteins.dat` 파일을 새로 만든 폴더 `recombine`으로 이동(`mv`) 시킨다.
+> > 세번째 행은 방금전에 이동한 파일에 대한 사본을 생성시킨다.
+> > 여기서 조금 까다로운 점은 파일이 복사되는 디렉토리다.
+> > `..` 이 의미하는 바가 "한단계 위로 이동"하라는 의미라서,
+> > 복사되는 파일은 이제 `/Users/jamie` 디렉토리에 위치하게 됨을 상기한다.
+> > `..` 이 의미하는 바는 복사되는 파일 위치에 대한 것이 **아니라** 현재 작업 디렉토리에 대한 
+> >  것으로 해석됨에 유의한다. 
+> >  그래서, 그래서, `ls` 명령어를 사용해서 보여지게 되는 것은 (`/Users/jamie/data`에 있기 때문에) `recombine` 폴더가 된다.
 > >
-> > 1. No, see explanation above.  `proteins-saved.dat` is located at `/Users/jamie`
+> > 1. No, 상기 해설을 참조한다. `proteins-saved.dat` 데이터는 `/Users/jamie` 폴더에 위치한다.
 > > 2. Yes
-> > 3. No, see explanation above.  `proteins.dat` is located at `/Users/jamie/data/recombine`
-> > 4. No, see explanation above.  `proteins-saved.dat` is located at `/Users/jamie`
+> > 3. No, 상기 해설을 참조한다.  `proteins.dat` 데이터는 `/Users/jamie/data/recombine` 폴더에 위치한다.
+> > 4. No, 상기 해설을 참조한다.  `proteins-saved.dat` 데이터는 `/Users/jamie` 폴더에 위치한다.
 > {: .solution}
 {: .challenge}
 
-> ## Copy with Multiple Filenames
+> ## 다수 파일을 복사하기
+Copy with Multiple Filenames
 >
-> For this exercise, you can test the commands in the `data-shell/data` directory.
+> 이번 연습문제에서는 `data-shell/data` 디렉토리에서 명령어를 테스트한다.
 >
-> In the example below, what does `cp` do when given several filenames and a directory name?
+> 아래 예제에서, 파일명 다수와 디렉토리명이 주어졌을 떄 `cp` 명령어는 어떤 작업을 수행하는가?
 >
 > ~~~
 > $ mkdir backup
@@ -608,7 +611,7 @@ thesis/quotations.txt
 > ~~~
 > {: .language-bash}
 >
-> In the example below, what does `cp` do when given three or more file names?
+> 아래 예제에서, 3개 혹은 그 이상의 파일명이 주어졌을 때 `cp` 명령어는 어떤 작업을 수행하는가?
 >
 > ~~~
 > $ ls -F
@@ -623,12 +626,11 @@ thesis/quotations.txt
 > ~~~
 > {: .language-bash}
 >
-> > ## Solution
-> > If given more than one file name followed by a directory name (i.e. the destination directory must 
-> > be the last argument), `cp` copies the files to the named directory.
+> > ## 해답
+> > 하나이상 파일명 다음에 디렉토리명이 주어지게 되면(즉, 목적지 디렉토리는 마지막 인자에 위치해야 한다.), 
+> > `cp` 명령어는 파일을 해당 디렉토리에 복사한다.
 > >
-> > If given three file names, `cp` throws an error because it is expecting a directory
-> > name as the last argument.
+> > 연달아 파일명이 세게 주어지면, `cp` 명령어는 오류를 던지는데 이유는 마지막 인자로 디렉토리를 기대했기 때문이다.
 > >
 > > ```
 > > cp: target ‘morse.txt’ is not a directory
@@ -637,43 +639,40 @@ thesis/quotations.txt
 > {: .solution}
 {: .challenge}
 
-> ## Wildcards
+> ## 와일드 카드(Wildcards)
+> 
+> `*`는 **와일드카드(wildcard)**다. 
+> 와일드카드는 0 혹은 그 이상의 문자와 매칭되서, 
+> `*.pdb`은 `ethane.pdb`, `propane.pdb` 등등에 매칭한다.
+> 반면에,  `p*.pdb`은 `propane.pdb`와 `pentane.pdb`만 매칭하는데, 
+> 맨 앞에 'p'로 시작되는 파일명만 일치하기만 하면 되기 때문이다.
+> 
+> `?`도 또한 와일드카드지만 단지 단일 문자만 매칭한다. 
+> 이것이 의미하는 바는 `p?.pdb`은 `pi.pdb`  
+> 혹은 `p5.pdb`을 매칭하지만 (`molecules` 디렉토리에 두 파일이 있다면), 
+> `propane.pdb`은 매칭하지 않는다. 
+> 한번에 원하는 수만큼 와일드카드를 사용할 수 있다. 
+> 예를 들어, `p*.p?*`는 'p'로 시작하고 '.'과 'p', 
+> 그리고 최소 한자의 이상의 문자로 끝나는 임의의 문자열을 매칭한다고 표현할 수 있는데 
+> '?'이 한 문자를 매칭해야하고 마지막 '\*'은 끝에 임의의 문자숫자와 매칭할 수 있기 때문이다. 
+> 그래서 `p*.p?*`은 `preferred.practice`과 심지어 `p.pi`도 매칭한다(첫번째 '\*'은 어떤 문자도 매칭할 수가 없음). 
+> 하지만 `quality.practice`은 매칭할 수 없는데 이유는 'p'로 시작하지 않고, 
+> `preferred.p`도 매칭할 수 없는데 'p' 다음에 최소 하나의 문자가 필요한데 없기 때문이다.
 >
-> `*` is a **wildcard**. It matches zero or more
-> characters, so `*.pdb` matches `ethane.pdb`, `propane.pdb`, and every
-> file that ends with '.pdb'. On the other hand, `p*.pdb` only matches
-> `pentane.pdb` and `propane.pdb`, because the 'p' at the front only
-> matches filenames that begin with the letter 'p'.
->
-> `?` is also a wildcard, but it only matches a single character. This
-> means that `p?.pdb` would match `pi.pdb` or `p5.pdb` (if we had these two
-> files in the `molecules` directory), but not `propane.pdb`.
-> We can use any number of wildcards at a time: for example, `p*.p?*`
-> matches anything that starts with a 'p' and ends with '.', 'p', and at
-> least one more character (since the `?` has to match one character, and
-> the final `*` can match any number of characters). Thus, `p*.p?*` would
-> match `preferred.practice`, and even `p.pi` (since the first `*` can
-> match no characters at all), but not `quality.practice` (doesn't start
-> with 'p') or `preferred.p` (there isn't at least one character after the
-> '.p').
->
-> When the shell sees a wildcard, it expands the wildcard to create a
-> list of matching filenames *before* running the command that was
-> asked for. As an exception, if a wildcard expression does not match
-> any file, Bash will pass the expression as an argument to the command
-> as it is. For example typing `ls *.pdf` in the `molecules` directory
-> (which contains only files with names ending with `.pdb`) results in
-> an error message that there is no file called `*.pdf`.
-> However, generally commands like `wc` and `ls` see the lists of
-> file names matching these expressions, but not the wildcards
-> themselves. It is the shell, not the other programs, that deals with
-> expanding wildcards, and this is another example of orthogonal design.
+> 쉘이 와일드카드를 봤을 때, 요청된 명령문을 시작하기 *전에* 와일드카드를 확장하여 매칭할 파일 이름 목록을 생성한다. 
+> 예외로, 와일드카드 표현식이 어떤 파일과도 매칭되지 않게되면, 배수는 명령어에 인자로 표현식을 있는 그대로 전달한다.
+> 예를 들어, `molecules` 디렉토리(`.pdb` 확장자로 끝나는 파일만 모여있다.)에 `ls *.pdf`을 타이핑하게 되면, `*.pdf`으로 불리는 파일이 없다고 
+> 오류 메시지를 출력한다.
+> 하지만, 일반적으로 `wc`과 `ls` 명령어는 와일드카드 표현식과 매칭되는 파일명 목록을 보게 되고 와일드카드 
+> 자체가 아니다.
+> 다른 프로그램은 아니지만, 쉘은 와일드카드를 확장한 것을 다룬다는 점에서 
+> 직교 설계(orthogonal design)의 또 다른 사례로 볼 수 있다.
 {: .callout}
 
-> ## Using Wildcards
+> ## 와일드카드 사용
 >
-> When run in the `molecules` directory, which `ls` command(s) will
-> produce this output?
+> `molecules` 디렉토리에서 어떤 `ls` 명령어를 실행시키면 다음 출력결과를 
+> 산출하게 될까?
 >
 > `ethane.pdb   methane.pdb`
 >
@@ -682,23 +681,24 @@ thesis/quotations.txt
 > 3. `ls *t??ne.pdb`
 > 4. `ls ethane.*`
 >
-> > ## Solution
->>  The solution is `3.`
+> > ## 해답
+> >  해답은 `3.`
+> >
+> > `1.` 0 혹은 그이상 임의 캐릭터(`*`) 다음에 `t` 다음에 0 혹은 그이상 임의 캐릭터(`*`) 다음에 `ane.pdb` 파일명을 갖는 모든 파일을 출력한다.
+> > 결국 `ethane.pdb  methane.pdb  octane.pdb  pentane.pdb`이 출력된다.
+> >
+> > `2.` 0 혹은 그이상 임의 캐릭터(`*`) 다음에 `t` 다음에 한 문자(`?`) 다음에 `ne` 다음에 0 혹은 그이상 임의 캐릭터(`*`) 파일명을 갖는 모든 파일을 출력한다.
+> > 결국 `octane.pdb` `pentane.pdb`이 출력되지만, `thane.pdb`은 출력되지 않는다.
 >>
->> `1.` shows all files whose names contain zero or more characters (`*`) followed by the letter `t`, then zero or more characters (`*`) followed by `ane.pdb`. This gives `ethane.pdb  methane.pdb  octane.pdb  pentane.pdb`. 
->>
->> `2.` shows all files whose names start with zero or more characters (`*`) followed by the letter `t`, then a single character (`?`), then `ne.` followed by zero or more characters (`*`). This will give us `octane.pdb` and `pentane.pdb` but doesn't match anything which ends in `thane.pdb`.
->>
->> `3.` fixes the problems of option 2 by matching two characters (`??`) between `t` and `ne`. This is the solution.
->>
->> `4.` only shows files starting with `ethane.`.
+> > `3.` `t` 와 `ne` 사이에 두 문자(`??`)를 매칭함으로서 상기 2번 문제를 해결한다. 이것이 해답이다.
+> >
+> > `4.`는 `ethane.`으로 시작하는 파일만 출력한다.
 > {: .solution}
 {: .challenge}
 
-> ## More on Wildcards
+> ## 와일드카드 추가 문제 
 >
-> Sam has a directory containing calibration data, datasets, and descriptions of
-> the datasets:
+> 정훈이는 미세조정(calibration), 원본 데이터(dataset), 데이터 설명 데이터를 디렉토리에 보관하고 있다:
 >
 > ~~~
 > 2015-10-23-calibration.txt
@@ -716,9 +716,9 @@ thesis/quotations.txt
 > ~~~
 > {: .language-bash}
 >
-> Before heading off to another field trip, she wants to back up her data and
-> send some datasets to her colleague Bob. Sam uses the following commands
-> to get the job done:
+> 또 다른 견학여행을 떠나기 전에, 정훈이는 데이터를 백업하고 
+> 일부 데이터를 랩실 동료 기민에게 보내고자 한다.
+> 정훈이는 백업과 전송 작업을 위해서 다음 명령어를 사용한다:
 >
 > ~~~
 > $ cp *dataset* /backup/datasets
@@ -728,9 +728,9 @@ thesis/quotations.txt
 > ~~~
 > {: .language-bash}
 >
-> Help Sam by filling in the blanks.
+> 정훈이가 빈칸을 채우도록 도움을 주세요.
 >
-> > ## Solution
+> > ## 해답
 > > ```
 > > $ cp *calibration.txt /backup/calibration
 > > $ cp 2015-11-* ~/send_to_bob/all_november_files/
@@ -740,10 +740,9 @@ thesis/quotations.txt
 > {: .solution}
 {: .challenge}
 
-> ## Organizing Directories and Files
+> ## 디렉토리와 파일 조직화
 >
-> Jamie is working on a project and she sees that her files aren't very well
-> organized:
+> 정훈이가 프로젝트 작업을 하고 있는데, 작업 파일이 그다지 잘 조직적으로 정리되어 있지 않음을 알게 되었다:
 >
 > ~~~
 > $ ls -F
@@ -754,9 +753,9 @@ thesis/quotations.txt
 > ~~~
 > {: .output}
 >
-> The `fructose.dat` and `sucrose.dat` files contain output from her data
-> analysis. What command(s) covered in this lesson does she need to run so that the commands below will
-> produce the output shown?
+> `fructose.dat` 와 `sucrose.dat` 파일은 자료분석 결과 산출된 출력결과를 담고 있다.
+> 이번 학습에서 배운 어떤 명령어를 실행해야,
+> 아래 명령어를 실행했을 때 다음에 보여지는 출력을 생성할까요?
 >
 > ~~~
 > $ ls -F
@@ -775,31 +774,29 @@ thesis/quotations.txt
 > ~~~
 > {: .output}
 >
-> > ## Solution
+> > ## 해답
 > > ```
 > > mv *.dat analyzed
 > > ```
 > > {: .language-bash}
-> > Jamie needs to move her files `fructose.dat` and `sucrose.dat` to the `analyzed` directory.
-> > The shell will expand *.dat to match all .dat files in the current directory.
-> > The `mv` command then moves the list of .dat files to the "analyzed" directory.
+> > 정훈이는 `analyzed` 디렉토리에 `fructose.dat`, `sucrose.dat` 파일을 이동시킬 필요가 있다.
+> > 쉘에서  현재 디렉토리에서 `*.dat` 와일드카드가 `.dat` 확장자를 갖는 모든 파일을 매칭한다.
+> > `mv` 명령어가 `.dat` 확장자를 갖는 파일을 `analyzed` 디렉토리로 이동시킨다.
 > {: .solution}
 {: .challenge}
 
-> ## Copy a folder structure but not the files
+> ## 폴더 구조를 복사하지만, 파일을 복사하지 말자.
 >
-> You're starting a new experiment, and would like to duplicate the file
-> structure from your previous experiment without the data files so you can
-> add new data.
+> 새로운 실험을 시작해 보자. 데이터 파일 없이 이전 실험에게 만들었던 
+> 파일 구조만 복제하자. 그렇게 하면 새로운 데이터를 쉽게 추가할 수 있게 된다.
 >
-> Assume that the file structure is in a folder called '2016-05-18-data',
-> which contains a `data` folder that in turn contains folders named `raw` and
-> `processed` that contain data files.  The goal is to copy the file structure
-> of the `2016-05-18-data` folder into a folder called `2016-05-20-data` and
-> remove the data files from the directory you just created.
+> '2016-05-18-data' 디렉토리에 `data` 폴더로 `raw`와 `processed`가 있는데,
+> 각자 데이터 파일이 담겨있다.
+> 목적은 `2016-05-18-data` 폴더를 `2016-05-20-data` 폴더로 복사하는 것인데 
+> 복사된 폴더에는 모든 데이터 파일을 제거해야 된다.
 >
-> Which of the following set of commands would achieve this objective?
-> What would the other commands do?
+> 다음 명령어 집합 중 어떤 명령어 집합이 상기 목적을 달성할까요?
+> 다른 명령어 집합은 무슨 작업을 수행하는 것일가?
 >
 > ~~~
 > $ cp -r 2016-05-18-data/ 2016-05-20-data/
@@ -820,17 +817,17 @@ thesis/quotations.txt
 > {: .language-bash}
 > >
 > > ## Solution
-> > The first set of commands achieves this objective.
-> > First we have a recursive copy of a data folder.
-> > Then two `rm` commands which remove all files in the specified directories.
-> > The shell expands the '*' wild card to match all files and subdirectories.
+> > 첫번째 명령어들이 해당 목적을 달성한다.
+> > 먼저 재귀적으로 데이터 폴더를 복사한다.
+> > 그리고 나서 `rm` 명령어 두번 사용해서 복사한 디렉토리의 모든 파일을 제거한다.
+> > 쉘은 `*` 와일드카드로 매칭되는 모든 파일과 하위디렉토리를 확장하도록 한다.
 > >
-> > The second set of commands have the wrong order: 
-> > attempting to delete files which haven't yet been copied,
-> > followed by the recursive copy command which would copy them.
+> > 두번째 명령어들은 순서가 잘못되었다:
+> > 복사하지 않는 파일을 샂게하고 나서 재귀 복사 명령어로 디렉토리를 복사했다.
 > >
-> > The third set of commands would achieve the objective, but in a time-consuming way:
-> > the first command copies the directory recursively, but the second command deletes
-> > interactively, prompting for confirmation for each file and directory.
+> > 세번째 명령어도 목적을 달성하는데, 시간이 다소 소요된다:
+> > 첫번째 명령어가 디렉토리를 재귀적으로 복사하지만, 두번째 명령어는 인터랙티브하게 
+> > 각 파일과 디렉토리에 대한 확인하는 과정을 거쳐 
+> > 삭제를 하게 되어 시간이 추가로 소요된다.
 > {: .solution}
 {: .challenge}
