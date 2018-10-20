@@ -1,33 +1,32 @@
 ---
-title: "Pipes and Filters"
+title: "파이프와 필터"
 teaching: 25
 exercises: 10
 questions:
-- "How can I combine existing commands to do new things?"
+- "새로운 명령어를 만드는데 기존 명령어를 어떻게 조합할 수 있을까?"
 objectives:
-- "Redirect a command's output to a file."
-- "Process a file instead of keyboard input using redirection."
-- "Construct command pipelines with two or more stages."
-- "Explain what usually happens if a program or pipeline isn't given any input to process."
-- "Explain Unix's 'small pieces, loosely joined' philosophy."
+- "명령어 출력결과를 파일로 방향을 바꾼다(redirect)."
+- "키보드 입력 대신에 방향변경(redirection)을 사용하여 파일을 처리한다."
+- "2단계 혹은 3단계를 갖는 명령문 파이프라인을 구성한다."
+- "프로그램 혹은 파이프라인에 처리할 입력을 주지 않았을 때 통상 발생하되는 것을 설명한다."
+- "`작은 조각, 느슨하게 결합하기(small pieces, loosely joined)`라는 유닉스 철학을 설명한다."
 keypoints:
-- "`cat` displays the contents of its inputs."
-- "`head` displays the first 10 lines of its input."
-- "`tail` displays the last 10 lines of its input."
-- "`sort` sorts its inputs."
-- "`wc` counts lines, words, and characters in its inputs."
-- "`command > file` redirects a command's output to a file."
-- "`first | second` is a pipeline: the output of the first command is used as the input to the second."
-- "The best way to use the shell is to use pipes to combine simple single-purpose programs (filters)."
+- "`cat` 명령어는 입력 파일에 담긴 내용을 화면에 출력한다."
+- "`head` 명령어는 입력 파일의 첫 10줄을 화면에 출력한다."
+- "`tail` 명령어는 입력 파일의 마지막 10줄을 화면에 출력한다."
+- "`sort` 명령어는 입력 파일을 정렬한다."
+- "`wc` 명령어는 입력 파일의 행수, 단어수, 문자수를 센다."
+- "`command > file` 명령어는 명령어의 출력결과를 파일로 방향을 변경시킨다."
+- "`first | second` 이 파이프라인이다: 첫번째 명령어의 출력이 두번째 명령어의 입력으로 사용된다."
+- "쉘을 사용하는 최선의 방법은 파이프를 사용해서 간단한 단일 목적 프로그램(필터)을 조합하는 것이다."
 ---
 
-Now that we know a few basic commands,
-we can finally look at the shell's most powerful feature:
-the ease with which it lets us combine existing programs in new ways.
-We'll start with a directory called `molecules`
-that contains six files describing some simple organic molecules.
-The `.pdb` extension indicates that these files are in Protein Data Bank format,
-a simple text format that specifies the type and position of each atom in the molecule.
+몇가지 기초 유닉스 명령어를 배웠기 때문에, 
+마침내 쉘의 가장 강령한 기능을 살펴볼 수 있게 되었다: 
+새로운 방식으로 기존에 존재하던 프로그램을 쉽게 조합해 낼 수 있게 한다. 
+간단한 유기분자 설명을 하는 6개 파일을 담고 있는 `molecules`(분자)라는 디렉토리에서 시작한다. 
+`.pdb` 파일 확장자는 단백질 데이터 은행 (Protein Data Bank) 형식으로, 
+분자의 각 원자 형식과 위치를 표시하는 간단한 텍스트 형식으로 되어 있다.
 
 ~~~
 $ ls molecules
@@ -40,12 +39,12 @@ octane.pdb    pentane.pdb   propane.pdb
 ~~~
 {: .output}
 
-Let's go into that directory with `cd` and run the command `wc *.pdb`.
-`wc` is the "word count" command:
-it counts the number of lines, words, and characters in files (from left to right, in that order).
+명령어 `cd`로 해당 디렉토리로 가서 `wc *.pdb` 명령어를 실행한다. 
+`wc` 명령어는 "word count"의 축약어로 파일의 라인 수, 단어수, 문자수를 개수한다. (왼쪽에서 오른쪽 순서로)
 
-The `*` in `*.pdb` matches zero or more characters,
-so the shell turns `*.pdb` into a list of all `.pdb` files in the current directory:
+`*.pdb`에서 `*`은 0 혹은 더 많이 일치하는 문자를 매칭한다.
+그래서 쉘은 `*.pdb`을 통해 `.pdb` 전체 리스트 목록을 반환한다:
+
 
 ~~~
 $ cd molecules
@@ -65,9 +64,7 @@ $ wc *.pdb
 {: .output}
 
 
-
-If we run `wc -l` instead of just `wc`,
-the output shows only the number of lines per file:
+`wc` 대신에 `wc -l`을 실행하면, 출력결과는 파일마다 행수만을 보여준다:
 
 ~~~
 $ wc -l *.pdb
@@ -85,27 +82,23 @@ $ wc -l *.pdb
 ~~~
 {: .output}
 
-We can also use `-w` to get only the number of words,
-or `-c` to get only the number of characters.
+단어 숫자만을 얻기 위해서 `-w`, 문자 숫자만을 얻기 위해서 `-c`을 사용할 수 있다.
 
-Which of these files is shortest?
-It's an easy question to answer when there are only six files,
-but what if there were 6000?
-Our first step toward a solution is to run the command:
+파일 중에서 어느 파일이 가장 짧을까요? 
+단지 6개의 파일이 있기 때문에 질문에 답하기는 쉬울 것이다. 
+하지만 만약에 6000 파일이 있다면 어떨까요? 
+해결에 이르는 첫번째 단계로 다음 명령을 실행한다:
 
 ~~~
 $ wc -l *.pdb > lengths.txt
 ~~~
 {: .language-bash}
 
-The greater than symbol, `>`, tells the shell to **redirect** the command's output
-to a file instead of printing it to the screen. (This is why there is no screen output:
-everything that `wc` would have printed has gone into the
-file `lengths.txt` instead.)  The shell will create
-the file if it doesn't exist. If the file exists, it will be
-silently overwritten, which may lead to data loss and thus requires
-some caution.
-`ls lengths.txt` confirms that the file exists:
+`>` 기호는 쉘로 하여금 화면에 처리 결과를 뿌리는 대신에 파일로 **방향변경(redirect)**하게 한다. 
+만약 파일이 존재하지 않으면 파일을 생성하고 파일이 존재하면 파일에 내용을 덮어쓰기 한다. 
+조용하게 덮어쓰기 하기 때문에 자료가 유실될 수 있어서 주의가 요구된다.
+(이것이 왜 화면에 출력결과가 없는 이유다. `wc`가 출력하는 모든 것은 `lengths.txt` 파일에 대신 들어간다.) 
+`ls lengths.txt` 을 통해 파일이 존재하는 것을 확인한다:
 
 ~~~
 $ ls lengths.txt
@@ -117,11 +110,9 @@ lengths.txt
 ~~~
 {: .output}
 
-We can now send the content of `lengths.txt` to the screen using `cat lengths.txt`.
-`cat` stands for "concatenate":
-it prints the contents of files one after another.
-There's only one file in this case,
-so `cat` just shows us what it contains:
+`cat lengths.txt`을 사용해서 화면으로 `lengths.txt`의 내용을 보낼 수 있다. 
+`cat`은 "concatenate"를 줄인 것이고 하나씩 하나씩 파일의 내용을 출력한다. 
+이번 사례에는 단지 파일이 하나만 있어서, `cat` 명령어는 단지 한 파일이 담고 있는 내용만 보여준다:
 
 ~~~
 $ cat lengths.txt
@@ -150,7 +141,7 @@ $ cat lengths.txt
 > or back one by pressing `b`.  Press `q` to quit.
 {: .callout}
 
-Now let's use the `sort` command to sort its contents.
+이제 `sort` 명령어를 사용해서 파일 내용을 정렬합니다. 
 
 > ## What Does `sort -n` Do?
 >
@@ -194,10 +185,8 @@ Now let's use the `sort` command to sort its contents.
 > {: .solution}
 {: .challenge}
 
-We will also use the `-n` flag to specify that the sort is
-numerical instead of alphabetical.
-This does *not* change the file;
-instead, it sends the sorted result to the screen:
+`-n` 플래그를 사용해서 알파벳 대신에 숫자 방식으로 정렬할 것을 지정할 수 있다.
+이 명령어는 파일 자체를 변경하지 *않고* 대신에 정렬된 결과를 화면으로 보낸다:
 
 ~~~
 $ sort -n lengths.txt
@@ -215,11 +204,10 @@ $ sort -n lengths.txt
 ~~~
 {: .output}
 
-We can put the sorted list of lines in another temporary file called `sorted-lengths.txt`
-by putting `> sorted-lengths.txt` after the command,
-just as we used `> lengths.txt` to put the output of `wc` into `lengths.txt`.
-Once we've done that,
-we can run another command called `head` to get the first few lines in `sorted-lengths.txt`:
+`> lengths.txt`을 사용해서 `wc` 실행결과를 `lengths.txt`에 넣었듯이, 
+명령문 다음에 `> sorted-lengths.txt`을 넣음으로서, 
+임시 파일이름인 `sorted-lengths.txt`에 정렬된 목록 정보를 담을 수 있다. 
+이것을 실행한 다음에, 또 다른 `head` 명령어를 실행해서 `sorted-lengths.txt`에서 첫 몇 행을 뽑아낼 수 있다:
 
 ~~~
 $ sort -n lengths.txt > sorted-lengths.txt
@@ -232,12 +220,11 @@ $ head -n 1 sorted-lengths.txt
 ~~~
 {: .output}
 
-Using `-n 1` with `head` tells it that
-we only want the first line of the file;
-`-n 20` would get the first 20,
-and so on.
-Since `sorted-lengths.txt` contains the lengths of our files ordered from least to greatest,
-the output of `head` must be the file with the fewest lines.
+`head`에 `-n 1` 매개변수를 사용해서 파일의 첫번째 행만이 필요하다고 지정한다. 
+`-n 20`은 처음 20개 행만을 지정한다. 
+`sorted-lengths.txt`이 가장 작은 것에서부터 큰 것으로 정렬된 파일 길이 정보를 담고 있어서, 
+`head`의 출력 결과는 가장 짧은 행을 가진 파일이 되어야만 된다.
+
 
 > ## Redirecting to the same file
 >
@@ -311,11 +298,10 @@ the output of `head` must be the file with the fewest lines.
 > {: .solution}
 {: .challenge}
 
-If you think this is confusing,
-you're in good company:
-even once you understand what `wc`, `sort`, and `head` do,
-all those intermediate files make it hard to follow what's going on.
-We can make it easier to understand by running `sort` and `head` together:
+이것이 혼란스럽다면, 좋은 친구네요: 
+`wc`, `sort`, `head` 명령어 각각이 무엇을 수행하는지 이해해도, 
+중간에 산출되는 파일에 무슨 일이 진행되고 있는지 따라가기는 쉽지 않다. 
+`sort`와 `head`을 함께 실행해서 이해하기 훨씬 쉽게 만들 수 있다:
 
 ~~~
 $ sort -n lengths.txt | head -n 1
@@ -327,19 +313,17 @@ $ sort -n lengths.txt | head -n 1
 ~~~
 {: .output}
 
-The vertical bar, `|`, between the two commands is called a **pipe**.
-It tells the shell that we want to use
-the output of the command on the left
-as the input to the command on the right.
-The computer might create a temporary file if it needs to,
-or copy data from one program to the other in memory,
-or something else entirely;
-we don't have to know or care.
+두 명령문 사이의 수직 막대를 **파이프(pipe)**라고 부른다. 
+수직막대는 쉘에게 왼편 명령문의 출력결과를 오른쪽 명령문의 입력값으로 사용된다는 뜻을 전달한다. 
+컴퓨터는 필요하면 임시 파일을 생성하거나, 
+한 프로그램에서 주기억장치의 다른 프로그램으로 데이터를 복사하거나, 
+혹은 완전히 다른 작업을 수행할 수도 있다; 
+사용자는 알 필요도 없고 관심을 가질 이유도 없다.
 
-Nothing prevents us from chaining pipes consecutively.
-That is, we can for example send the output of `wc` directly to `sort`,
-and then the resulting output to `head`.
-Thus we first use a pipe to send the output of `wc` to `sort`:
+어떤 것도 파이프를 연속적으로 사슬로 엮어 사용하는 것을 막을 수는 없다.
+즉, 예를 들어 또 다른 파이프를 사용해서 `wc`의 출력결과를 `sort`에 바로 보내고 나서, 
+다시 처리 결과를 `head`에 보낸다.
+`wc` 출력결과를 `sort`로 보내는데 파이프를 사용했다:
 
 ~~~
 $ wc -l *.pdb | sort -n
@@ -357,7 +341,8 @@ $ wc -l *.pdb | sort -n
 ~~~
 {: .output}
 
-And now we send the output of this pipe, through another pipe, to `head`, so that the full pipeline becomes:
+또 다른 파이프를 사용해서 `wc`의 출력결과를 `sort`에 바로 보내고 나서, 
+다시 처리 결과를 `head`로 보내게 되면 전체 파이프라인은 다음과 같이 된다:
 
 ~~~
 $ wc -l *.pdb | sort -n | head -n 1
@@ -369,10 +354,10 @@ $ wc -l *.pdb | sort -n | head -n 1
 ~~~
 {: .output}
 
-This is exactly like a mathematician nesting functions like *log(3x)*
-and saying "the log of three times *x*".
-In our case,
-the calculation is "head of sort of line count of `*.pdb`".
+이것이 정확하게 수학자가 *log(3x)* 같은 중첩함수를 사용하는 것과 같다. 
+"*log(3x)*은 x에 3을 곱하고 로그를 취하는 것과 같다." 
+이번 경우는, 
+`*.pdb`의 행수를 세어서 정렬해서 첫부분만 계산하는 것이 된다.
 
 > ## Piping Commands Together
 >
@@ -393,78 +378,64 @@ the calculation is "head of sort of line count of `*.pdb`".
 > {: .solution}
 {: .challenge}
 
-Here's what actually happens behind the scenes when we create a pipe.
-When a computer runs a program --- any program --- it creates a **process**
-in memory to hold the program's software and its current state.
-Every process has an input channel called **standard input**.
-(By this point, you may be surprised that the name is so memorable, but don't worry:
-most Unix programmers call it "stdin").
-Every process also has a default output channel called **standard output**
-(or "stdout"). A second output channel called **standard error** (stderr) also
-exists. This channel is typically used for error or diagnostic messages, and it
-allows a user to pipe the output of one program into another while still receiving 
-error messages in the terminal. 
+파이프를 생성할 때 뒤에서 실질적으로 일어나는 일은 다음과 같다. 
+컴퓨터가 한 프로그램(어떤 프로그램도 동일)을 실행할 때 프로그램에 대한 소프트웨어와 현재 상태 정보를 담기 위해서 주기억장치 메모리에 **프로세스(process)**를 생성한다. 
+모든 프로세스는 **표준 입력(standard input)**이라는 입력 채널을 가지고 있다. 
+(여기서 이름이 너무 기억하기 좋아서 놀랄지도 모른다. 하지만 걱정하지 마세요. 대부분의 유닉스 프로그래머는 "stdin"이라고 부른다). 
+또한 모든 프로세스는 **표준 출력(standard output)**(혹은 "stdout")이라고 불리는 기본디폴트 출력 채널도 있다.
+이 채널이 일반적으로 오류 혹은 진단 메시지 용도로 사용되어서 
+터미널로 오류 메시지를 받으면서도 그 와중에 프로그램 출력값이 또다른 프로그램에 파이프되어 
+들어가는 것이 가능하게 한다.
 
-The shell is actually just another program.
-Under normal circumstances,
-whatever we type on the keyboard is sent to the shell on its standard input,
-and whatever it produces on standard output is displayed on our screen.
-When we tell the shell to run a program,
-it creates a new process
-and temporarily sends whatever we type on our keyboard to that process's standard input,
-and whatever the process sends to standard output to the screen.
 
-Here's what happens when we run `wc -l *.pdb > lengths.txt`.
-The shell starts by telling the computer to create a new process to run the `wc` program.
-Since we've provided some filenames as arguments,
-`wc` reads from them instead of from standard input.
-And since we've used `>` to redirect output to a file,
-the shell connects the process's standard output to that file.
+쉘은 실질적으로 또다른 프로그램이다. 
+정상적인 상황에서 사용자가 키보드로 무엇을 타이핑하는 모든 것은 표준 입력으로 쉘에 보내지고, 
+표준 출력에서 만들어지는 무엇이든지 화면에 출력된다. 
+쉘에게 프로그램을 실행하게 할때, 
+새로운 프로게스를 생성하고, 임시로 키보드에 타이핑하는 무엇이든지 그 프로세스의 표준 입력으로 보내지고, 
+프로세스는 표준 출력을 무엇이든 화면에 전송한다.
 
-If we run `wc -l *.pdb | sort -n` instead,
-the shell creates two processes
-(one for each process in the pipe)
-so that `wc` and `sort` run simultaneously.
-The standard output of `wc` is fed directly to the standard input of `sort`;
-since there's no redirection with `>`,
-`sort`'s output goes to the screen.
-And if we run `wc -l *.pdb | sort -n | head -n 1`,
-we get three processes with data flowing from the files,
-through `wc` to `sort`,
-and from `sort` through `head` to the screen.
+`wc -l *.pdb > lengths`을 실행할 때 여기서 일어나는 것을 설명하면 다음과 같다. 
+`wc` 프로그램을 실행할 새로운 프로세스를 생성하라고 쉘이 컴퓨터에 지시한다.
+파일이름을 인자로 제공했기 때문에 표준입력 대신 `wc`는 인자에서 입력값을 읽어온다. 
+`>`을 사용해서 출력값을 파일로 방향변경 했기했기 때문에, 
+쉘은 프로세스의 표준 출력결과를 파일에 연결한다.
 
-![Redirects and Pipes](../fig/redirects-and-pipes.png)
 
-This simple idea is why Unix has been so successful.
-Instead of creating enormous programs that try to do many different things,
-Unix programmers focus on creating lots of simple tools that each do one job well,
-and that work well with each other.
-This programming model is called "pipes and filters".
-We've already seen pipes;
-a **filter** is a program like `wc` or `sort`
-that transforms a stream of input into a stream of output.
-Almost all of the standard Unix tools can work this way:
-unless told to do otherwise,
-they read from standard input,
-do something with what they've read,
-and write to standard output.
+`wc -l *.pdb | sort -n`을 실행한다면, 쉘은 프로세스 두개를 생성한다. 
+(파이프 프로세스 각각에 대해서 하나씩) 그래서 `wc`과 `sort`은 동시에 실행된다. 
+`wc`의 표준출력은 직접적으로 `sort`의 표준 입력으로 들어간다; 
+`>`같은 방향변경이 없기 때문에 `sort`의 출력은 화면으로 나가게 된다. 
+`wc -l *.pdb | sort -n | head -1`을 실행하면, 
+파일에서 `wc`에서 `sort`로, `sort`에서 `head`을 통해 화면으로 나가게 되는 데이터 흐름을 가진 프로세스 3개가 있게 된다.
 
-The key is that any program that reads lines of text from standard input
-and writes lines of text to standard output
-can be combined with every other program that behaves this way as well.
-You can *and should* write your programs this way
-so that you and other people can put those programs into pipes to multiply their power.
 
-> ## Redirecting Input
+![방향변경과 파이프](../fig/redirects-and-pipes.png)
+
+이 간단한 아이디어가 왜 유닉스가 그토록 성공적이었는지를 보여준다. 
+다른 많은 작업을 수행하는 거대한 프로그램을 생성하는 대신에, 
+유닉스 프로그래머는 각자가 한가지 작업만을 잘 수행하는 간단한 도구를 많이 생성하는데 집중하고, 
+서로간에 유기적으로 잘 작동하게 만든다. 
+이러한 프로그래밍 모델을 파이프와 필터(pipes and filters)라고 부른다; 
+파이프는 이미 살펴봤고, **필터(filter)**는 `wc`, `sort`같은 프로그램으로 입력 스트림을 출력 스트림으로 변환하는 것이다. 
+거의 모든 표준 유닉스 도구는 이런 방식으로 동작한다: 
+별도로 언급되지 않는다면, 
+표준 입력에서 읽고, 읽은 것을 가지고 무언가를 수행하고 표준출력에 쓴다.
+
+중요한 점은 표준입력에서 텍스트 행을 읽고, 
+표준 출력에 텍스트 행을 쓰는 임의 프로그램은 이런 방식으로 동작하는 모든 다른 프로그램과 조합될 수 있다는 것이다. 
+여러분도 여러분이 작성한 프로그램을 이러한 방식으로 작성할 수 있어야 하고 *작성해야 한다*. 
+그래서 여러분과 다른 사람들이 이러한 프로그램을 파이프에 넣어서 생태계 전체 힘을 배가할 수 있다.
+
+
+> ## 입력 방향변경
 >
-> As well as using `>` to redirect a program's output, we can use `<` to
-> redirect its input, i.e., to read from a file instead of from standard
-> input. For example, instead of writing `wc ammonia.pdb`, we could write
-> `wc < ammonia.pdb`. In the first case, `wc` gets a command line
-> argument telling it what file to open. In the second, `wc` doesn't have
-> any command line arguments, so it reads from standard input, but we
-> have told the shell to send the contents of `ammonia.pdb` to `wc`'s
-> standard input.
+> 프로그램의 출력 결과 방향변경을 위해서 `>`을 사용하는 것과 마찬가지로, `<`을 사용해서 입력을 되돌릴 수도 있다. 
+> 즉, 표준입력 대신에 파일로부터 읽어 들일 수 있다. 
+> 예를 들어, `wc ammonia.pdb` 와 같이 작성하는 대신에, `wc < ammonia.pdb` 작성할 수 있다.
+> 첫째 사례는, `wc`는 무슨 파일을 여는지를 명령 라인의 매개변수에서 얻는다.
+> 두번째 사례는, `wc`에 명령 라인 매개변수가 없다. 
+> 그래서 표준 입력에서 읽지만, 쉘에게 `ammonia.pdb`의 내용을 `wc`에 표준 입력으로 보내라고 했다.
 {: .callout}
 
 > ## What Does `<` Mean?
@@ -657,7 +628,10 @@ so that you and other people can put those programs into pipes to multiply their
 > {: .solution}
 {: .challenge}
 
-## Nelle's Pipeline: Checking Files
+## Nelle의 파이프라인 Pipeline: 파일 확인하기
+
+앞에서 설명한 것처럼 Nelle은 분석기를 통해 시료를 시험해서 1520개 파일을 `north-pacific-gyre/2012-07-03` 디렉토리에 생성했다. 
+빠르게 건전성 확인하기 위해, 홈디렉토리에서 시작해서, 다음과 같이 타이핑한다:
 
 Nelle has run her samples through the assay machines
 and created 17 files in the `north-pacific-gyre/2012-07-03` directory described earlier.
