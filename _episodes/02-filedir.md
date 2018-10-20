@@ -1,47 +1,45 @@
 ---
-title: "Navigating Files and Directories"
+title: "파일과 디렉토리 돌아다니기"
 teaching: 30
 exercises: 10
 questions:
-- "How can I move around on my computer?"
-- "How can I see what files and directories I have?"
-- "How can I specify the location of a file or directory on my computer?"
+- "컴퓨터 여기저기를 어떻게 돌아다닐 수 있을까?"
+- "컴퓨터에 저장된 파일과 디렉토리를 어떻게 살펴볼 수 있을까?"
+- "컴퓨터 파일 혹은 디렉토리를 어떻게 하면 지정할 수 있을까?"
 objectives:
-- "Explain the similarities and differences between a file and a directory."
-- "Translate an absolute path into a relative path and vice versa."
-- "Construct absolute and relative paths that identify specific files and directories."
-- "Demonstrate the use of tab completion, and explain its advantages."
+- "파일과 디렉토리의 차이점과 유사점을 설명한다."
+- "절대경로를 상대경로로 변환하고, 반대로 상대경로를 절대경로로 변환한다."
+- "특정 파일과 디렉토리를 식별할 수 있도록 절대경로와 상대경로를 구성한다."
+- "쉘의 읽기-실행-출력(read-run-print) 주기를 각 단계별로 설명한다."
+- "탭 완성기능 사용법을 시연하고, 장점을 설명한다."
 keypoints:
-- "The file system is responsible for managing information on the disk."
-- "Information is stored in files, which are stored in directories (folders)."
-- "Directories can also store other directories, which forms a directory tree."
-- "`cd path` changes the current working directory."
-- "`ls path` prints a listing of a specific file or directory; `ls` on its own lists the current working directory."
-- "`pwd` prints the user's current working directory."
-- "`/` on its own is the root directory of the whole file system."
-- "A relative path specifies a location starting from the current location."
-- "An absolute path specifies a location from the root of the file system."
-- "Directory names in a path are separated with `/` on Unix, but `\\` on Windows."
-- "`..` means 'the directory above the current one'; `.` on its own means 'the current directory'."
-- "Most files' names are `something.extension`. The extension isn't required, and doesn't guarantee anything, but is normally used to indicate the type of data in the file."
+- "파일 시스템은 디스크에 저장된 정보를 관리하는 역할을 담당한다."
+- "정보는 파일에 저장되고, 파일은 디렉토리(폴더)에 저장된다."
+- "디렉토리는 다른 디렉토리도 저장할 수 있는데, 이를 통해 디렉토리 나무구조가 형성된다."
+- "`cd path` 명령어를 통해 현재 작업하는 디렉토리를 바꿀 수 있다."
+- "`ls path` 명령어는 특정 파일 혹은 디렉토리 목록을 출력한다; `ls` 자체로 현재 작업중인 디렉토리 정보를 보여준다."
+- "`pwd`는 사용자의 현재 작업하는 디렉토리를 출력한다."
+- "`/`은 전체 파일 시스템의 루트 디렉토리가 된다."
+- "상대경로는 현재 위치에서 시작하는 위치를 명세한다."
+- "절대경로는 파일 시스템 루트 위치로부터 위치를 명세한다."
+- "경로명을 유닉스에서는 `/`, 윈도우에서는 `\\` 기호로 구분한다."
+- "`..` 은 현재 디렉토리 상위 디렉토리를 의미한다; `.`은 '현재 디렉토리'를 의미한다."
+- "거의 대부분의 파일명은 `파일명.확장자(something.extension)` 형태를 띈다. 확장자가 필요하지도 그 어떤 것도 보증하지 않지만, 일반적으로 파일 데이터 유형이 어떤 것인지 지정하는 사용된다."
 ---
 
-The part of the operating system responsible for managing files and directories 
-is called the **file system**.
-It organizes our data into files,
-which hold information,
-and directories (also called "folders"),
-which hold files or other directories.
+파일과 디렉토리 관리를 담당하고 있는 운영체제 부분을 **파일 시스템(file system)**이라고 한다. 
+파일 시스템은 데이터를 정보를 담고 있는 파일과 파일 혹은 다른 디렉토리를 담고 있는 디렉토리(혹은 "폴더"")로 조직화한다.
 
-Several commands are frequently used to create, inspect, rename, and delete files and directories.
-To start exploring them, we'll go to our open shell window.
+파일과 디렉토리를 생성, 검사, 이름 바꾸기, 삭제하는데 명령어 몇개가 자주 사용된다. 
+명령어를 살펴보기 위해, 쉘 윈도우를 연다:
 
-First let's find out where we are by running a command called `pwd`
-(which stands for "print working directory"). Directories are like *places* - at any time
-while we are using the shell we are in exactly one place, called
-our **current working directory**. Commands mostly read and write files in the 
-current working directory, i.e. "here", so knowing where you are before running
-a command is important. `pwd` shows you where you are:
+먼저, `pwd` 명령어를 사용해서 위치를 찾아낸다; `pwd`는 "print working directory"를 의미한다.
+디렉토리는 *장소(place)* 같다 - 
+쉘을 사용할 때마다 정확하게 한 장소에 위치하게 되는데, 
+이를 **현재 작업 디렉토리(current working directory)**라고 부른다.
+명령어 대부분은 현재 작업 디렉토리에 파일을 읽고 쓰는 작업을 "이곳(here)"에 수행한다.
+그래서 명령어를 실행하기 전에 현재 위치가 어디인지 파악하는 것이 중요하다.
+`pwd` 명령어를 숳애하게 되면 현재 위치를 다음과 같이 보여주게 된다:
 
 ~~~
 $ pwd
@@ -53,74 +51,70 @@ $ pwd
 ~~~
 {: .output}
 
-Here,
-the computer's response is `/Users/nelle`,
-which is Nelle's **home directory**:
 
-> ## Home Directory Variation
+다음에서, 컴퓨터의 응답은 `/Users/nelle`으로 넬(Nelle)의 **홈 디렉토리(home directory)**다:
+
+
+> ## 홈 디렉토리(Home Directory) 변종
 >
-> The home directory path will look different on different operating systems.
-> On Linux it may look like `/home/nelle`,
-> and on Windows it will be similar to `C:\Documents and Settings\nelle` or
-> `C:\Users\nelle`.  
-> (Note that it may look slightly different for different versions of Windows.)
-> In future examples, we've used Mac output as the default - Linux and Windows
-> output may differ slightly, but should be generally similar.  
+> 
+> 홈 디렉토리 경로는 운영체제마다 다르게 보인다.
+> 리눅스에서 `/home/nelle` 처럼 보이고, 윈도우에서는 
+> `C:\Documents and Settings\nelle`, `C:\Users\nelle`와 유사하게 보인다.
+> (윈도우 버젼마다 다소 차이가 있을 수 있음에 주목한다.)
+> 다음 예제부터, 맥OS 출력결과를 기본설정으로 사용할 것이다; 
+> 리눅스와 윈도우 출력결과에 다소 차이가 날 수 있지만, 전반적으로 유사하다.
 {: .callout}
 
-To understand what a "home directory" is,
-let's have a look at how the file system as a whole is organized.  For the
-sake of this example, we'll be
-illustrating the filesystem on our scientist Nelle's computer.  After this
-illustration, you'll be learning commands to explore your own filesystem,
-which will be constructed in a similar way, but not be exactly identical.  
+"홈 디렉토리(home directory)"를 이해하기 위해서, 
+파일 시스템이 전체적으로 어떻게 구성되었는지 살펴보자. 
+최상단에 다른 모든 것을 담고 있는 **루트 디렉토리(root directory)**가 있다. 
+슬래쉬 `/` 문자로 나타내고, `/users/nelle`에서 맨 앞에 슬래쉬이기도 하다.
 
-On Nelle's computer, the filesystem looks like this:
+Nelle 과학자 컴퓨터의 파일시스템을 사례로 살펴보자. 
+시연을 통해서 유사한 방식으로 (하지만 정확하게 동일하지는 않지만) 본인 컴퓨터
+파일시스템을 탐색하는 명령어를 학습하게 된다.
+
+넬 과학자 컴퓨터의 파일 시스템은 다음과 같다:
 
 ![The File System](../fig/filesystem.svg)
 
-At the top is the **root directory**
-that holds everything else.
-We refer to it using a slash character, `/`, on its own;
-this is the leading slash in `/Users/nelle`.
+최상단에 다른 모든 것을 담고 있는 **루트 디렉토리(root directory)**가 있다. 
+슬래쉬 `/` 문자로 나타내고, `/users/nelle`에서 맨 앞에 슬래쉬이기도 하다.
 
-Inside that directory are several other directories:
-`bin` (which is where some built-in programs are stored),
-`data` (for miscellaneous data files),
-`Users` (where users' personal directories are located),
-`tmp` (for temporary files that don't need to be stored long-term),
-and so on.  
+홈 디렉토리 안쪽에 몇가지 다른 디렉토리가 있다:
+`bin` (몇몇 내장 프로그램이 저장된 디렉토리), 
+`data` (여러가지 데이터 파일이 저장된 디렉토리), 
+`Users` (사용자의 개인 디렉토리가 저장된 디렉토리), 
+`tmp` (장기간 저장될 필요가 없는 임시 파일을 위한 디렉토리), 등등:
 
-We know that our current working directory `/Users/nelle` is stored inside `/Users`
-because `/Users` is the first part of its name.
-Similarly,
-we know that `/Users` is stored inside the root directory `/`
-because its name begins with `/`.
+현재 작업 디렉토리 `/Users/nelle`는 `/Users` 내부에 저장되어 있다는 것을 알고 있는데, 
+이유는 `/Users`가 이름 처음 부분이기 때문에 알 수 있다. 
+마찬가지로 `/Users`는 루트 디렉토리 내부에 저장되어 있다는 것을 알 수 있는데, 이름이 `/`으로 시작되기 때문이다.
 
-> ## Slashes
+
+> ## 슬래쉬(Slashes)
 >
-> Notice that there are two meanings for the `/` character.
-> When it appears at the front of a file or directory name,
-> it refers to the root directory. When it appears *inside* a name,
-> it's just a separator.
+> 슬래쉬 `/` 문자는 두가지 의미가 있는 것에 주목한다.
+> 파일 혹은 디렉토리 이름 앞에 나타날 때, 루트 디렉토리를 지칭하게 되고,
+> 이름 *가운데* 나타날 때, 단순히 구분자 역할을 수행한다.
 {: .callout}
 
-Underneath `/Users`,
-we find one directory for each user with an account on Nelle's machine,
-her colleagues the Mummy and Wolfman.  
+
+`/Users` 하단에서 Nelle 과학자 컴퓨터 계정과, 랩실 동료 미이라(Mummy)와 늑대인간(Wolfman) 디렉토리를 볼 수 있다.
 
 ![Home Directories](../fig/home-directories.svg)
 
-The Mummy's files are stored in `/Users/imhotep`,
-Wolfman's in `/Users/larry`,
-and Nelle's in `/Users/nelle`.  Because Nelle is the user in our
-examples here, this is why we get `/Users/nelle` as our home directory.  
-Typically, when you open a new command prompt you will be in
-your home directory to start.  
+미이라(Mummy) 파일은 `/Users/imhotep` 디렉토리에 저장되어 있고, 
+늑대인가(Wolfman)의 파일은 `/Users/larry` 디렉토리에 저장되어 있고 
+`/Users/nelle` 디렉토리에 `nelle`의 정보가 저장되어 있는데,
+이것이 왜 `nelle`이 디렉토리 이름의 마지막 부분인 이유다.
+일반적으로 명령 프롬프트를 열게 되면, 처음 시작하는 곳이 본인 계정 홈 디렉토리가 된다.
 
-Now let's learn the command that will let us see the contents of our
-own filesystem.  We can see what's in our home directory by running `ls`,
-which stands for "listing":
+
+본인 파일시스템에 담긴 내용물을 파악하는데 사용하는 명령어를 학습해 보자.
+(Nelle의 홈 디렉토리에 무엇이 있는지 `ls` 명령어를 실행해서 살펴보자.)
+`ls`는 "목록보기(listing)"를 나타낸다:
 
 ~~~
 $ ls
@@ -133,17 +127,15 @@ Desktop      Downloads    Movies       Pictures
 ~~~
 {: .output}
 
-(Again, your results may be slightly different depending on your operating
-system and how you have customized your filesystem.)
+(다시 한번, 본인 컴퓨터 운영체제와 파일시스템을 취향에 따라 바꿨는지에 따라 
+출력결과는 다소 다를 수 있다.)
 
-`ls` prints the names of the files and directories in the current directory. 
-We can make its output more comprehensible by using the **flag** `-F`
-(also known as a **switch** or an **option**) ,
-which tells `ls` to add a marker to file and directory names to indicate what
-they are. A trailing `/` indicates that this is a directory. Depending on your
-settings, it might also use colors to indicate whether each entry is a file or 
-directory.
-You might recall that we used `ls -F` in an earlier example.
+`ls`는 알파벳 순서로 깔끔하게 열로 정렬하여 현재 디렉토리에 있는 파일과 디렉토리 이름을 출력한다.
+**플래그(flag)** `-F`(**스위치(switch)** 혹은 **옵션(option)**으로도 불린다)를 추가하여 출력을 좀더 이해하기 좋게 출력괄를 생성할 수도 있다. 
+`ls`으로 하여금 디렉토리 이름 뒤에 `/`을 추가하게 일러준다:
+끝에 붙은 `/`은 디렉토리라는 것을 지칭한다.
+설정에 따라 달라지도록 파일이냐 디렉토리냐에 따라 다른 색상을 입힐 수도 있다.
+앞선 학습에서 `ls -F` 명령어를 사용한 것을 상기한다.
 
 ~~~
 $ ls -F
@@ -156,33 +148,30 @@ Desktop/      Downloads/    Movies/       Pictures/
 ~~~
 {: .output}
 
-### Getting help
+### 도움말 얻기
 
-`ls` has lots of other **flags**. There are two common ways to find out how 
-to use a command and what flags it accepts:
+`ls` 명령어에 딸린 **플래그**가 많다.
+일반적으로 명령어와 수반되는 플래그 사용법을 파악하는 방식이 두개 있다:
 
-1. We can pass a `--help` flag to the command, such as:
+1. `--help` 플래그를 명령어에 다음과 같이 전달하는 방법:
     ~~~
     $ ls --help
     ~~~
     {: .bash}
 
-2. We can read its manual with `man`, such as:
+2. `man` 명령어로 다음과 같이 매뉴얼을 읽는 방법:
     ~~~
     $ man ls 
     ~~~
     {: .bash}
 
-**Depending on your environment you might find that only one of these works
-(either `man` or `--help`).**
-We'll describe both ways below.
+**본인 컴퓨터 환경에 따라 상기 방법 중 하나만 동작(`man` 혹은 `--help`)할 수도 있다.**
+아래에서 두가지 방법 모두 살펴보자.
 
+#### `--help` 플래그
 
-#### The `--help` flag
-
-Many bash commands, and programs that people have written that can be
-run from within bash, support a `--help` flag to display more
-information on how to use the command or program.
+배쉬 내부에서 동작하도록 작성된 배쉬 명령어와 프로그램은 `--help` 플래그를 지원해서 
+명령어 혹은 프로그램을 사용하는 방식에 대한 더 많은 정보를 볼 수 있게 해 준다.
 
 ~~~
 $ ls --help
@@ -309,9 +298,9 @@ or available locally via: info '(coreutils) ls invocation'
 ~~~
 {: .output}
 
-> ## Unsupported command-line options
-> If you try to use an option (flag) that is not supported, `ls` and other programs
-> will usually print an error message similar to:
+> ## 지원되지 않는 명령-라인 선택옵션
+> 지원되지 않는 선택옵션(플래그)를 사용하게 되면, `ls`를 비롯한 다른 프로그램은 
+> 다음과 같은 오류 메시지를 일반적으로 출력하게 된다:
 >
 > ~~~
 > $ ls -j
@@ -325,52 +314,48 @@ or available locally via: info '(coreutils) ls invocation'
 > {: .error}
 {: .callout}
 
-#### The `man` command
+#### `man` 명령어
 
-The other way to learn about `ls` is to type 
+`ls`에 대해 배울 수 있는 다른 방식은 다음 명령어를 타이핑하는 것이다.
+
 ~~~
 $ man ls
 ~~~
 {: .bash}
 
-This will turn your terminal into a page with a description 
-of the `ls` command and its options and, if you're lucky, some examples
-of how to use it.
+상기 명령어를 실행하게 되면 `ls` 명령어와 선택 옵션에 대해 기술된 페이지로 
+탈바꿈하게 된다. 만약 운이 좋은 경우 상용법에 대한 예제도 포함되어 있다.
 
-To navigate through the `man` pages,
-you may use <kbd>↑</kbd> and <kbd>↓</kbd> to move line-by-line,
-or try <kbd>B</kbd> and <kbd>Spacebar</kbd> to skip up and down by a full page.
-To search for a character or word in the `man` pages, 
-use <kbd>/</kbd> followed by the character or word you are searching for. 
+`man` 페이지를 살펴보는 방법은 행단위로 이동하는데 <kbd>↑</kbd>, <kbd>↓</kbd>을 사용하거나 
+전체 페이지 단위로 건너뛰거나 아래 페이지로 이동할 경우 <kbd>B</kbd>, <kbd>Spacebar</kbd>을 사용한다.
+`man` 페이지에서 단어나 문자를 찾는 경우 <kbd>/</kbd> 다음에 검색할 문자 혹은 단어를 타이핑하면 된다.
 
-To **quit** the `man` pages, press <kbd>Q</kbd>. 
+`man` 페이지에서 빠져 나오고자 **종료(quit)**하고자 한다면 <kbd>Q</kbd>을 누른다. 
 
-> ## Manual pages on the web
+> ## 웹상의 매뉴얼 페이지
 >
-> Of course there is a third way to access help for commands:
-> searching the internet via your web browser. 
-> When using internet search, including the phrase `unix man page` in your search
-> query will help to find relevant results.
+> 물론 명령어에 대한 도움말에 접근하는 세번째 방식이 있다:
+> 웹브라우저를 통해서 인터넷을 검색하는 것이다.
+> 인터넷 검색을 이용할 때, 검색쿼리에 `unix man page` 문구를 
+> 포함할 경우 연관된 정보를 찾는데 도움이 될 수 있다.
 >
-> GNU provides links to its
-> [manuals](http://www.gnu.org/manual/manual.html) including the
-> [core GNU utilities](http://www.gnu.org/software/coreutils/manual/coreutils.html),
-> which covers many commands introduced within this lesson.
+> GNU도 [GNU 핵심 유틸리티(core GNU utilities)](http://www.gnu.org/software/coreutils/manual/coreutils.html)이 
+> 포함된 [매뉴얼](http://www.gnu.org/manual/manual.html)을 제공하고 있는데
+> 이번 학습에 소개된 많은 명령어를 망라하고 있다.
 {: .callout}
 
-> ## Exploring More `ls` Flags
+> ## 더많은 `ls` 플래그 탐색
 >
-> What does the command `ls` do when used with the `-l` and `-h` flags?
+> `-l`, `-h` 플래그를 붙여 `ls` 명령어를 수행하게 되면 출력결과는 어떻게 나올까?
 >
-> Some of its output is about properties that we do not cover in this lesson (such
-> as file permissions and ownership), but the rest should be useful
-> nevertheless.
+> 출력결과의 일부는 이번 학습에서 다루지 않는 속성(property)에 대한 것으로 파일 권한과 파일 소유에 대한 것이다.
+> 그럼에도 불구하고 나머지는 유용할 것이다.
 >
-> > ## Solution
-> > The `-l` flag makes `ls` use a **l**ong listing format, showing not only
-> > the file/directory names but also additional information such as the file size
-> > and the time of its last modification. The `-h` flag makes the file size
-> > "**h**uman readable", i.e. display something like `5.3K` instead of `5369`.
+> > ## 해답 
+> > `ls`와 사용되는 `-l` 플래그는 **l**ong을 축약한 것으로 
+> > 파일/디렉토리 명칭 뿐만 아니라 파일 크기, 최종 변경 시간 같은 부가정보가 출력된다.
+> > `-h` 플래그는 "**h**uman readable" 사람이 읽기 편한 형태로 파일크기를 지정한다.
+> > 예를 들어, `5369` 대신에 `5.3K`이 화면에 출력된다.
 > {: .solution}
 {: .challenge}
 
