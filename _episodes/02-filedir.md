@@ -359,35 +359,29 @@ $ man ls
 > {: .solution}
 {: .challenge}
 
-> ## Listing Recursively and By Time
+> ## 재귀적으로 시간순으로 목록 출력
 >
-> The command `ls -R` lists the contents of directories recursively, i.e., lists
-> their sub-directories, sub-sub-directories, and so on at each level. The command
-> `ls -t` lists things by time of last change, with most recently changed files or
-> directories first.
-> In what order does `ls -R -t` display things? Hint: `ls -l` uses a long listing
-> format to view timestamps.
+> `ls -R` 명령어는 디렉토리에 담긴 내용을 재귀적으로 화면에 출력한다; 즉, 
+> 각 단계별로 하위 디렉토리, 하위-하위 디렉토리 내용을 확면에 출력한다.
+> `ls -t` 명령어는 마지막 변경된 시점순으로 가장 최근에 변경된 파일 혹은 디렉토리를 화면에 정렬해서 출력한다.
+> `ls -R -t` 명령어는 어떤 순서로 화면엘 출력할까?
+> 힌트: `ls -l` 명령어를 사용해서 시간도장(timestamp)을 볼 수 있도록 전체 목록을 화면에 출력한다.
 >
-> > ## Solution
-> > The files/directories in each directory are sorted by time of last change.
+> > ## 해답
+> > 각 디렉토리의 파일/디렉토리가 가장 마지막 시간 변경순으로 정렬되어 출력된다.
 > {: .solution}
 {: .challenge}
 
-Here,
-we can see that our home directory contains mostly **sub-directories**.
-Any names in your output that don't have trailing slashes,
-are plain old **files**.
-And note that there is a space between `ls` and `-F`:
-without it,
-the shell thinks we're trying to run a command called `ls-F`,
-which doesn't exist.
+여기서 홈 디렉토리가 **하위 디렉토리(sub-directories)**가 포함된것을 알 수 있따.
+슬래쉬(`/`)가 붙지 않는 명칭을 갖는 것은 것은 평범한 **파일(file)**이다.
+`ls` 와 `-F` 사이에 공백이 있는 것에 주목한다:
+공백이 없다면 쉘은 존재하지 않는 `ls-F` 명령어를 실행시키려 한다고 간주한다.
 
-We can also use `ls` to see the contents of a different directory.  Let's take a
-look at our `Desktop` directory by running `ls -F Desktop`,
-i.e.,
-the command `ls` with the `-F` **flag** and the **argument**  `Desktop`.
-The argument `Desktop` tells `ls` that
-we want a listing of something other than our current working directory:
+`ls` 명령어를 사용해서 다른 디렉토리에 들어 있는 파일과 디렉토리를 살펴볼 수 있다.
+`ls -F Desktop` 명령어를 실행해서 바탕화면 `Desktop` 디렉토리에 담긴 것을 살펴보자.
+즉, `ls` 명령어는 `-F` **플래그**, 그리고 **인자(argument)** `Desktop`으로 구성된다.
+`Desktop` 인자는 `ls`로 하여금 현재 작업 디렉토리가 아닌 바탕화면 디렉토리 내용을 
+출력하도록 지정하는 역할을 수행한다:
 
 ~~~
 $ ls -F Desktop
@@ -399,23 +393,22 @@ data-shell/
 ~~~
 {: .output}
 
-Your output should be a list of all the files and sub-directories on your
-Desktop, including the `data-shell` directory you downloaded at
-the [setup for this lesson]({{ page.root }}{% link setup.md %}).  Take a look at your Desktop to confirm that
-your output is accurate.  
+본인 출력결과는 [setup for this lesson]({{ page.root }}{% link setup.md %})에서 
+다운로드 받아 압축을 풀어 작업하여 생성한 `data-shell` 디렉토리와 
+본인 바탕화면에 저장된 모든 파일과 하위디렉토리가 출력되어야 한다.
 
-As you may now see, using a bash shell is strongly dependent on the idea that
-your files are organized in a hierarchical file system.
-Organizing things hierarchically in this way helps us keep track of our work:
-it's possible to put hundreds of files in our home directory,
-just as it's possible to pile hundreds of printed papers on our desk,
-but it's a self-defeating strategy.
+지금 확인했듯이, 배쉬 쉘은 파일을 계층적 파일 시스템으로 구성한다는 아이디어에 
+강력히 의존하고 있다.
+이런 방식으로 계층적으로 파일과 디렉토리를 구조화하게 되면 본인 작업을 추적하는데 도움이 된다:
+책상위에 출력한 논문 수백개를 쌓아놓은 것는 것이 가능하듯이,
+홈 디렉토리에 파일 수백개를 저장하는 것도 가능하다.
+하지만, 이런 접근법은 자멸하는 전략이나 마찬가지다. 
 
-Now that we know the `data-shell` directory is located on our Desktop, we
-can do two things.  
+`data-shell` 디렉토리가 바탕화면(Desktop)에 위치하는 것을 확인했으니,
+다음 두가지를 수행할 수 있다.
 
-First, we can look at its contents, using the same strategy as before, passing
-a directory name to `ls`:
+먼저, `data-shell` 디렉토리에 담긴 것을 살펴보자; 디렉토리 이름에 `ls`를 전달해서 
+앞서 확인된 동일한 전략을 사용하자:
 
 ~~~
 $ ls -F Desktop/data-shell
@@ -428,19 +421,17 @@ data/               north-pacific-gyre/ pizza.cfg           writing/
 ~~~
 {: .output}
 
-Second, we can actually change our location to a different directory, so
-we are no longer located in
-our home directory.  
+둘째로, 다른 디렉토리로 위치를 실제로 바꿀 수 있다. 
+그렇게 하면 더이상 홈 디렉토리에 있지는 않게 된다.
 
-The command to change locations is `cd` followed by a
-directory name to change our working directory.
-`cd` stands for "change directory",
-which is a bit misleading:
-the command doesn't change the directory,
-it changes the shell's idea of what directory we are in.
+작업 디렉토리를 변경하기 위해서 `cd` 다음에 디렉토리 이름을 사용한다. 
+`cd`는 "change directory"의 두문어다. 
+하지만 약간 오해의 소지가 있다: 
+명령어 자체가 디렉토리를 변경하지는 않고, 
+단지 사용자가 어느 디렉토리에 있는지에 대한 쉘의 생각만 바꾼다.
 
-Let's say we want to move to the `data` directory we saw above.  We can
-use the following series of commands to get there:
+앞서 확인한 `data` 디렉토리로 이동해 보자.
+다음 명령어를 쭉 이어서 실행하게 되면 목적지에 도달할 수 있다:
 
 ~~~
 $ cd Desktop
@@ -449,13 +440,12 @@ $ cd data
 ~~~
 {: .language-bash}
 
-These commands will move us from our home directory onto our Desktop, then into
-the `data-shell` directory, then into the `data` directory.  `cd` doesn't print anything,
-but if we run `pwd` after it, we can see that we are now
-in `/Users/nelle/Desktop/data-shell/data`.
-If we run `ls` without arguments now,
-it lists the contents of `/Users/nelle/Desktop/data-shell/data`,
-because that's where we now are:
+상기 명령어는 홈 디렉토리에 바탕화면(`Desktop`) 디렉토리로 이동하고 나서,
+`data-shell` 디렉토리로 이동하고 나서, `data` 디렉토리에 이동하게 된다.
+`cd` 명령어는 아무것도 출력하지는 않지만, `pwd` 명령어를 실행하게 되면 
+`/Users/nelle/Desktop/data-shell/data` 위치한 것을 확인하게 된다.
+인자 없이 `ls` 명령어를 실행하게 되면, `/Users/nelle/Desktop/data-shell/data` 디렉토리 
+파일과 디렉토리를 출력하게 되는데 이유는 지금 있는 위치이기 때문이다:
 
 ~~~
 $ pwd
@@ -478,8 +468,9 @@ animals.txt       morse.txt     planets.txt     sunspot.txt
 ~~~
 {: .output}
 
-We now know how to go down the directory tree, but
-how do we go up?  We might try the following:
+이제 디렉토리 나무를 타서 아래로 내려가는 방법을 익혔다.
+하지만 어떻게 하면 위로 올라갈 수 있을까? 
+다음 명령어를 시도해보자:
 
 ~~~
 $ cd data-shell
@@ -491,27 +482,23 @@ $ cd data-shell
 ~~~
 {: .error}
 
-But we get an error!  Why is this?  
+하지만, 오류 발생! 이유가 뭘까?
 
-With our methods so far,
-`cd` can only see sub-directories inside your current directory.  There are
-different ways to see directories above your current location; we'll start
-with the simplest.  
+지금까지 방법으로 `cd` 명령어는 현재 디렉토리 내부에 하위 디렉토리만 볼 수 있다.
+현재 디렉토리에서 상위 디렉토리를 볼 수 있는 다른 방법이 있다;
+가장 단순한 것부터 시작해보자.
 
-There is a shortcut in the shell to move up one directory level
-that looks like this:
+쉘에서 한단계 위 디렉토리로 이동할 수 있는 단축키가 존재하는데 다음과 같이 생겼다:
 
 ~~~
 $ cd ..
 ~~~
 {: .language-bash}
 
-`..` is a special directory name meaning
-"the directory containing this one",
-or more succinctly,
-the **parent** of the current directory.
-Sure enough,
-if we run `pwd` after running `cd ..`, we're back in `/Users/nelle/Desktop/data-shell`:
+`..`은 특별한 디렉토리명인데 "현재 디렉토리를 포함하는 디렉토리", 좀더 간결하게 표현하면
+현재 디렉토리의 **부모**를 의미한다.
+물론, `cd ..` 명령어를 실행하고 나서 `pwd`을 실행하게 되면 
+`/Users/nelle/Desktop/data-shell`로 되돌아 간다:
 
 ~~~
 $ pwd
@@ -523,8 +510,8 @@ $ pwd
 ~~~
 {: .output}
 
-The special directory `..` doesn't usually show up when we run `ls`.  If we want
-to display it, we can give `ls` the `-a` flag:
+단순히 `ls` 명령어를 실행하게 되면 특수 디렉토리 `..`이 화면에 출력되지는 않는다.
+`..` 디렉토리를 출력하려면 `ls` 명령어와 `-a` 플래그를 사용한다:
 
 ~~~
 $ ls -F -a
@@ -537,41 +524,39 @@ $ ls -F -a
 ~~~
 {: .output}
 
-`-a` stands for "show all";
-it forces `ls` to show us file and directory names that begin with `.`,
-such as `..` (which, if we're in `/Users/nelle`, refers to the `/Users` directory)
-As you can see,
-it also displays another special directory that's just called `.`,
-which means "the current working directory".
-It may seem redundant to have a name for it,
-but we'll see some uses for it soon.
+`-a`은 "show all"의 축약으로 모두 보여주기를 의미한다;
+`ls`로 하여금 `..`와 같은 `.`로 시작하는 파일과 디렉토리명도 화면에 출력하게 강제한다.
+(`/Users/nelle` 디렉토리에 위치한다면, `/Users` 디렉토리를 지칭)
+`.`도 또다른 특별한 디렉토리로,
+"현재 작업 디렉토리(current working directory)"를 의미한다.
+중복되어 불필요해 보일 수 있지만, 곧 `.`에 대한 사용법을 학습할 것이다.
 
-Note that in most command line tools, multiple flags can be combined 
-with a single `-` and no spaces between the flags: `ls -F -a` is 
-equivalent to `ls -Fa`.
+대부분의 명령라인 도구에서 플래그 다수룰 조합해서 플래그 사이 공백없이 단일 `-`로 사용함에 주목한다:
+`ls -F -a`은 `ls -Fa`와 동일하다.
 
-> ## Other Hidden Files
+
+> ## 다른 숨은 파일들
 >
-> In addition to the hidden directories `..` and `.`, you may also see a file
-> called `.bash_profile`. This file usually contains shell configuration
-> settings. You may also see other files and directories beginning
-> with `.`. These are usually files and directories that are used to configure
-> different programs on your computer. The prefix `.` is used to prevent these
-> configuration files from cluttering the terminal when a standard `ls` command
-> is used.
+> 숨은 `..`, `.` 디렉토리에 더해서, 
+> `.bash_profile` 파일도 봤을 것이다.
+> `.bash_profile` 파일에는 쉘 환경설정 정보가 담겨져 있다.
+> `.`으로 시작하는 다른 파일과 디렉토리를 봤을 수도 있다.
+> 이런 파일은 본인 컴퓨터의 다른 프로그램에서 환경설정을 하기 위해서 사용되는 
+> 파일과 디렉토리라고 보면 된다.
+> `.` 접두어를 사용해서 `ls` 명령어를 사용할 때 이러한 환경설정 파일들이 터미널을 
+> 난잡하게 만드는 것을 방지하는 기능을 수행한다.
 {: .callout}
 
-> ## Orthogonality
+> ## 직교(Orthogonality)
 >
-> The special names `.` and `..` don't belong to `cd`;
-> they are interpreted the same way by every program.
-> For example,
-> if we are in `/Users/nelle/data`,
-> the command `ls ..` will give us a listing of `/Users/nelle`.
-> When the meanings of the parts are the same no matter how they're combined,
-> programmers say they are **orthogonal**:
-> Orthogonal systems tend to be easier for people to learn
-> because there are fewer special cases and exceptions to keep track of.
+> 특수 이름 `.`과 `..`는 `ls`에만 속하는 것이 아니고; 
+> 모든 프로그램에서 같은 방식으로 해석된다. 
+> 예를 들어, `/Users/nelle/data` 디렉토리에 있을 때,
+> `ls ..` 명령어는 `/Users/nelle`의 목록을 보여줄 것이다. 
+> 어떻게 조합되든 상관없이 동일한 의미를 가지게 될 때, 
+> 프로그래머는 이를 **직교(orthogonal)**한다고 부른다. 
+> 직교 시스템은 사람들이 훨씬 배우기 쉬운데,
+> 이유는 기억하고 추적할 특수 사례와 예외가 더 적기 때문이다.
 {: .callout}
 
 These then, are the basic commands for navigating the filesystem on your computer:
@@ -647,55 +632,53 @@ $ cd /Users/nelle/Desktop/data-shell
 
 Run `pwd` and `ls -F` to ensure that we're in the directory we expect.  
 
-> ## Two More Shortcuts
+> ## 단축(Shortcuts) 두개 더 {.callout}
 >
-> The shell interprets the character `~` (tilde) at the start of a path to
-> mean "the current user's home directory". For example, if Nelle's home
-> directory is `/Users/nelle`, then `~/data` is equivalent to
-> `/Users/nelle/data`. This only works if it is the first character in the
-> path: `here/there/~/elsewhere` is *not* `here/there/Users/nelle/elsewhere`.
->
-> Another shortcut is the `-` (dash) character.  `cd` will translate `-` into
-> *the previous directory I was in*, which is faster than having to remember,
-> then type, the full path.  This is a *very* efficient way of moving back
-> and forth between directories. The difference between `cd ..` and `cd -` is
-> that the former brings you *up*, while the latter brings you *back*. You can
-> think of it as the *Last Channel* button on a TV remote.
+> 쉘을 `~` (틸드) 문자를 경로의 시작으로 해석해서 "현재 사용자 홈 디렉토리"를 의미하게 된다.
+> 예를 들어, Nelle의 홈 디렉토리가 `/Users/nelle`이라면, `~/data`은 
+> `/Users/nelle/data`와 동치가 된다. 경로명에 첫 문자로 있을 때만 이것이 동작한다:
+> `here/there/~/elsewhere`이 `here/there/Users/nelle/elsewhere`이 되는 것은 *아니다*.
+> 따라서, `cd ~`을 홈 디렉토리로 변경하는데 사용한다.
+> 
+> 또 다룩 단축은 대쉬(`-`) 문자다. `cd`는 `-` 문자를 *지금 있는 이전 디렉토리*로 변역한다.
+> 이 방법이 전체 경로를 기억하고 있다가 타이핑하는 것보다 더 빠르다.
+> 이를 통해 디렉토리를 앞뒤로 *매우* 효율적으로 이동하게 된다.
+> `cd ..` 와 `cd -` 명령어 사이 차이점은 전자(`cd ..`)는 *위로*, 
+> 후자(`cd -`)는 *아래로* 이동하게 위치를 바꾸는 역할을 수행한다.
+> TV 리모컨의 *이전 채널* 기능으로 생각하면 편하다.
 {: .callout}
 
-> ## Absolute vs Relative Paths
+> ## 동일 작업을 수행하는 수많은 방법 - 절대 경로 vs. 상대 경로 {.challenge}
 >
-> Starting from `/Users/amanda/data/`,
-> which of the following commands could Amanda use to navigate to her home directory,
-> which is `/Users/amanda`?
+> `/home/amanda/data/` 디렉토리에서 시작할 때,
+> Amanda가 홈디렉토리인 `/home/amanda`로 돌아가도록 사용할 수 있는 명령어를 아래에서 선택하시요.
+> 
+> 1.  `cd .`
+> 2.  `cd /`
+> 3.  `cd /home/amanda`
+> 4.  `cd ../..`
+> 5.  `cd ~`
+> 6.  `cd home`
+> 7.  `cd ~/data/..`
+> 8.  `cd`
+> 9.  `cd ..`
 >
-> 1. `cd .`
-> 2. `cd /`
-> 3. `cd /home/amanda`
-> 4. `cd ../..`
-> 5. `cd ~`
-> 6. `cd home`
-> 7. `cd ~/data/..`
-> 8. `cd`
-> 9. `cd ..`
->
-> > ## Solution
-> > 1. No: `.` stands for the current directory.
-> > 2. No: `/` stands for the root directory.
-> > 3. No: Amanda's home directory is `/Users/amanda`.
-> > 4. No: this goes up two levels, i.e. ends in `/Users`.
-> > 5. Yes: `~` stands for the user's home directory, in this case `/Users/amanda`.
-> > 6. No: this would navigate into a directory `home` in the current directory if it exists.
-> > 7. Yes: unnecessarily complicated, but correct.
-> > 8. Yes: shortcut to go back to the user's home directory.
-> > 9. Yes: goes up one level.
+> > ## 해답
+> > 1. No: `.`은 현재 디렉토리를 나타냄.
+> > 2. No: `/`는 루트 디렉토리를 나타냄.
+> > 3. No: Amanda 홈 디렉토리른 `/Users/amanda`임.
+> > 4. No: `../..`은 두 단계 거슬러 올라간다; 즉, `/Users`에 도달함.
+> > 5. Yes: `~`은 사용자 홈 디렉토리를 나타남; 이 경우 `/Users/amanda`이 됨.
+> > 6. No: 현재 디렉토리 내부에 `home` 디렉토리가 존재하는 경우 `home` 디렉토리로 이동하게 됨.
+> > 7. Yes: 불필요하게 복잡하지만, 정답이 맞음.
+> > 8. Yes: 사용자 홈 디렉토리로 이동할 수 있는 단축키를 사용함.
+> > 9. Yes: 한 단계 위로 이동.
 > {: .solution}
 {: .challenge}
 
-> ## Relative Path Resolution
+> ## 상대경로 해결 {.challenge}
 >
-> Using the filesystem diagram below, if `pwd` displays `/Users/thing`,
-> what will `ls -F ../backup` display?
+> 만약 `pwd` 명령어를 쳤을 때, 화면에 `/Users/thing`이 출력된다면, `ls -F ../backup`은 무엇을 출력할까요?
 >
 > 1.  `../backup: No such file or directory`
 > 2.  `2012-12-01 2013-01-08 2013-01-27`
@@ -704,21 +687,21 @@ Run `pwd` and `ls -F` to ensure that we're in the directory we expect.
 >
 > ![File System for Challenge Questions](../fig/filesystem-challenge.svg)
 >
-> > ## Solution
-> > 1. No: there *is* a directory `backup` in `/Users`.
-> > 2. No: this is the content of `Users/thing/backup`,
-> >    but with `..` we asked for one level further up.
-> > 3. No: see previous explanation.
-> > 4. Yes: `../backup/` refers to `/Users/backup/`.
+> > ## 해답
+> > 1. No: `backup` in `/Users` 디렉토리 내부에 `backup` 디렉토리가 *있다*.
+> > 2. No: `Users/thing/backup` 디렉토리에 담긴 것을 출력한다.
+> >    하지만 `..`으로 한 단계 상위 레벨 위를 찾도록 요청했다.
+> > 3. No: 이전 해답을 참조한다.
+> > 4. Yes: `../backup/` 은 `/Users/backup/`을 지칭한다.
 > {: .solution}
 {: .challenge}
 
-> ## `ls` Reading Comprehension
+> ## `ls` 독해 능력
 >
-> Assuming a directory structure as in the above Figure
-> (File System for Challenge Questions), if `pwd` displays `/Users/backup`,
-> and `-r` tells `ls` to display things in reverse order,
-> what command will display:
+> 상기 그림(도전과제 질문에 사용되는 파일 시스템)에 나온 디렉토리 구조를 상정한다.
+> 만약 `pwd` 명령어를 쳤을 때 화면에 `/Users/backup`이 출력되고, 
+> `-r` 인자는 `ls` 명령어가 역순으로 화면에 출력하게 한다면, 
+> 어떤 명령어가 다음을 화면에 출력할까요?>
 >
 > ~~~
 > pnas_sub/ pnas_final/ original/
@@ -728,85 +711,68 @@ Run `pwd` and `ls -F` to ensure that we're in the directory we expect.
 > 1.  `ls pwd`
 > 2.  `ls -r -F`
 > 3.  `ls -r -F /Users/backup`
-> 4.  Either #2 or #3 above, but not #1.
+> 4.  위 #2 혹은 #3, 하지만, #1은 아님.
 >
-> > ## Solution
-> >  1. No: `pwd` is not the name of a directory.
-> >  2. Yes: `ls` without directory argument lists files and directories
-> >     in the current directory.
-> >  3. Yes: uses the absolute path explicitly.
-> >  4. Correct: see explanations above.
+> > ## 해답
+> >  1. No: `pwd` 는 디렉토리 명칭이 아님.
+> >  2. Yes: 디렉토리 인자가 없는 `ls` 명령어는 현재 디렉토리의 파일과 디렉토리를 화면에 출력함.
+> >  3. Yes: 절대 경로를 명시적으로 사용.
+> >  4. Correct: 상기 해설 참조.
 > {: .solution}
 {: .challenge}
 
-### Nelle's Pipeline: Organizing Files
+### Nelle의 파이프라인: 파일 구성하기
 
-Knowing just this much about files and directories,
-Nelle is ready to organize the files that the protein assay machine will create.
-First,
-she creates a directory called `north-pacific-gyre`
-(to remind herself where the data came from).
-Inside that,
-she creates a directory called `2012-07-03`,
-which is the date she started processing the samples.
-She used to use names like `conference-paper` and `revised-results`,
-but she found them hard to understand after a couple of years.
-(The final straw was when she found herself creating
-a directory called `revised-revised-results-3`.)
+파일과 디렉토리에 대해서 알았으니, Nelle은 단백질 분석기가 생성하는 파일을 구성할 준비를 마쳤다. 
+우선 `north-pacific-gyre` 디렉토리를 생성해서 데이터가 어디에서 왔는지를 상기하도록 한다. 
+`2012-07-03` 디렉토리를 생성해서 시료 처리를 시작한 날짜를 명기했다. 
+Nelle은 `conference-paper`와 `revised-results`같은 이름을 사용하곤 했다. 
+하지만, 몇년이 지난 후에 이해하기 어렵다는 것을 발견했다. 
+(마지막 지푸라기는 `revised-revised-results-3` 디렉토리를 본인이 생성했다는 것을 발견했을 때였다.)
 
-> ## Sorting Output
+> ## 출력결과 정렬
 >
-> Nelle names her directories "year-month-day",
-> with leading zeroes for months and days,
-> because the shell displays file and directory names in alphabetical order.
-> If she used month names,
-> December would come before July;
-> if she didn't use leading zeroes,
-> November ('11') would come before July ('7'). Similarly, putting the year first
-> means that June 2012 will come before June 2013.
+> Nelle은 월과 일에 0을 앞에 붙여 디렉토리를 "년-월-일(year-month-day)" 방식으로 이름지었다. 
+> 왜냐하면 쉘이 알파벳 순으로 파일과 디렉토리 이름을 화면에 출력하기 때문이다. 
+> 만약 월이름을 사용한다면, 12월(December)이 7월(July) 앞에 위치할 것이다:
+> 만약 앞에 0을 붙이지 않으면 11월이 7월 앞에 올 것이다.
 {: .callout}
 
-Each of her physical samples is labelled according to her lab's convention
-with a unique ten-character ID,
-such as "NENE01729A".
-This is what she used in her collection log
-to record the location, time, depth, and other characteristics of the sample,
-so she decides to use it as part of each data file's name.
-Since the assay machine's output is plain text,
-she will call her files `NENE01729A.txt`, `NENE01812A.txt`, and so on.
-All 1520 files will go into the same directory.
+각각의 물리적 시료는 "NENE01729A"처럼 10자리 중복되지 않는 ID로 연구실 관례에 따라 표식을 붙였다. 
+시료의 장소, 시간, 깊이, 그리고 다른 특징을 기록하기 위해서 수집 기록에 사용된 것과 동일하다. 
+그래서 이를 각 파일 이름으로 사용하기로 결정했다. 
+분석기 출력값이 텍스트 형식이기 때문에 `NENE01729A.txt`, `NENE01812A.txt`, … 같이 확장자를 붙였다. 
+총 1,520개 파일 모두 동일한 디렉토리에 저장되었다.
 
-Now in her current directory `data-shell`,
-Nelle can see what files she has using the command:
+
+이제 `data-shell` 현재 작업 디렉토리에서 
+Nelle은 다음 명령어를 사용해서, 무슨 파일이 있는지 확인할 수 있다:
 
 ~~~
 $ ls north-pacific-gyre/2012-07-03/
 ~~~
 {: .language-bash}
 
-This is a lot to type,
-but she can let the shell do most of the work through what is called **tab completion**.
-If she types:
+엄청나게 많은 타이핑이지만 **탭 자동완성(tab completion)**을 통해 쉘에게 많은 일을 시킬 수도 있다. 
+만약 다음과 같이 타이핑하고:
 
 ~~~
 $ ls nor
 ~~~
 {: .language-bash}
 
-and then presses tab (the tab key on her keyboard),
-the shell automatically completes the directory name for her:
+그리고 나서 탭(키보드에 탭 키)을 누르면, 자동으로 쉘이 디렉토리 이름을 자동완성 시켜준다:
+
 
 ~~~
 $ ls north-pacific-gyre/
 ~~~
 {: .language-bash}
 
-If she presses tab again,
-Bash will add `2012-07-03/` to the command,
-since it's the only possible completion.
-Pressing tab again does nothing,
-since there are 19 possibilities;
-pressing tab twice brings up a list of all the files,
-and so on.
-This is called **tab completion**,
-and we will see it in many other tools as we go on.
+탭을 다시 누르면, Bash가 명령문에 `2012-07-03/`을 추가하는데, 
+왜냐하면 유일하게 가능한 자동완성조건이기 때문이다. 
+한번더 탭을 누려면 아무것도 수행하지 않는다.
+왜냐하면 1520가지 경우의 수가 있기 때문이다; 
+탭을 두번 누르면 모든 파일 목록을 가져온다. 
+이것을 **탭 자동완성(tab completion)**이라고 부르고, 
+앞으로도 다른 많은 툴에서도 많이 볼 것이다.
