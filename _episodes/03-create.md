@@ -1,30 +1,30 @@
 ---
-title: "Working With Files and Directories"
+title: "파일과 디렉토리 작업"
 teaching: 30
 exercises: 20
 questions:
-- "How can I create, copy, and delete files and directories?"
-- "How can I edit files?"
+- "파일과 디렉토리를 어떻게 생성, 복사, 삭제할 수 있을까?"
+- "파일을 어떻게 편집할 수 있을까?"
 objectives:
-- "Create a directory hierarchy that matches a given diagram."
-- "Create files in that hierarchy using an editor or by copying and renaming existing files."
-- "Delete, copy and move specified files and/or directories."
+- "주어진 도표에 매칭되는 디렉토리를 계층적으로 생성한다."
+- "편집기 사용하거나 혹은 이미 만들어진 파일을 복사한 후 이름을 바꾸어서 디렉토리에 계층적으로 파일을 생성한다."
+- "특정 파일과 디렉토리 혹은 각각을 삭제, 복사, 이동한다."
 keypoints:
-- "`cp old new` copies a file."
-- "`mkdir path` creates a new directory."
-- "`mv old new` moves (renames) a file or directory."
-- "`rm path` removes (deletes) a file."
-- "`*` matches zero or more characters in a filename, so `*.txt` matches all files ending in `.txt`."
-- "`?` matches any single character in a filename, so `?.txt` matches `a.txt` but not `any.txt`."
-- "Use of the Control key may be described in many ways, including `Ctrl-X`, `Control-X`, and `^X`."
-- "The shell does not have a trash bin: once something is deleted, it's really gone."
-- "Depending on the type of work you do, you may need a more powerful text editor than Nano."
+- "`cp old new` 명령어는 파일을 복사한다."
+- "`mkdir path` 명령어는 디렉토리를 새로 생성한다."
+- "`mv old new` 명령어는 파일 혹은 디렉토리를 이동하거나 명칭을 바꾼다."
+- "`rm path` 명령어는 파일을 삭제(제거)한다."
+- "`*` 은 파일명에 문자를 0 혹은 그 이상 매칭해서, `*.txt`은 `.txt`으로 끝나는 모든 파일을 매칭한다."
+- "`?` 은 파일명에 문자 하나를 매칭해서, `?.txt` 은 `any.txt`은 안되고 `a.txt`은 매칭이 된다."
+- "컨트롤 키를 사용하는 방법이 다양하게 기술될 수 있다; `Ctrl-X`, `Control-X`, `^X`"
+- "쉘은 휴지통을 갖고 있지 않다: 무언가 삭제되면, 정말 없어진 것이다."
+- "본인 작업 형태에 따라 다르지만, 나노(Nano)보다 더 강력한 텍스트 편집기가 필요할 수 있다."
 ---
 
-We now know how to explore files and directories,
-but how do we create them in the first place?
-Let's go back to our `data-shell` directory on the Desktop
-and use `ls -F` to see what it contains:
+이제는 어떻게 파일과 디렉토리를 살펴보는지 알게 되었지만, 
+우선, 어떻게 파일과 디렉토리를 생성할 수 있을까요? 
+바탕화면(Desktop) `data-shell` 디렉토리로 돌아가서 
+`ls -F` 명령어를 사용하여 무엇을 담고 있는지 살펴봅시다:
 
 ~~~
 $ pwd
@@ -46,19 +46,19 @@ creatures/  data/  molecules/  north-pacific-gyre/  notes.txt  pizza.cfg  solar.
 ~~~
 {: .output}
 
-Let's create a new directory called `thesis` using the command `mkdir thesis`
-(which has no output):
+명령어 `mkdir thesis`을 사용하여 새 디렉토리 `thesis`를 생성합시다
+(출력되는 것은 아무것도 없습니다.):
+
 
 ~~~
 $ mkdir thesis
 ~~~
 {: .language-bash}
 
-As you might guess from its name,
-`mkdir` means "make directory".
-Since `thesis` is a relative path
-(i.e., doesn't have a leading slash),
-the new directory is created in the current working directory:
+이름에서 유추를 할 수도, 하지 못할 수도 있지만, 
+`mkdir`은 "make directory(디렉토리 생성하기)"를 의미한다. 
+`thesis`는 상대 경로여서(즉, 앞에 슬래쉬가 없음), 
+새로운 디렉토리는 현재 작업 디렉토리 아래 만들어진다:
 
 ~~~
 $ ls -F
@@ -70,51 +70,51 @@ creatures/  data/  molecules/  north-pacific-gyre/  notes.txt  pizza.cfg  solar.
 ~~~
 {: .output}
 
-> ## Two ways of doing the same thing
-> Using the shell to create a directory is no different than using a file explorer.
-> If you open the current directory using your operating system's graphical file explorer,
-> the `thesis` directory will appear there too.
-> While they are two different ways of interacting with the files,
-> the files and directories themselves are the same.
+> ## 동일한 작업을 수행하는 두가지 방법
+> 쉘을 사용해서 디렉토리를 생성하는 것이나 파일 탐색기를 사용하는 것과 별반 차이가 없다.
+> 운영체제 그래픽 파일 탐색기를 사용해서 현재 디렉토리를 열게 되면,
+> `thesis` 디렉토리가 마찬가지로 나타난다.
+> 파일과 상호작용하는 두가지 다른 방식이 존재하지만,
+> 파일과 디렉토리는 동일하다.
 {: .callout}
 
-> ## Good names for files and directories
+> ## 파일과 디렉토리를 위한 좋은 명칭
 >
-> Complicated names of files and directories can make your life painful
-> when working on the command line. Here we provide a few useful
-> tips for the names of your files.
+> 
+> 명령라인으로 작업할 때, 복잡하고 어려운 파일과 디렉토리는 삶을 질을 현격히 저하시킨다.
+> 다음에 파일 명칭에 대한 유용한 팁이 몇개 있다.
 >
-> 1. Don't use whitespaces.
+> 1. 공백(whitespaces)을 사용하지 마라
 >
->    Whitespaces can make a name more meaningful
->    but since whitespace is used to break arguments on the command line
->    it is better to avoid them in names of files and directories.
->    You can use `-` or `_` instead of whitespace.
+>    공백은 이름을 의미있게 할 수도 있지만,
+>    공백이 명령라인 인터페이스에서 인자를 구별하는데 사용되기에,
+>    파일과 디렉토리 명에서는 피하는 것이 상책이다.
+>    공백 대신에 `-` 혹은 `_` 문자를 사용한다.
 >
-> 2. Don't begin the name with `-` (dash).
+> 2. 대쉬(`-`)로 명칭을 시작하지 않는다.
 >
->    Commands treat names starting with `-` as options.
+>    명령어가 `-`으로 시작되는 명칭을 선택옵션으로 처리하기 때문이다.
 >
-> 3. Stick with letters, numbers, `.` (period or 'full stop'), `-` (dash) and `_` (underscore).
+> 3. 명칭에 문자, 숫자, `.` (마침표), `-` (대쉬) and `_` (밑줄)을 고수한다.
 >
->    Many other characters have special meanings on the command line.
->    We will learn about some of these during this lesson.
->    There are special characters that can cause your command to not work as
->    expected and can even result in data loss.
+>    명령라인 인터페이스에서 다른 많은 문자는 특별한 의미를 갖는다.
+>    학습을 진행하면서 이들 중 일부를 배울 것이다.
+>    일부 특수 문자는 명령어가 기대했던 대로 동작하지 못하게 하거나,
+>    심한 경우 데이터 유실을 야기할 수도 있다.
 >
-> If you need to refer to names of files or directories that have whitespace
-> or another non-alphanumeric character, you should surround the name in quotes (`""`).
+> 공백을 포함하거나 알파벳이 아닌 문자를 갖는 파일명이나 디렉토리명을 굳이 지정할 필요가 있다면,
+> 인용부호(`""`)로 파일명이나 디렉토리명을 감싸야 한다.
 {: .callout}
 
-Since we've just created the `thesis` directory, there's nothing in it yet:
+`thesis` 디렉토리를 방금 생성했기에 내부에는 아무것도 없다:
 
 ~~~
 $ ls -F thesis
 ~~~
 {: .language-bash}
 
-Let's change our working directory to `thesis` using `cd`,
-then run a text editor called Nano to create a file called `draft.txt`:
+`cd` 명령어를 사용하여 `thesis`로 작업 디렉토리를 변경하자. 
+Nano 텍스트 편집기를 실행해서 `draft.txt` 파일을 생성하자:
 
 ~~~
 $ cd thesis
@@ -122,47 +122,42 @@ $ nano draft.txt
 ~~~
 {: .language-bash}
 
-> ## Which Editor?
+> ## 어떤 편집기가 좋을까요?
 >
-> When we say, "`nano` is a text editor," we really do mean "text": it can
-> only work with plain character data, not tables, images, or any other
-> human-friendly media. We use it in examples because it is one of the 
-> least complex text editors. However, because of this trait, it may 
-> not be powerful enough or flexible enough for the work you need to do
-> after this workshop. On Unix systems (such as Linux and Mac OS X),
-> many programmers use [Emacs](http://www.gnu.org/software/emacs/) or
-> [Vim](http://www.vim.org/) (both of which require more time to learn), 
-> or a graphical editor such as
-> [Gedit](http://projects.gnome.org/gedit/). On Windows, you may wish to
-> use [Notepad++](http://notepad-plus-plus.org/).  Windows also has a built-in
-> editor called `notepad` that can be run from the command line in the same
-> way as `nano` for the purposes of this lesson.  
->
-> No matter what editor you use, you will need to know where it searches
-> for and saves files. If you start it from the shell, it will (probably)
-> use your current working directory as its default location. If you use
-> your computer's start menu, it may want to save files in your desktop or
-> documents directory instead. You can change this by navigating to
-> another directory the first time you "Save As..."
+> "`nano`가 텍스트 편집기다"라고 말할 때, 정말 "텍스트"만 의미한다. 
+> 즉, 일반 문자 데이터만 작업할 수 있고, 표, 이미지, 혹은 다른 형태의 인간 친화적 미디어는 작업할 수 없다. 
+> `nano`를 워크샵에서 사용하는데 이유는 거의 누구나 훈련없이 사용할 수 있기 때문이다. 
+> 하지만, 실제 작업에는 좀더 강력한 편집기 사용을 추천한다. 
+> 유닉스 시스템 계열(맥 OS X, 리눅스)에서 많은 프로그래머는 
+> [Emacs](http://www.gnu.org/software/emacs/) 혹은 [Vim](http://www.vim.org/)을 사용하거나, 
+> (둘다 완전히 비직관적이만, 심지어 유닉스 표준이기도 하다)
+> 혹은 그래픽 편집기로 [Gedit](http://projects.gnome.org/gedit/)를 사용한다. 
+> 윈도우에서는 [Notepad++](http://notepad-plus-plus.org/)를 사용하는 것도 좋다.
+> 윈도우에는 `메모장(notepad)`이라고 불리는 자체 내장 편집기도 있는데 
+> `nano` 편집기와 마찬가지로 명령라인에서 바로 불러 실행될 수 있다.
+> 
+> 어떤 편집기를 사용하든, 파일을 검색하고 저장하는 것을 알 필요가 있다. 
+> 쉘에서 편집기를 시작하면, (아마도) 현재 작업 디렉토리가 디폴트 시작 위치가 된다. 
+> 컴퓨터 시작 메뉴에서 시작한다면, 대신에 바탕화면(Desktop) 혹은 문서 디렉토리에 파일을 저장하고 싶을지도 모른다. 
+> "다른 이름으로 저장하기(Save As ...)"로 다른 디렉토리로 이동하여 작업 디렉토리를 변경하여 파일을 저장할 수도 있다.
 {: .callout}
 
-Let's type in a few lines of text.
-Once we're happy with our text, we can press `Ctrl-O` (press the Ctrl or Control key and, while
-holding it down, press the O key) to write our data to disk
-(we'll be asked what file we want to save this to:
-press Return to accept the suggested default of `draft.txt`).
+텍스트 몇 줄을 타이핑하고, 
+컨트롤+O (Control-O, Ctrl 혹은 콘트롤 키보드를 누르면서 `O` 를 누름)를 눌러서 데이터를 디스크에 쓰면 저장된다:
+(저장하고자 하는 파일명을 입력하도록 독촉받게 되면 `draft.txt` 기본디폴트로 설정된 것을 받아들이고 엔터키를 친다.)
+
 
 ![Nano in Action](../fig/nano-screenshot.png)
 
-Once our file is saved, we can use `Ctrl-X` to quit the editor and
-return to the shell.
 
-> ## Control, Ctrl, or ^ Key
+파일이 저장되면, 컨트롤+X (`Ctrl-X`, Control-X)를 사용하여 편집기를 끝내고 쉘로 돌아간다. 
+
+> ## Control, Ctrl, ^ Key
 >
-> The Control key is also called the "Ctrl" key. There are various ways
-> in which using the Control key may be described. For example, you may
-> see an instruction to press the Control key and, while holding it down,
-> press the X key, described as any of:
+> 컨트롤 키를 줄여서 "Ctrl" 키라고도 부른다.
+> 컨트롤 키를 기술하는 몇가지 방식이 있다.
+> 예를 들어, "컨트롤 키를 누룬다", "컨트롤 키를 누르면서 X 키를 친다"라는 표현은 
+> 다음 중 하나로 기술된다:
 >
 > * `Control-X`
 > * `Control+X`
@@ -171,13 +166,12 @@ return to the shell.
 > * `^X`
 > * `C-x`
 >
-> In nano, along the bottom of the screen you'll see `^G Get Help ^O WriteOut`.
-> This means that you can use `Control-G` to get help and `Control-O` to save your
-> file.
+> `nano` 편집기에서 화면 하단에 `^G Get Help ^O WriteOut`을 볼 수 있따.
+> `Control-G`를 눌러 도움말을 얻고, `Control-O`를 눌러 파일을 저장한다는 의미를 갖는다.
 {: .callout}
 
-`nano` doesn't leave any output on the screen after it exits,
-but `ls` now shows that we have created a file called `draft.txt`:
+`nano`는 화면에 어떤 출력도 뿌려주지 않고 끝내지만, 
+`ls` 명령어를 사용하여 `draft.txt` 파일이 생성된 것을 확인할 수 있다:
 
 ~~~
 $ ls
@@ -189,47 +183,45 @@ draft.txt
 ~~~
 {: .output}
 
-> ## Creating Files a Different Way
+> ## 파일을 생성하는 다른 방법
 >
-> We have seen how to create text files using the `nano` editor.
-> Now, try the following command in your home directory:
+> `nano` 편집기를 사용해서 텍스트 파일을 생성하는 방법을 살펴봤다.
+> 홈 디렉토리에서 다음 명령어를 실행해 보자:
 >
 > ~~~
-> $ cd                  # go to your home directory
+> $ cd                  # 홈 디렉토리로 이동하기
 > $ touch my_file.txt
 > ~~~
 > {: .language-bash}
 >
-> 1.  What did the touch command do?
->     When you look at your home directory using the GUI file explorer,
->     does the file show up?
+> 1.  `touch` 명령어는 어떤 작업을 수행하는가?
+>     GUI 파일 탐색기를 사용해서 본인 홈 디렉토리를 살펴보게 되면,
+>     파일이 생성된 것이 보이는가?
 >
-> 2.  Use `ls -l` to inspect the files.  How large is `my_file.txt`?
+> 2. `ls -l` 명령어를 사용해서 파일을 살펴보자. `my_file.txt` 파일은 얼마나 큰가?
 >
-> 3.  When might you want to create a file this way?
+> 3.  이런 방식으로 파일을 언제 생성하면 좋을까?
 >
-> > ## Solution
-> > 1.  The touch command generates a new file called 'my_file.txt' in
-> >     your home directory.  If you are in your home directory, you
-> >     can observe this newly generated file by typing 'ls' at the 
-> >     command line prompt.  'my_file.txt' can also be viewed in your
-> >     GUI file explorer.
+> > ## 해답
+> > 1.  `touch` 명령어가 홈 디렉토리에 'my_file.txt' 파일을 새로 생성시킨다.
+> >     터미널로 현재 홈 디렉토리에 있는 경우, `ls` 를 타이핑하게 되면 
+> >     새로 생성된 파일을 확인할 수 있다. GUI 파일 탐색기로도 
+> >     'my_file.txt' 파일을 볼 수 있다.
 > >
-> > 2.  When you inspect the file with 'ls -l', note that the size of
-> >     'my_file.txt' is 0kb.  In other words, it contains no data.
-> >     If you open 'my_file.txt' using your text editor it is blank.
+> > 2.  'ls -l' 명령어로 파일을 조사하게 되면, 'my_file.txt' 파일크기가 0kb 임에 주목한다.
+> >     다른 말로 표현하면, 데이터가 아무 것도 없다는 의미가 된다.
+> >     텍스트 편집기로 'my_file.txt' 파일을 열게 되면, 텅 비어 있다.
 > >
-> > 3.  Some programs do not generate output files themselves, but
-> >     instead require that empty files have already been generated.
-> >     When the program is run, it searches for an existing file to
-> >     populate with its output.  The touch command allows you to
-> >     efficiently generate a blank text file to be used by such
-> >     programs.
+> > 3.  일부 프로그램은 그 자체로 출력 파일을 생성하지 않지만,
+> >     빈 파일이 이미 생성되어 있는 것을 요구조건으로 하는 경우가 있다.
+> >     프로그램이 실행되면, 출력결과를 채울 수 있는 파일이 존재하는지 검색한다.
+> >     이런 프로그램에게 `touch` 명령어는 빈 텍스트 파일을 효율적으로 생성할 수 있는 
+> >     메커니즘을 제공한다는 점에서 유용하다.
 > {: .solution}
 {: .challenge}
 
-Returning to the `data-shell` directory,
-let's tidy up the `thesis` directory by removing the draft we created:
+`data-shell` 디렉토리로 돌아가서,
+생성한 초안을 제거해서 `thesis` 디렉토리를 깔끔하게 정리하자:
 
 ~~~
 $ cd thesis
@@ -237,29 +229,26 @@ $ rm draft.txt
 ~~~
 {: .language-bash}
 
-This command removes files (`rm` is short for "remove").
-If we run `ls` again,
-its output is empty once more,
-which tells us that our file is gone:
+상기 명령어는 파일을 제거한다(`rm`은 "remove"를 줄인 것이다.)
+`ls` 명령어를 다시 실행하게 되면,
+출력결과는 아무 것도 없게 되는데 파일이 사라진 것을 확인시켜준다:
 
 ~~~
 $ ls
 ~~~
 {: .language-bash}
 
-> ## Deleting Is Forever
+> ## 삭제는 영원하다
 >
-> The Unix shell doesn't have a trash bin that we can recover deleted
-> files from (though most graphical interfaces to Unix do).  Instead,
-> when we delete files, they are unhooked from the file system so that
-> their storage space on disk can be recycled. Tools for finding and
-> recovering deleted files do exist, but there's no guarantee they'll
-> work in any particular situation, since the computer may recycle the
-> file's disk space right away.
+> 유닉스에는 삭제된 파일을 복구할 수 있는 휴지통이 없다. 
+> (하지만, 유닉스에 기반한 대부분의 그래픽 인터페이스는 휴지통 기능이 있다)
+> 파일을 삭제하면 파일시스템의 관리대상에서 빠져서 디스트 저장공간이 다시 재사용되게 한다. 
+> 삭제된 파일을 찾아 되살리는 도구가 존재하지만, 
+> 어느 상황에서나 동작한다는 보장은 없다. 
+> 왜냐하면 파일이 저장되었던 공간을 컴퓨터가 바로 재사용할지 모르기 때문이다.
 {: .callout}
 
-Let's re-create that file
-and then move up one directory to `/Users/nelle/Desktop/data-shell` using `cd ..`:
+파일을 다시 생성하고 나서, `cd ..`를 사용하여 `/Users/nelle/Desktop/data-shell` 상위 디렉토리로 이동해보자:
 
 ~~~
 $ pwd
@@ -287,8 +276,7 @@ $ cd ..
 ~~~
 {: .language-bash}
 
-If we try to remove the entire `thesis` directory using `rm thesis`,
-we get an error message:
+`rm thesis`을 사용하여 전체 `thesis` 디렉토리를 제거하려고 하면 오류 메시지가 생긴다:
 
 ~~~
 $ rm thesis
@@ -300,38 +288,49 @@ rm: cannot remove `thesis': Is a directory
 ~~~
 {: .error}
 
-This happens because `rm` by default only works on files, not directories.
-
-To really get rid of `thesis` we must also delete the file `draft.txt`.
-We can do this with the [recursive](https://en.wikipedia.org/wiki/Recursion) option for `rm`:
+`rm` 명령어는 파일에만 동작하고 디렉토리에는 동작하지 않기 때문에 오류가 발생한다. 
+`thesis` 디렉토리를 제거하려면, `draft.txt` 파일도 삭제해야 한다.
+`rm` 명령어에 [재귀(recursive)](https://en.wikipedia.org/wiki/Recursion) 선택옵션을 사용해서 
+삭제 작업을 수행할 수 있다:
 
 ~~~
 $ rm -r thesis
 ~~~
 {: .language-bash}
 
-> ## Using `rm` Safely
+> ## `rm` 안전하게 사용하기
 >
-> What happens when we type `rm -i thesis/quotations.txt`?
-> Why would we want this protection when using `rm`?
+> `rm -i thesis/quotations.txt` 타이핑하면 무슨 일이 일어날까?
+> `rm` 명령어를 사용할 때 왜 이러한 보호장치가 필요할까?
 >
-> > ## Solution
+> > ## 해답
 > > ```
 > > $ rm: remove regular file 'thesis/quotations.txt'?
 > > ```
 > > {: .language-bash} 
-> > The -i option will prompt before every removal. 
-> > The Unix shell doesn't have a trash bin, so all the files removed will disappear forever. 
-> > By using the -i flag, we have the chance to check that we are deleting only the files that we want to remove.
+> > `-i` 선택옵션은 삭제하기 전에 삭제를 확인하게 해준다.
+> > 유닉스 쉘에는 휴지통이 없어서, 삭제되는 모든 파일은 영원히 사라진다.
+> > `-i` 플래그를 사용하게 되면, 삭제를 원하는 파일만 삭제되는지 점검할 수 있는 기회를 갖게된다.
 > {: .solution}
 {: .challenge}
 
-> ## With Great Power Comes Great Responsibility
+> ## 큰 힘에는 큰 책임이 따른다(With Great Power Comes Great Responsibility)
 >
-> Removing the files in a directory recursively can be a very dangerous
-> operation. If we're concerned about what we might be deleting we can
-> add the "interactive" flag `-i` to `rm` which will ask us for confirmation
-> before each step
+> 디렉토리에 먼저 파일을 제거하고, 그리고 나서 디렉토리를 제거하는 방식은 지루하고 시간이 많이 걸린다. 
+> 대신에 `-r` 옵션을 가진 `rm` 명령어를 사용할 수 있다. 
+> `-r` 플래그 옵션은 "recursive(재귀적)"을 나타낸다.
+>
+> ~~~
+> $ rm -r thesis
+> ~~~
+>
+> 디렉토리에 모든 것을 삭제하고 나서 디렉토리 자체도 삭제한다. 
+> 만약 디렉토리가 하위 디렉토리를 가지고 있다면, `rm -r`은 하위 디렉토리에도 같은 작업을 반복한다. 
+> 매우 편리하지만, 부주위하게 사용되면 피해가 엄청날 수 있다.
+> 
+> 디렉톨리 파일을 재귀적으로 제거하는 것은 매우 위험할 수 있다.
+> 삭제되는 것에 염려가 된다면, `rm` 명령어에 `-i` 인터랙티브 플래그를 추가해서
+> 삭제단계마다 확인을 하고 삭제하는 것도 가능하다.
 >
 > ~~~
 > $ rm -r -i thesis
@@ -340,14 +339,15 @@ $ rm -r thesis
 > rm: remove directory ‘thesis’? y
 > ~~~
 > {: .language-bash}
->
-> This removes everything in the directory, then the directory itself, asking
-> at each step for you to confirm the deletion.
+> 
+> 상기 명령어는 `thesis` 디렉토리 내부 모든 것을 삭제하고 나서 `thesis` 디렉토리도 
+> 삭제하는데 삭제단계별로 확인 절차를 거친다.
 {: .callout}
 
-Let's create that directory and file one more time.
-(Note that this time we're running `nano` with the path `thesis/draft.txt`,
-rather than going into the `thesis` directory and running `nano` on `draft.txt` there.)
+
+다시 한번 디렉토리와 파일을 생성하자. 
+이번에는 `thesis/draft.txt` 파일경로로 바로 `nano`를 실행함을 주목하자. 
+이전에는 `thesis`디렉토리로 가서 `draft.txt`이름으로 `nano`를 실행했다.
 
 ~~~
 $ pwd
@@ -371,22 +371,18 @@ draft.txt
 ~~~
 {: .output}
 
-`draft.txt` isn't a particularly informative name,
-so let's change the file's name using `mv`,
-which is short for "move":
+`draft.txt`가 특별한 정보를 제공하는 이름이 아니어서 `mv`를 사용하여 파일 이름을 변경하자. 
+`mv`는 "move"의 줄임말이다:
 
 ~~~
 $ mv thesis/draft.txt thesis/quotes.txt
 ~~~
 {: .language-bash}
 
-The first argument tells `mv` what we're "moving",
-while the second is where it's to go.
-In this case,
-we're moving `thesis/draft.txt` to `thesis/quotes.txt`,
-which has the same effect as renaming the file.
-Sure enough,
-`ls` shows us that `thesis` now contains one file called `quotes.txt`:
+첫번째 매개변수는 `mv` 명령어에게 이동하려는 대상을, 두번째 매개변수는 어디로 이동되는지를 나타낸다. 
+이번 경우에는 `thesis/draft.txt` 파일을 `thesis/quotes.txt`으로 이동한다. 
+이렇게 파일을 이동하는 것이 파일 이름을 바꾸는 것과 동일한 효과를 가진다. 
+아니나 다를까, `ls` 명령어를 사용하여 확인하면 `thesis` 디렉토리에는 이제 `quotes.txt` 파일만 있음을 확인할 수 있다:
 
 ~~~
 $ ls thesis
@@ -398,39 +394,38 @@ quotes.txt
 ~~~
 {: .output}
 
-One has to be careful when specifying the target file name, since `mv` will
-silently overwrite any existing file with the same name, which could
-lead to data loss. An additional flag, `mv -i` (or `mv --interactive`),
-can be used to make `mv` ask you for confirmation before overwriting.
+목표 파일명을 명세할 때 주의를 기울일 필요가 있다. 
+왜냐하면, `mv` 명령어는 동일 명칭을 갖는
+어떤 기존 파일도 아주 조용히 덮어 써버리는 재주가 있어 데이터 유실에 이르게 된다.
+부가적인 옵션 플래그, `mv -i` (즉 `mv --interactive`)를 사용해서
+덮어쓰기 전에 사용자가 확인하도록 `mv` 명령어를 활용할 수도 있다.
 
-Just for the sake of consistency,
-`mv` also works on directories
+일관성을 갖고 있어서, `mv`는 디렉토리에도 동작한다 --- 별도 `mvdir` 명령어는 없다.
 
-Let's move `quotes.txt` into the current working directory.
-We use `mv` once again,
-but this time we'll just use the name of a directory as the second argument
-to tell `mv` that we want to keep the filename,
-but put the file somewhere new.
-(This is why the command is called "move".)
-In this case,
-the directory name we use is the special directory name `.` that we mentioned earlier.
+`quotes.txt` 파일을 현재 작업 디렉토리로 이동합시다. 
+`mv`를 다시 사용한다. 
+하지만 이번에는 두번째 매개변수로 디렉토리 이름을 사용해서 파일이름을 바꾸지 않고, 새로운 장소에 놓는다. 
+(이것이 왜 명령어가 "move(이동)"으로 불리는 이유다.) 
+이번 경우에 사용되는 디렉토리 이름은 앞에서 언급한 특수 디렉토리 이름 `.` 이다.
 
 ~~~
 $ mv thesis/quotes.txt .
 ~~~
 {: .language-bash}
 
-The effect is to move the file from the directory it was in to the current working directory.
-`ls` now shows us that `thesis` is empty:
+과거에 있던 디렉토리에서 파일을 현재 작업 디렉토리로 옮긴 효과가 나타난다.
+`ls` 명령어가 `thesis` 디렉토리가 비였음을 보여준다:
 
 ~~~
 $ ls thesis
 ~~~
 {: .language-bash}
 
-Further,
-`ls` with a filename or directory name as an argument only lists that file or directory.
-We can use this to see that `quotes.txt` is still in our current directory:
+더 나아가, 
+`ls` 명령어를 인자로 파일 이름 혹은 디렉토리 이름과 함께 사용하면, 
+그 해당 파일 혹은 디렉토리만 화면에 보여준다. 
+이렇게 사용하면, `quotes.txt` 파일이 현재 작업 디렉토리에 있음을 볼 수 있다:
+
 
 ~~~
 $ ls quotes.txt
@@ -442,10 +437,9 @@ quotes.txt
 ~~~
 {: .output}
 
-> ## Moving to the Current Folder
+> ## 현재 폴더로 이동하기
 >
-> After running the following commands,
-> Jamie realizes that she put the files `sucrose.dat` and `maltose.dat` into the wrong folder:
+> 다음 명령어를 실행한 후에, 정훈이는 `sucrose.dat`, `maltose.dat` 파일을 잘못된 폴더에 넣은 것을 인지하게 되었다:
 >
 > ~~~
 > $ ls -F
@@ -456,28 +450,29 @@ quotes.txt
 > ~~~
 > {: .language-bash}
 >
-> Fill in the blanks to move these files to the current folder
-> (i.e., the one she is currently in):
+> 해당 파일을 현재 디렉토리(즉, 현재 사용자가 위치한 폴더)로 이동시키도록 아래 빈칸을 채우시오:
 >
 > ~~~
 > $ mv ___/sucrose.dat  ___/maltose.dat ___
 > ~~~
 > {: .language-bash}
-> > ## Solution
+>
+> > ## 해답
 > > ```
 > > $ mv ../analyzed/sucrose.dat ../analyzed/maltose.dat .
 > > ```
 > > {: .language-bash}
-> > Recall that `..` refers to the parent directory (i.e. one above the current directory)
-> > and that `.` refers to the current directory.
+> > `..` 디렉토리는 부모 디렉토리(즉, 현재 디렉토리에서 상위 디렉토리를 지칭)
+> > `.` 디렉토리는 현재 디렉토리를 지칭함을 상기한다.
 > {: .solution}
 {: .challenge}
 
-The `cp` command works very much like `mv`,
-except it copies a file instead of moving it.
-We can check that it did the right thing using `ls`
-with two paths as arguments --- like most Unix commands,
-`ls` can be given multiple paths at once:
+
+`cp` 명령어는 `mv` 명령어와 거의 동일하게 동작한다. 
+차이점은 이동하는 대신에 복사한다는 점이다. 
+인자로 경로를 두개 갖는 `ls` 명령어로 제대로 작업을 했는지 확인할 수 있다.
+대부분의 유닉스 명령어와 마찬가지로, `ls` 명령어로 한번 경로 다수를 전달할 수도 있다:
+
 
 ~~~
 $ cp quotes.txt thesis/quotations.txt
@@ -490,9 +485,8 @@ quotes.txt   thesis/quotations.txt
 ~~~
 {: .output}
 
-To prove that we made a copy,
-let's delete the `quotes.txt` file in the current directory
-and then run that same `ls` again.
+복사를 제대로 수행했는지 증명하기 위해서, 
+현재 작업 디렉토리에 있는 `quotes.txt` 파일을 삭제하고 나서, 다시 동일한 `ls` 명령어를 실행한다. 
 
 ~~~
 $ rm quotes.txt
@@ -506,60 +500,56 @@ thesis/quotations.txt
 ~~~
 {: .error}
 
-This time it tells us that it can't find `quotes.txt` in the current directory,
-but it does find the copy in `thesis` that we didn't delete.
+이번에는 현재 디렉토리에서 `quotes.txt` 파일은 찾을 수 없지만, 
+삭제하지 않은 thesis 폴더의 복사본은 찾아서 보여준다.
 
-> ## What's In A Name?
+
+> ## 파일명이 뭐가 중요해? 
 >
-> You may have noticed that all of Nelle's files' names are "something dot
-> something", and in this part of the lesson, we always used the extension
-> `.txt`.  This is just a convention: we can call a file `mythesis` or
-> almost anything else we want. However, most people use two-part names
-> most of the time to help them (and their programs) tell different kinds
-> of files apart. The second part of such a name is called the
-> **filename extension**, and indicates
-> what type of data the file holds: `.txt` signals a plain text file, `.pdf`
-> indicates a PDF document, `.cfg` is a configuration file full of parameters
-> for some program or other, `.png` is a PNG image, and so on.
+> Nelle의 파일 이름이 "무엇.무엇"으로 된 것을 알아챘을 것이다. 
+> 이번 학습에서, 항상 `.txt` 확장자를 사용했다.
+> 이것은 단지 관례다: 파일 이름을 `mythesis` 혹은 원하는 무엇이든지 작명할 수 있다. 
+> 하지만, 대부분의 사람들은 두 부분으로 구분된 이름을 사용하여
+> 사람이나 프로그램이 다른 유형의 파일임을 구분하도록 돕는다. 
+> 이름에 나온 두번째 부분을 **파일 확장자(filename extension)**라고 부르고, 
+> 파일에 어떤 유형의 데이터가 담고 있는지 나타낸다. 
+> `.txt` 확장자는 텍스트 파일임을, `.pdf`는 PDF 문서임을, 
+> `.cfg` 확장자는 어떤 프로그램에 대한 구성정보를 담고 있는 형상관리 파일임을 내고,
+> `.png` 확장자는 PNG 이미지 등등을 나타낸다.
+> 
+> 단지 관습이기는 하지만 중요하다. 
+> 파일은 바이트(byte) 정보를 담고 있다: PDF 문서, 이미지, 등에 대해서 규칙에 따라 
+> 바이트를 해석하는 것은 사람과 작성된 프로그램에 맡겨졌다.
+> 
+> `whale.mp3`처럼 고래 PNG 이미지 이름을 갖는 파일을 고래 노래의 음성파일로 변환하는 마술은 없다. 
+> 설사 누군가 두번 클릭할 때, 운영체제가 음악 재생기로 열어 실행할 수는 있지만 동작은 되지 않을 것이다.
 >
-> This is just a convention, albeit an important one. Files contain
-> bytes: it's up to us and our programs to interpret those bytes
-> according to the rules for plain text files, PDF documents, configuration
-> files, images, and so on.
->
-> Naming a PNG image of a whale as `whale.mp3` doesn't somehow
-> magically turn it into a recording of whalesong, though it *might*
-> cause the operating system to try to open it with a music player
-> when someone double-clicks it.
 {: .callout}
 
-> ## Renaming Files
+
+> ## 파일 이름 바꾸기
 >
-> Suppose that you created a `.txt` file in your current directory to contain a list of the
-> statistical tests you will need to do to analyze your data, and named it: `statstics.txt`
->
-> After creating and saving this file you realize you misspelled the filename! You want to
-> correct the mistake, which of the following commands could you use to do so?
+> 데이터를 분석하는데 필요한 통계 검정 목록을 담고 있는 `.txt` 파일을 현재 디렉토리에 생성했다고 가정하자;
+> 파일명은 `statstics.txt`.
+> 파일을 생성하고 저장한 후에 곰곰히 생각해 보니 파일명 철자가 틀린 것을 알게 되었다!
+> 틀린 철자를 바로잡고자 하는데, 다음 중 어떤 명령어를 사용해야 하는가?
 >
 > 1. `cp statstics.txt statistics.txt`
 > 2. `mv statstics.txt statistics.txt`
 > 3. `mv statstics.txt .`
 > 4. `cp statstics.txt .`
 >
-> > ## Solution
-> > 1. No.  While this would create a file with the correct name, the incorrectly named file still exists in the directory
-> > and would need to be deleted.
-> > 2. Yes, this would work to rename the file.
-> > 3. No, the period(.) indicates where to move the file, but does not provide a new file name; identical file names
-> > cannot be created.
-> > 4. No, the period(.) indicates where to copy the file, but does not provide a new file name; identical file names
-> > cannot be created.
+> > ## 해답
+> > 1. No. 철자오류가 수정된 파일이 생성되지만, 철자가 틀린 파일도 디렉토리에 여전히 존재하기 때문에 삭제작업이 필요하다.
+> > 2. Yes, 이 명령어를 통해서 파일명을 고칠 수 있다.
+> > 3. No, 마침표(.)는 파일을 이동할 디렉토리를 나타내지 새로운 파일명을 제시하고 있지는 않고 있다; 동일한 파일명은 생성될 수 없다.
+> > 4. No, 마침표(.)는 파일을 복사할 디렉토리를 나타내지 새로운 파일명을 제시하고 있지는 않고 있다; 동일한 파일명은 생성될 수 없다.
 > {: .solution}
 {: .challenge}
 
-> ## Moving and Copying
+> ## 이동과 복사
 >
-> What is the output of the closing `ls` command in the sequence shown below?
+> 아래 보여진 일련의 명령문에 뒤에 `ls`명령어의 출력값은 무엇일까요?
 >
 > ~~~
 > $ pwd
@@ -590,7 +580,7 @@ but it does find the copy in `thesis` that we didn't delete.
 > 3.   `proteins.dat recombine`
 > 4.   `proteins-saved.dat`
 >
-> > ## Solution
+> > ## 해답
 > > We start in the `/Users/jamie/data` directory, and create a new folder called `recombine`.
 > > The second line moves (`mv`) the file `proteins.dat` to the new folder (`recombine`).
 > > The third line makes a copy of the file we just moved.  The tricky part here is where the file was
