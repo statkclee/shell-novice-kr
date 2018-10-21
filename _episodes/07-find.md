@@ -1,35 +1,33 @@
 ---
-title: "Finding Things"
+title: "파일, 문자, 디렉토리 등 찾기"
 teaching: 25
 exercises: 20
 questions:
-- "How can I find files?"
-- "How can I find things in files?"
+- "파일을 어떻게 찾을 수 있을까?"
+- "파일의 무언가를 어떻게 찾을 수 있을까?"
 objectives:
-- "Use `grep` to select lines from text files that match simple patterns."
-- "Use `find` to find files whose names match simple patterns."
-- "Use the output of one command as the command-line argument(s) to another command."
-- "Explain what is meant by 'text' and 'binary' files, and why many common tools don't handle the latter well."
+- "`grep` 명령어를 사용해서 간단한 패턴과 매칭되는 행을 텍스트 파일에서 골라낸다."
+- "`find` 명령어를 사용해서 간단한 패턴과 매칭하는 파일을 찾는다."
+- "명령-라인 인자로 한 명령어의 출력결과를 다른 명령어에도 사용한다."
+- "'텍스트(text)'와 '바이너리(binary)'' 의미와 함께 많은 도구가 바이너리 파일을 잘 다루지 못하는 이유를 설명한다."
 keypoints:
-- "`find` finds files with specific properties that match patterns."
-- "`grep` selects lines in files that match patterns."
-- "`--help` is a flag supported by many bash commands, and programs that can be run from within Bash, to display more information on how to use these commands or programs."
-- "`man command` displays the manual page for a given command."
-- "`$(command)` inserts a command's output in place."
+- "`find` 명령어는 패턴과 매칭되는 구체적 특성을 갖는 파일을 찾아낸다."
+- "`grep` 명령어는 패턴과 매칭되는 파일의 행을 선택해 준다."
+- "`--help` 플래그는 대다수 배쉬 명령어와 배쉬 내에서 실행되는 프로그램에서 지원이 되어 명령어 혹은 프로그램이 실행되는 방식에 대한 추가 정보를 보여준다."
+- "`man command` 명령어는 주어진 명령어에 대한 매뉴얼 페이지를 출력해준다."
+- "`$(command)` 명령어는 명령어의 출력결과를 해당 위치에 삽입해 준다."
 ---
 
-In the same way that many of us now use "Google" as a 
-verb meaning "to find", Unix programmers often use the 
-word "grep".
-"grep" is a contraction of "global/regular expression/print",
-a common sequence of operations in early Unix text editors.
-It is also the name of a very useful command-line program.
+"구글(Google)"을 "검색"을 의미하는 동사로 많은 분들이 사용하는 것처럼
+유닉스 프로그래머는 "grep"을 동일하게 사용한다.
+`grep`은 "global/regular expression/print(전역/정규표현식/출력)"의 축약어로 
+초기 유닉스 편집기에서 일반적인 일련의 연산작업을 뜻한다.
+매우 유용한 명령-라인 프로그램 이름이기도 하다.
 
-`grep` finds and prints lines in files that match a pattern.
-For our examples,
-we will use a file that contains three haikus taken from a
-1998 competition in *Salon* magazine. For this set of examples,
-we're going to be working in the writing subdirectory:
+
+`grep`은 패턴과 매칭되는 파일의 행을 찾아 화면에 뿌려준다. 
+예제 파일로, *Salon* 잡지 1988년 경쟁부문에서 하이쿠(haiku, 일본의 전통 단시) 3개를 담고 있는 파일을 사용례로 활용할 것이다.
+이 예제 파일을 갖는 "writing" 하위 디렉토리에서 작업을 할 것이다:
 
 ~~~
 $ cd
@@ -53,15 +51,15 @@ Software is like that.
 ~~~
 {: .output}
 
-> ## Forever, or Five Years
+> ## 영원히 혹은 5년
 >
-> We haven't linked to the original haikus because they don't appear to be on *Salon*'s site any longer.
-> As [Jeff Rothenberg said](http://www.clir.org/pubs/archives/ensuring.pdf),
-> "Digital information lasts forever --- or five years, whichever comes first."
-> Luckily, popular content often [has backups](http://wiki.c2.com/?ComputerErrorHaiku).
+> 원본 하이쿠에 링크를 걸지 않았는데 이유는 Salon 사이트에 더 이상 보이는 것 같지 않아서다. 
+> [Jeff Rothenberg가 말했듯이](http://www.clir.org/pubs/archives/ensuring.pdf), 
+> "디지털 정보는 어느 것이 먼저 오든 영원한 영속성을 가지거나 혹은 5년이다."
+> 운이 좋은 경우 인기 콘텐트는 종종 [백업된다](http://wiki.c2.com/?ComputerErrorHaiku).
 {: .callout}
 
-Let's find lines that contain the word "not":
+단어 "not"을 포함하는 행을 찾아 봅시다:
 
 ~~~
 $ grep not haiku.txt
@@ -75,11 +73,14 @@ Today it is not working
 ~~~
 {: .output}
 
-Here, `not` is the pattern we're searching for. The grep command searches through the file, looking for matches to the pattern specified. To use it type `grep`, then the pattern we're searching for and finally the name of the file (or files) we're searching in.
+여기서 `not`이 찾고자 하는 패턴이다. 
+`grep` 명령어는 파일을 뒤져 지정된 패턴과 매칭되는 것을 찾아낸다.
+명령어를 사용하려면 `grep`을 타이핑하고 나서,
+찾고자 하는 패턴을 지정하고 나서 검색하고자 하는 파일명(혹은 파일 다수)를 지정하면 된다.
 
-The output is the three lines in the file that contain the letters "not".
+출력값으로 "not"을 포함하는 파일에 행이 3개 있다.
 
-Let's try a different pattern: "The".
+다른 패턴을 시도해 보자. 이번에는 "The"이다.
 
 ~~~
 $ grep The haiku.txt
@@ -92,14 +93,15 @@ The Tao that is seen
 ~~~
 {: .output}
 
-This time,
-two lines that include the letters "The" are outputted.
-However, one instance of those letters is contained within a larger word,
-"Thesis".
 
-To restrict matches to lines containing the word "The" on its own,
-we can give `grep` with the `-w` flag.
-This will limit matches to word boundaries.
+이번에는 문자 "The"를 포함한 행이 두줄 출력되었다.
+하지만, 더 큰 단어 안에 포함된 단어("Thesis")도 함께 출력된다.
+
+`grep`명령어에 `-w` 옵션을 주면, 단어 경계로 매칭을 제한해서, 
+"day" 단어만을 가진 행만이 화면에 출력된다.
+
+매칭을 "The" 단어 자체만 포함하는 행만 매칭시키려면,
+`grep`명령어에 `-w` 옵션을 주게 되면, 단어 경계로 매칭을 제한시킨다.
 
 ~~~
 $ grep -w The haiku.txt
@@ -111,11 +113,9 @@ The Tao that is seen
 ~~~
 {: .output}
 
-Note that a "word boundary" includes the start and end of a line, so not
-just letters surrounded by spaces. 
-Sometimes we don't
-want to search for a single word, but a phrase. This is also easy to do with
-`grep` by putting the phrase in quotes.
+"단어 경계"는 행의 시작과 끝이 포함됨에 주의한다. 그래서 공백으로 감싼 단어는 해당사항이 없게 된다.
+때때로, 단어 하나가 아닌, 문구를 찾고자 하는 경우도 있다.
+인용부호 내부에 문구를 넣어 `grep`으로 작업하는 것이 편하다.
 
 ~~~
 $ grep -w "is not" haiku.txt
@@ -127,13 +127,13 @@ Today it is not working
 ~~~
 {: .output}
 
-We've now seen that you don't have to have quotes around single words,
-but it is useful to use quotes when searching for multiple words.
-It also helps to make it easier to distinguish between the search term or phrase
-and the file being searched.
-We will use quotes in the remaining examples.
 
-Another useful option is `-n`, which numbers the lines that match:
+지금까지 단일 단어 주위를 인용부호로 감쌀 필요가 없다는 것을 알고 있다.
+하지만, 단어 다수를 검색할 때 인용부호를 사용하는 것이 유용하다.
+이렇게 하면, 검색어(term) 혹은 검색 문구(phrase)와 검색 대상이 되는 파일 사이를 더 쉽게 구별하는데 도움을 준다.
+나머지 예제에서는 인용부호를 사용한다.
+
+또다른 유용한 옵션은 `-n`으로, 매칭되는 행에 번호를 붙여 출력한다:
 
 ~~~
 $ grep -n "it" haiku.txt
@@ -147,11 +147,11 @@ $ grep -n "it" haiku.txt
 ~~~
 {: .output}
 
-Here, we can see that lines 5, 9, and 10 contain the letters "it".
+상기에서 5, 9, 10번째 행이 문자 "it"를 포함함을 확인할 수 있다.
 
-We can combine options (i.e. flags) as we do with other Unix commands.
-For example, let's find the lines that contain the word "the". We can combine
-the option `-w` to find the lines that contain the word "the" and `-n` to number the lines that match:
+다른 유닉스 명령어와 마찬자기로 옵션(즉, 플래그)을 조합할 수 있다. 
+단어 "the"를 포함하는 행을 찾아보자.
+"the"를 포함하는 행을 찾는 `-w` 옵션과 매칭되는 행에 번호를 붙이는 `-n`을 조합할 수 있다:
 
 ~~~
 $ grep -n -w "the" haiku.txt
@@ -164,7 +164,7 @@ $ grep -n -w "the" haiku.txt
 ~~~
 {: .output}
 
-Now we want to use the option `-i` to make our search case-insensitive:
+이제 `-i` 옵션을 사용해서 대소분자 구분없이 매칭한다:
 
 ~~~
 $ grep -n -w -i "the" haiku.txt
@@ -178,8 +178,8 @@ $ grep -n -w -i "the" haiku.txt
 ~~~
 {: .output}
 
-Now, we want to use the option `-v` to invert our search, i.e., we want to output
-the lines that do not contain the word "the".
+이제, `-v` 옵션을 사용해서 뒤집어서 역으로 매칭을 한다. 
+즉, 단어 "the"를 포함하지 않는 행을 출력결과로 한다.
 
 ~~~
 $ grep -n -w -v "the" haiku.txt
@@ -199,7 +199,8 @@ $ grep -n -w -v "the" haiku.txt
 ~~~
 {: .output}
 
-`grep` has lots of other options. To find out what they are, we can type:
+`grep` 명령어는 옵션이 많다. 
+`grep` 명령어에 대한 도움을 찾으려면, 다음 명령어를 타이핑한다:
 
 ~~~
 $ grep --help
@@ -249,15 +250,14 @@ Miscellaneous:
 > {: .solution}
 {: .challenge}
 
-> ## Wildcards
+> ## 와일드카드(Wildcards) 
 >
-> `grep`'s real power doesn't come from its options, though; it comes from
-> the fact that patterns can include wildcards. (The technical name for
-> these is **regular expressions**, which
-> is what the "re" in "grep" stands for.) Regular expressions are both complex
-> and powerful; if you want to do complex searches, please look at the lesson
-> on [our website](http://v4.software-carpentry.org/regexp/index.html). As a taster, we can
-> find lines that have an 'o' in the second position like this:
+> `grep`의 진정한 힘은 옵션에서 나오지 않고; 
+> 패턴에 와일드카드를 포함할 수 있다는 사실에서 나온다. 
+> (기술적 명칭은 **정규 표현식(regular expressions)**이고, "grep" 명령어의 "re"가 정규표현식을 나타낸다.) 
+> 정규 표현식은 복잡하기도 하지만 강력하기도 하다. 
+> 복잡한 검색을 하고자 한다면, 소프트웨어 카펜트리 웹사이트에서 [수업내용](http://software-carpentry.org/v4/regexp/index.html)을 볼 수 있다. 
+> 맛보기로, 다음과 같이 두번째 위치에 'o'를 포함한 행을 찾을 수 있다:
 >
 > ~~~
 > $ grep -E '^.o' haiku.txt
@@ -271,18 +271,15 @@ Miscellaneous:
 > ~~~
 > {: .output}
 >
-> We use the `-E` flag and put the pattern in quotes to prevent the shell
-> from trying to interpret it. (If the pattern contained a `*`, for
-> example, the shell would try to expand it before running `grep`.) The
-> `^` in the pattern anchors the match to the start of the line. The `.`
-> matches a single character (just like `?` in the shell), while the `o`
-> matches an actual 'o'.
+> `-E` 플래그를 사용해서 인용부호 안에 패턴을 넣어서 쉘이 해석하는 것을 방지한다. 
+> (예를 들어, 패턴에 '\*'이 포함된다면, `grep`을 실행되기 전에 쉘이 먼저 전개하려 할 것이다.) 
+> 패턴에서 '^'은 행의 시작에 매칭을 고정시키는 역할을 한다.
+> '.'은 한 문자만 매칭하고(쉘의 '?'과 마찬가지로), 'o'는 실제 영문 'o'와 매칭된다.
 {: .callout}
 
-> ## Tracking a Species
+> ## 개체(species) 추적하기
 > 
-> Leah has several hundred 
-> data files saved in one directory, each of which is formatted like this:
+> 정훈이는 한 디렉토리에 수백개 데이터 파일이 있는데, 형태는 다음과 같다:
 > 
 > ~~~
 > 2013-11-05,deer,5
@@ -293,10 +290,8 @@ Miscellaneous:
 > ~~~
 > {: .source}
 >
-> She wants to write a shell script that takes a species as the first command-line argument 
-> and a directory as the second argument. The script should return one file called `species.txt` 
-> containing a list of dates and the number of that species seen on each date.
-> For example using the data shown above, `rabbit.txt` would contain:
+> 명령라인에서 첫번째 인자로 개체(species), 두번째 인자로 디렉토리를 인자로 받는 쉘스크립트를 작성하고자 한다.
+> 스크립트는 일자별로 관측된 개체수를 담아 `species.txt` 라는 파일로 저장하면 된다.
 > 
 > ~~~
 > 2013-11-05,22
@@ -304,7 +299,7 @@ Miscellaneous:
 > ~~~
 > {: .source}
 >
-> Put these commands and pipes in the right order to achieve this:
+> 스크립트를 작성하는데 다음에 나온 명령어를 적절한 순서로 파이프에 연결시키면 된다:
 > 
 > ~~~
 > cut -d : -f 2  
@@ -317,19 +312,19 @@ Miscellaneous:
 > ~~~
 > {: .language-bash}
 >
-> Hint: use `man grep` to look for how to grep text recursively in a directory
-> and `man cut` to select more than one field in a line.
+> 힌트: `man grep` 명령어를 사용해서 디렉토리에서 재귀적으로 텍스트를 `grep`하는지 찾아본다.
+>       `man cut` 명령어를 사용해서 한줄에 필드 하나 이상을 선택하는 방법을 살펴본다.
 >
-> An example of such a file is provided in `data-shell/data/animal-counts/animals.txt`
+> `data-shell/data/animal-counts/animals.txt` 파일이 예제 파일로 제공되고 있다:
 >
-> > ## Solution
+> > ## 해답
 > >
 > > ```
 > > grep -w $1 -r $2 | cut -d : -f 2 | cut -d , -f 1,3  > $1.txt
 > > ```
 > > {: .source}
 > >
-> > You would call the script above like this:
+> > 상기 쉘 스크립트를 다음과 같이 호출하면 된다:
 > >
 > > ```
 > > $ bash count-species.sh bear .
@@ -338,25 +333,26 @@ Miscellaneous:
 > {: .solution}
 {: .challenge}
 
-> ## Little Women
+> ## 작은 아낙네(Little Women)
 >
-> You and your friend, having just finished reading *Little Women* by
-> Louisa May Alcott, are in an argument.  Of the four sisters in the
-> book, Jo, Meg, Beth, and Amy, your friend thinks that Jo was the
-> most mentioned.  You, however, are certain it was Amy.  Luckily, you
-> have a file `LittleWomen.txt` containing the full text of the novel
-> (`data-shell/writing/data/LittleWomen.txt`).
-> Using a `for` loop, how would you tabulate the number of times each
-> of the four sisters is mentioned?
+> Louisa May Alcott가 지은 *작은 아낙네(Little Women)*를 친구과 함께 읽고 논쟁중이다.
+> 책에는 Jo, Meg, Beth, Amy 네자매가 나온다. 친구가 Jo가 가장 많이 언급되었다고 생각한다.
+> 하지만, 나는 Amy라고 확신한다. 운좋게도, 소설의 전체 텍스트를 담고 있는 `LittleWomen.txt` 
+> 파일이 있다(`data-shell/writing/data/LittleWomen.txt`). 
+> `for` 루프를 사용해서, 네자매 각각이 얼마나 언급되었는지 횟수를 개수할 수 있을까?
+> 
+> 힌트: 한가지 해결책은 `grep`, `wc`, `|` 명령어를 동원하는 것이지만, 
+> 다른 해결책으로 `grep` 옵션을 활용하는 것도 있다.
 >
-> Hint: one solution might employ
-> the commands `grep` and `wc` and a `|`, while another might utilize
-> `grep` options.
 > There is often more than one way to solve a programming task, so a
 > particular solution is usually chosen based on a combination of
 > yielding the correct result, elegance, readability, and speed.
 >
-> > ## Solutions
+> 프로그래밍 문제를 푸는 방식은 한가지 이상 존재한다.
+> 따라서, 올바른 결과를 도출해야 하고, 우아하고(elegance), 가독성이 좋고(readability), 속도를 
+> 다 함께 고려하여 선택한다.
+> 
+> > ## 해답
 > > ```
 > > for sis in Jo Meg Beth Amy
 > > do
@@ -366,7 +362,7 @@ Miscellaneous:
 > > ```
 > > {: .source}
 > >
-> > Alternative, slightly inferior solution:
+> > 또다른 해법으로, 다소 떨어지는 해답은 다음과 같다:
 > > ```
 > > for sis in Jo Meg Beth Amy
 > > do
@@ -376,28 +372,27 @@ Miscellaneous:
 > > ```
 > > {: .source}
 > >
-> > This solution is inferior because `grep -c` only reports the number of lines matched.
-> > The total number of matches reported by this method will be lower if there is more
-> > than one match per line.
+> > 이 해답이 다소 뒤떨어지는 이유는 `grep -c`는 매칭되는 행 숫자만 출력하기 때문이다.
+> > 행마다 매칭되는 것이 하나 이상 되는 경우, 이 방법으로 매칭되는 전체 갯수는 낮아질 수 있기 때문이다.
 > {: .solution}
 {: .challenge}
 
-While `grep` finds lines in files,
-the `find` command finds files themselves.
-Again,
-it has a lot of options;
-to show how the simplest ones work, we'll use the directory tree shown below.
+`grep`이 파일의 행을 찾는 반면에, `find` 명령어는 파일 자체를 검색한다. 
+다시, `find` 명령어는 정말 옵션이 많다; 
+가장 간단한 것이 어떻게 동작하는지 시연하기 위해, 
+다음과 같은 디렉토리 구조를 사용할 것이다.
 
-![File Tree for Find Example](../fig/find-file-tree.svg)
+<!-- ![File Tree for Find Example](../fig/find-file-tree.svg) -->
 
-Nelle's `writing` directory contains one file called `haiku.txt` and three subdirectories:
-`thesis` (which contains a sadly empty file, `empty-draft.md`);
-`data` (which contains three files `LittleWomen.txt`, `one.txt` and `two.txt`);
-and a `tools` directory that contains the programs `format` and `stats`,
-and a subdirectory called `old`, with a file `oldtool`.
+<img src="../fig/find-file-tree.svg" alt="File Tree for Find Example" width="57%" />
 
-For our first command,
-let's run `find .`.
+Nelle의 `writing` 디렉토리는 `haiku.txt`로 불리는 파일 하나와, 하위 디렉토리 4개를 포함한다. 
+`thesis` 디렉토리는 슬프게고 아무것도 담겨있지 않는 빈 파일 `empty-draft.md`만 있고, 
+`data` 디렉토리는 `LittleWomen.txt`, `one.txt`과 `two.txt` 총 파일 3개를 포함하고, 
+`tools` 디렉토리는 `format`과 `stats` 프로그램을 포함하고,
+`oldtool` 파일을 담고 있는 `old` 하위 디렉토리로 구성되어 있다.
+
+첫 명령어로, `find .`을 실행하자. 
 
 ~~~
 $ find .
@@ -421,20 +416,20 @@ $ find .
 ~~~
 {: .output}
 
-As always,
-the `.` on its own means the current working directory,
-which is where we want our search to start.
-`find`'s output is the names of every file **and** directory
-under the current working directory.
-This can seem useless at first but `find` has many options
-to filter the output and in this lesson we will discover some 
-of them.
+항상 그렇듯이, `.` 자체가 의미하는 바는 현재 작업 디렉토리로, 검색을 시작하는 디렉토리가 된다.
+`find` 출력결과로 현재 작업 디렉토리 아래 있는 모든 파일, **그리고**  디렉토리명이 나온다.
+출력결과가 쓸모없어 보이지만, `find` 명령어에 선택옵션이 많아서 
+출력결과를 필터할 수 있다. 이번 학습에서는 그중 일부만 다뤄볼 것이다.
+
 
 The first option in our list is
 `-type d` that means "things that are directories".
 Sure enough,
 `find`'s output is the names of the five directories in our little tree
 (including `.`):
+
+첫번째 선택옵션은 `-type d`로 "디렉토리인 것들"을 의미한다. 
+아니나 다를까, `find`의 출력에는 (`.`을 포함해서) 디렉토리 5개가 나온다.
 
 ~~~
 $ find . -type d
@@ -450,9 +445,9 @@ $ find . -type d
 ~~~
 {: .output}
 
-Notice that the objects `find` finds are not listed in any particular order.
-If we change `-type d` to `-type f`,
-we get a listing of all the files instead:
+`find` 명령어가 찾는 객체가 특별한 순서를 갖고 출력되는 것이 아님에 주목한다.
+`-type d`에서 `-type f`로 옵션을 변경하면, 
+대신에 모든 파일 목록이 나온다:
 
 ~~~
 $ find . -type f
@@ -471,7 +466,7 @@ $ find . -type f
 ~~~
 {: .output}
 
-Now let's try matching by name:
+이제 이름으로 매칭을 하자:
 
 ~~~
 $ find . -name *.txt
@@ -483,24 +478,26 @@ $ find . -name *.txt
 ~~~
 {: .output}
 
-We expected it to find all the text files,
-but it only prints out `./haiku.txt`.
-The problem is that the shell expands wildcard characters like `*` *before* commands run.
-Since `*.txt` in the current directory expands to `haiku.txt`,
-the command we actually ran was:
+모든 텍스트 파일을 찾기를 기대하지만, 
+단지 `./haiku.txt`만을 화면에 출력한다. 
+문제는 명령문을 실행하기 *전에*, 
+`*`같은 와일드카드 문자를 쉘이 전개하는 것이다. 
+현재 디렉토리에서 `*.txt`을 전개하면 `haiku.txt`이 되기 때문에, 
+실제 실행하는 명령어는 다음과 같다:
 
 ~~~
 $ find . -name haiku.txt
 ~~~
 {: .language-bash}
 
-`find` did what we asked; we just asked for the wrong thing.
+`find` 명령어는 사용자가 요청한 것만 수행한다; 
+사용자는 방금전에 잘못된 것을 요청했다.
 
-To get what we want,
-let's do what we did with `grep`:
-put `*.txt` in single quotes to prevent the shell from expanding the `*` wildcard.
-This way,
-`find` actually gets the pattern `*.txt`, not the expanded filename `haiku.txt`:
+사용자가 원하는 것을 얻기 위해서, `grep`을 가지고 작업했던 것을 수행하자. 
+단일 인용부호에 `*.txt`을 넣어서 쉘이 와일드카드 `*`을 전개하지 못하게 한다. 
+이런 방식으로, 
+`find` 명령어는 확장된 파일명 `haiku.txt`이 아닌, 
+실제로 `*.txt` 패턴을 얻는다:
 
 ~~~
 $ find . -name '*.txt'
@@ -515,23 +512,20 @@ $ find . -name '*.txt'
 ~~~
 {: .output}
 
-> ## Listing vs. Finding
+> ## 목록(Listing) vs. 찾기(Finding)
 >
-> `ls` and `find` can be made to do similar things given the right options,
-> but under normal circumstances,
-> `ls` lists everything it can,
-> while `find` searches for things with certain properties and shows them.
+> 올바른 옵션이 주어진 상태에서, `ls`와 `find` 명령어를 사용해서 비슷한 작업을 수행하도록 만들 수 있다. 
+> 하지만, 정상 상태에서 `ls`는 가능한 모든 것을 목록으로 출력하는 반면에, 
+> `find`는 어떤 특성을 가진 것을 검색하고 보여준다는 점에서 차이가 난다.
 {: .callout}
 
-As we said earlier,
-the command line's power lies in combining tools.
-We've seen how to do that with pipes;
-let's look at another technique.
-As we just saw,
-`find . -name '*.txt'` gives us a list of all text files in or below the current directory.
-How can we combine that with `wc -l` to count the lines in all those files?
+앞에서 언급했듯이, 명령-라인(command-line)의 힘은 도구를 조합하는데 있다. 
+파이프로 어떻게 조합하는지를 살펴봤고; 
+또 다른 기술을 살펴보자. 
+방금 보았듯이, `find . -name '*.txt'` 명령어는 현재 디렉토리 및 하위 디렉토리에 있는 모든 텍스트 파일 목록을 보여준다.
+어떻게 하면 `wc -l` 명령어와 조합해서 모든 파일의 행을 개수할 수 있을까?
 
-The simplest way is to put the `find` command inside `$()`:
+가장 간단한 방법은 `$()` 내부에 `find` 명령어를 위치시키는 것이다:
 
 ~~~
 $ wc -l $(find . -name '*.txt')
@@ -547,26 +541,25 @@ $ wc -l $(find . -name '*.txt')
 ~~~
 {: .output}
 
-When the shell executes this command,
-the first thing it does is run whatever is inside the `$()`.
-It then replaces the `$()` expression with that command's output.
-Since the output of `find` is the four filenames `./data/one.txt`, `./data/LittleWomen.txt`, `./data/two.txt`, and `./haiku.txt`,
-the shell constructs the command:
+쉘이 상기 명령어를 실행할 때, 
+처음 수행하는 것은 `$()` 내부를 무엇이든 실행시키는 것이다. 
+그리고 나서 `$()` 표현식을 명령어의 출력 결과로 대체한다. 
+`find`의 출력 결과가 파일 이름 4개, 즉, `./data/one.txt`, `./data/LittleWomen.txt`, `./data/two.txt`, `./haiku.txt`라서, 
+쉘은 다음과 같이 명령문을 구성하게 된다:
 
 ~~~
 $ wc -l ./data/one.txt ./data/LittleWomen.txt ./data/two.txt ./haiku.txt
 ~~~
 {: .language-bash}
 
-which is what we wanted.
-This expansion is exactly what the shell does when it expands wildcards like `*` and `?`,
-but lets us use any command we want as our own "wildcard".
+상기 명령문이 사용자가 원하는 것이다. 
+이러한 확장이 `*`과 `?` 같은 와일드카드로 확장할 때, 정확하게 쉘이 수행하는 것이다. 
+하지만 자신의 "와일드카드"로 사용자가 원하는 임의 명령어를 사용해보자.
 
-It's very common to use `find` and `grep` together.
-The first finds files that match a pattern;
-the second looks for lines inside those files that match another pattern.
-Here, for example, we can find PDB files that contain iron atoms
-by looking for the string "FE" in all the `.pdb` files above the current directory:
+`find`와 `grep`을 함께 사용하는 것이 일반적이다. 
+먼저 `find`가 패턴을 매칭하는 파일을 찾고; 둘째로 `grep`이 또 다른 패턴과 매칭되는 파일 내부 행을 찾는다. 
+예제로 다음에 현재 부모 디렉토리에서 모든 `.pdb` 파일에 "FE" 문자열을 검색해서, 
+철(FE) 원자를 포함하는 PDB파일을 찾을 찾을 수 있다:
 
 ~~~
 $ grep "FE" $(find .. -name '*.pdb')
@@ -578,99 +571,89 @@ $ grep "FE" $(find .. -name '*.pdb')
 ~~~
 {: .output}
 
-> ## Matching and Subtracting
+> ## 매칭후 빼내기 
 >
-> The `-v` flag to `grep` inverts pattern matching, so that only lines
-> which do *not* match the pattern are printed. Given that, which of
-> the following commands will find all files in `/data` whose names
-> end in `s.txt` (e.g., `animals.txt` or `planets.txt`), but do
-> *not* contain the word `net`?
-> Once you have thought about your answer, you can test the commands in the `data-shell`
-> directory.
+> `grep` 명령어의 `-v` 옵션은 패턴 매칭을 반전시킨다. 패턴과 매칭하지 *않는* 행만 출력시킨다.
+> 다음 명령어 중에서 어느 것이 `/data` 폴더에 `s.txt`로 끝나는 (예로, `animals.txt` 혹은 `planets.txt`), 
+> 하지만 `net` 단어는 포함하지 *않게* 모든 파일을 찾아낼까요?
+> 정답을 생각해냈다면, `data-shell` 디렉토리에서 다음 명령어를 시도해본다.
+
 >
 > 1.  `find data -name '*s.txt' | grep -v net`
 > 2.  `find data -name *s.txt | grep -v net`
 > 3.  `grep -v "temp" $(find data -name '*s.txt')`
 > 4.  None of the above.
 >
-> > ## Solution
-> > The correct answer is 1. Putting the match expression in quotes prevents the shell
-> > expanding it, so it gets passed to the `find` command.
+> > ## 해답
+> > 정답은 1. 매칭 표현식을 인용부호로 감싸서 쉘이 전개하는 것을 방지시킨 
+> > 상태로 `find` 명령어에 전개시킨다. 
 > >
-> > Option 2 is incorrect because the shell expands `*s.txt` instead of passing the wildcard
-> > expression to `find`.
+> > 2번은 틀렸는데, 이유는 쉘이 `find` 명령어에 와일드카드를 전달하는 대신에 `*s.txt` 을 전개하기 때문이다.
 > >
-> > Option 3 is incorrect because it searches the contents of the files for lines which
-> > do not match "temp", rather than searching the file names.
+> > 3번은 틀렸는데, 이유는 파일명을 찾는 대신에 "temp"와 매칭되지 않는 행을 갖는 파일을 검색하기 때문이다.
 > {: .solution}
 {: .challenge}
 
-> ## Binary Files
+> ## 바이너리 파일(Binary File)
 >
-> We have focused exclusively on finding things in text files. What if
-> your data is stored as images, in databases, or in some other format?
-> One option would be to extend tools like `grep` to handle those formats.
-> This hasn't happened, and probably won't, because there are too many
-> formats to support.
+> 텍스트 파일에 존재하는 것을 찾는 것에만 배타적으로 집중했다. 
+> 데이터가 만약 이미지로, 데이터베이스로, 혹은 다른 형식으로 저장되어 있다면 어떨까? 
+> 한가지 선택사항은 `grep` 같은 툴을 확장해서 텍스트가 아닌 형식도 다루게 한다. 
+> 이 접근법은 발생하지도 않았고, 아마도 그러지 않을 것이다. 
+> 왜냐하면 지원할 형식이 너무나도 많은 존재하기 때문이다.
 >
-> The second option is to convert the data to text, or extract the
-> text-ish bits from the data. This is probably the most common approach,
-> since it only requires people to build one tool per data format (to
-> extract information). On the one hand, it makes simple things easy to
-> do. On the negative side, complex things are usually impossible. For
-> example, it's easy enough to write a program that will extract X and Y
-> dimensions from image files for `grep` to play with, but how would you
-> write something to find values in a spreadsheet whose cells contained
-> formulas?
+> 두번째 선택지는 데이터를 텍스트로 변환하거나, 데이터에서 텍스트같은 비트를 추출하는 것이다. 
+> 아마도 가장 흔한 접근법이 (정보를 추출하기 위해서) 각 데이터 형식마다 도구 하나만 개발하면 되기 때문이다. 
+> 한편으로, 이 접근법은 간단한 것을 쉽게 할 수 있게 한다. 
+> 부정적인 면으로 보면, 복잡한 것은 일반적으로 불가능하다. 
+> 예를 들어, `grep`을 이리 저리 사용해서 이미지 파일에서 X와 Y 크기를 추출하는 프로그램을 작성하기는 쉽다. 
+> 하지만, 공식을 담고 있는 엑셀 같은 스프레드쉬트 셀에서 값을 찾아내는 것을 어떻게 작성할까?
 >
-> The third choice is to recognize that the shell and text processing have
-> their limits, and to use another programming language.
-> When the time comes to do this, don't be too hard on the shell: many
-> modern programming languages have borrowed a lot of
-> ideas from it, and imitation is also the sincerest form of praise.
+> 세번째 선택지는 쉘과 텍스트 처리가 모두 한계를 가지고 있다는 것을 인지하고, 
+> 대신에 (R 혹은 파이썬 같은) 프로그램 언어를 사용하는 것이다. 
+> 이러한 시점이 왔을 때 쉘에서 너무 고생하지 마세요: 
+> R 혹은 파이썬을 포함한 많은 프로그래밍 언어가 많은 아이디어를 여기에서 가져왔다. 
+> 모방은 또한 칭찬의 가장 충심어린 형태이기도 하다.
 {: .callout}
 
-The Unix shell is older than most of the people who use it. It has
-survived so long because it is one of the most productive programming
-environments ever created --- maybe even *the* most productive. Its syntax
-may be cryptic, but people who have mastered it can experiment with
-different commands interactively, then use what they have learned to
-automate their work. Graphical user interfaces may be better at the
-first, but the shell is still unbeaten at the second. And as Alfred
-North Whitehead wrote in 1911, "Civilization advances by extending the
-number of important operations which we can perform without thinking
-about them."
+유닉스 쉘은 지금 사용하는 대부분의 사람보다 나이가 많다. 
+그토록 오랫동안 생존한 이유는 지금까지 만들어진 가장 생산성이 높은 프로그래밍 환경 중 하나 혹은 아마도 **가장 생산성 높은** 프로그래밍 환경이기 때문이다. 
+구문이 암호스러울 수도 있지만, 숙달한 사람은 다양한 명령어를 대화하듯이 실험하고 나서, 
+본인 작업을 자동화하는데 학습한 것을 사용한다. 
+그래픽 사용자 인터페이스(GUI)가 처음에는 더 좋을 수 있지만, 여전히 쉘이 최강이다. 
+화이트헤드(Alfred North Whitehead) 박사가 1911년 썼듯이 
+"문명은 생각없이 수행할 수 있는 중요한 작업의 수를 확장함으써 발전한다.
+(Civilization advances by extending the number of important operations which we can perform without thinking about them.)"
 
-> ## `find` Pipeline Reading Comprehension
+> ## `find` 파이프라인 독해 능력
 >
-> Write a short explanatory comment for the following shell script:
+> 다음 쉘 스크립트에 대해서 무슨 것을 수행하는지 짧은 설명문을 작성하세요. 
 >
 > ~~~
 > wc -l $(find . -name '*.dat') | sort -n
 > ~~~
 > {: .language-bash}
 >
-> > ## Solution
-> > 1. Find all files with a `.dat` extension in the current directory
-> > 2. Count the number of lines each of these files contains
-> > 3. Sort the output from step 2. numerically
+> > ## 해답
+> > 1. 현재 디렉토리에서 `.dat` 확장자를 갖는 모든 파일을 찾아내시오.
+> > 2. 파일 각각이 담고 있는 행을 개수한다.
+> > 3. 앞선 단계에서 나온 출력결과를 숫자로 인식해서 정렬시킨다.
 > {: .solution}
 {: .challenge}
 
-> ## Finding Files With Different Properties
+> ## 다른 특성을 갖는 파일 찾아내기
 > 
-> The `find` command can be given several other criteria known as "tests"
-> to locate files with specific attributes, such as creation time, size,
-> permissions, or ownership.  Use `man find` to explore these, and then
-> write a single command to find all files in or below the current directory
-> that were modified by the user `ahmed` in the last 24 hours.
+> `find` 명령어에 "test"로 알려진 다른 기준을 제시해서 특정 속성을 갖는 파일을 지정할 수 있다. 예를 들어,
+> 파일 생성시간, 파일 크기, 파일권한, 파일소유.
+> `man find` 명령어를 사용해서 이를 살펴보고 나서,
+> 지난 24시간 이내 `ahmed` 사용자가 변경시킨 모든 파일을 찾는 명령어를 적성한다.
+> 
+> 힌트 1: `-type`, `-mtime`, `-user` 플래그 세개를 모두 사용해야 한다.
 >
-> Hint 1: you will need to use three tests: `-type`, `-mtime`, and `-user`.
+> 힌트 2: `-mtime` 값을 음수를 지정해야 된다 --- 왜일까?
 >
-> Hint 2: The value for `-mtime` will need to be negative---why?
->
-> > ## Solution
-> > Assuming that Nelle’s home is our working directory we type:
+> > ## 해답
+> > Nelle의 홈이 작업 디렉토리라고 가정하고, 다음 명령어를 타이핑한다:
 > >
 > > ~~~
 > > $ find ./ -type f -mtime -1 -user ahmed
