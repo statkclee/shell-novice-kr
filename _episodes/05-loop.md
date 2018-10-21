@@ -1,70 +1,69 @@
 ---
-title: "Loops"
+title: "루프(Loops)"
 teaching: 40
 exercises: 10
 questions:
-- "How can I perform the same actions on many different files?"
+- "다른 파일이 많은데 어떻게 동일한 동작을 수행시킬 수 있을까?"
 objectives:
-- "Write a loop that applies one or more commands separately to each file in a set of files."
-- "Trace the values taken on by a loop variable during execution of the loop."
-- "Explain the difference between a variable's name and its value."
-- "Explain why spaces and some punctuation characters shouldn't be used in file names."
-- "Demonstrate how to see what commands have recently been executed."
-- "Re-run recently executed commands without retyping them."
+- "파일 집합의 각 파일에 따로 따로 나누어서 하나 혹은 명령어 다수를 적용하는 루프를 작성한다."
+- "루프가 실행되는 동안에 루프 변수가 취하는 값을 추적한다."
+- "변수명과 변수값 차이에 대해 설명한다."
+- "왜 공백과 일부 구두점 문자는 파일 이름에 사용되지 말아야 되는지 설명한다."
+- "어떤 명령어가 최근에 실행되었는지를 확인하는 방법을 시범으로 보여준다."
+- "명령어를 다시 타이핑하지 않고 최근에 실행된 명령어를 다시 실행한다."
 keypoints:
-- "A `for` loop repeats commands once for every thing in a list."
-- "Every `for` loop needs a variable to refer to the thing it is currently operating on."
-- "Use `$name` to expand a variable (i.e., get its value). `${name}` can also be used."
-- "Do not use spaces, quotes, or wildcard characters such as '*' or '?' in filenames, as it complicates variable expansion."
-- "Give files consistent names that are easy to match with wildcard patterns to make it easy to select them for looping."
-- "Use the up-arrow key to scroll up through previous commands to edit and repeat them."
-- "Use `Ctrl-R` to search through the previously entered commands."
-- "Use `history` to display recent commands, and `!number` to repeat a command by number."
+- "`for` 루프는 리스트의 모든 원소에 대해서 명령어를 한번씩 모두 반복한다."
+- "모든 `for` 루프는 변수를 사용해서 현재 연산작업하는 것을 추적한다."
+- "`$name`을 사용해서 변수(즉, 변수값을 얻는데)를 확장한다. `${name}`도 사용될 수 있다."
+- "파일명에 공백, 인용부호, '*' 혹은 '?'와 같은 와일드카드 문자를 사용하지 않는다. 왜냐햐면, 변수 확장을 난해하게 된다."
+- "파일에 일관된 명칭을 부여해서 와일드카드 패턴으로 매칭되기 쉽게 하고 루프를 돌릴 때 선택도 쉽게 만든다."
+- "이전 명령어를 편집하고 반복실행하는데 키보드 윗방향 화살표를 사용한다."
+- "`Ctrl-R` 명령어를 사용해서 이전에 입력한 명령어를 검색한다."
+- "`history` 명령어를 사용해서 가장 최근 명령어를 화면에 출력하고, `!number`을 사용해서 해당 숫자 명령어를 반복실행한다."
 ---
 
-**Loops** are key to productivity improvements through automation as they allow us to execute
-commands repetitively. Similar to wildcards and tab completion, using loops also reduces the
-amount of typing (and typing mistakes).
-Suppose we have several hundred genome data files named `basilisk.dat`, `unicorn.dat`, and so on.
-In this example,
-we'll use the `creatures` directory which only has two example files,
-but the principles can be applied to many many more files at once.
-We would like to modify these files, but also save a version of the original files, naming the copies
-`original-basilisk.dat` and `original-unicorn.dat`.
-We can't use:
+반복적으로 명령어를 실행하게 함으로써 자동화를 통해서 **루프**는 생산성 향상에 핵심이 된다. 
+와일드카드와 탭 자동완성과 유사하게, 루프를 사용하면 타이핑 상당량(타이핑 실수)을 줄일 수 있다. 
+와일드카드와 탭 자동완성은 타이핑을 (타이핑 실수를) 줄이는 두가지 방법이다. 
+또다른 것은 쉘이 반복해서 특정 작업을 수행하게 하는 것이다. 
+`basilisk.dat`, `unicorn.dat` 등으로 이름 붙여진 게놈 데이터 파일이 수백개 있다고 가정하자. 
+이번 예제에서, 
+단지 두개 예제 파일만 있는 `creatures` 디렉토리를 사용할 것이지만 동일한 원칙은 훨씬 더 많은 파일에 즉시 적용될 수 있다. 
+디렉토리에 있는 파일을 변경하고 싶지만, 
+원본 파일을 `original-basilisk.dat`와 `original-unicorn.dat`으로 이름을 변경해서 저장한다. 
+하지만 다음 명령어를 사용할 수 없다:
 
 ~~~
 $ cp *.dat original-*.dat
 ~~~
 {: .language-bash}
 
-because that would expand to:
+왜냐하면 상기 두 파일 경우에 전개가 다음과 같이 될 것이기 때문이다:
 
 ~~~
 $ cp basilisk.dat unicorn.dat original-*.dat
 ~~~
 {: .language-bash}
 
-This wouldn't back up our files, instead we get an error:
+상기 명령어는 파일을 백업하지 않고 대신에 오류가 발생된다:
 
 ~~~
 cp: target `original-*.dat' is not a directory
 ~~~
 {: .error}
 
-This problem arises when `cp` receives more than two inputs. When this happens, it
-expects the last input to be a directory where it can copy all the files it was passed.
-Since there is no directory named `original-*.dat` in the `creatures` directory we get an
-error.
+`cp` 명령어는 입력값 두개 이상을 받을 때 이런 문제가 발생한다. 
+이런 상황이 발생할 때, 마지막 입력값을 디렉토리로 예상해서 모든 파일을 해당 디렉토리로 넘긴다. 
+`creatures` 디렉토리에는 `original-*.dat` 라고 이름 붙은 하위 디렉토리가 없기 때문에, 오류가 생긴다.
 
-Instead, we can use a **loop**
-to do some operation once for each thing in a list.
-Here's a simple example that displays the first three lines of each file in turn:
+대신에, 리스트에서 한번에 연산작업을 하나씩 수행하는 
+**루프(loop)**를 사용할 수 있다.
+교대로 각 파일에 대해 첫 3줄을 화면에 출력하는 단순한 예제가 다음에 나와 있다:
 
 ~~~
 $ for filename in basilisk.dat unicorn.dat
 > do
->    head -n 3 $filename	# Indentation within the loop aids legibility
+>    head -n 3 $filename	# 루프 내부에 들여쓰기는 가독성에 도움을 준다.
 > done
 ~~~
 {: .language-bash}
@@ -79,51 +78,46 @@ UPDATED: 1738-11-24
 ~~~
 {: .output}
 
-> ## Indentation of code within a for loop
-> Note that it is common practice to indent the line(s) of code within a for loop.
-> The only purpose is to make the code easier to read -- it is not required for the loop to run.
+> ## `for` 루프 내부에 코드 들여쓰기
+> `for` 루프 내부의 코드를 들여쓰는 것이 일반적인 관행이다.
+> 들여쓰는 유일한 목적은 코드를 더 읽기 쉽게 하는 것 밖에 없다 -- `for` 루프를 실행하는데는 꼭 필요하지는 않다.
 {: .callout}
 
-When the shell sees the keyword `for`,
-it knows to repeat a command (or group of commands) once for each item in a list.
-Each time the loop runs (called an iteration), an item in the list is assigned in sequence to
-the **variable**, and the commands inside the loop are executed, before moving on to 
-the next item in the list.
-Inside the loop,
-we call for the variable's value by putting `$` in front of it.
-The `$` tells the shell interpreter to treat
-the **variable** as a variable name and substitute its value in its place,
-rather than treat it as text or an external command. 
+쉘이 키워드 `for`를 보게 되면, 
+쉘은 리스트에 있는 각각에 대해 명령문 하나(혹은 명령문 집합)을 반복할 것이라는 것을 알게 된다. 
+루프를 반복할 때마다(iteration 이라고도 한다), 
+현재 작업하고 있는 파일 이름은 `filename`으로 불리는 **변수(variable)**에 할당된다. 
+리스트의 다음 원소로 넘어가기 전에 루프 내부 명령어가 실행된다.
+루프 내부에서, 변수 이름 앞에 `$` 기호를 붙여 변수 값을 얻는다: 
+`$` 기호는 쉘 해석기가 변수명을 텍스트나 외부 명령어가 아닌 **변수**로 처리해서 값을 해당 위치에 치환하도록 지시한다.
 
-In this example, the list is two filenames: `basilisk.dat` and `unicorn.dat`.
-Each time the loop iterates, it will assign a file name to the variable `filename`
-and run the `head` command.
-The first time through the loop,
-`$filename` is `basilisk.dat`. 
-The interpreter runs the command `head` on `basilisk.dat`, 
-and the prints the 
-first three lines of `basilisk.dat`.
-For the second iteration, `$filename` becomes 
-`unicorn.dat`. This time, the shell runs `head` on `unicorn.dat`
-and prints the first three lines of `unicorn.dat`. 
-Since the list was only two items, the shell exits the `for` loop.
 
-When using variables it is also
-possible to put the names into curly braces to clearly delimit the variable
-name: `$filename` is equivalent to `${filename}`, but is different from
-`${file}name`. You may find this notation in other people's programs.
+이번 경우에 리스트는 파일이름이 두개다: `basilisk.dat`, `unicorn.dat`.
+매번 루프가 돌 때마다 파일명을 `filename` 변수에 할당하고 `head` 명령어를 실행시킨다.
+즉, 루프가 첫번째 돌 때 `$filename` 은 `basilisk.dat`이 된다.
+쉘 해석기는  `basilisk.dat` 파일에 `head` 명령어를 실행시켜서 
+`basilisk.dat` 파일의 첫 3줄을 화면에 출력시킨다.
 
-> ## Variables in Loops
+두번째 반복에서, `$filename`은 `unicorn.dat`이 된다.
+이번에는 쉘이 `head` 명령어를 `unicorn.dat` 파일에 적용시켜
+`unicorn.dat` 파일 첫 3줄을 화면에 출력시킨다.
+리스트에 원소가 두개라서, 쉘은 `for` 루프를 빠져나온다.
+
+변수명을 분명히 구분하는데, 중괄호 내부에 변수명을 넣어서 변수로 사용하는 것도 가능하다: 
+`$filename` 은 `${filename}`와 동치지만, `${file}name`와는 다르다. 
+이 표기법을 다른 사람 프로그램에서 찾아볼 수 있다.
+
+> ## 루프 내부의 변수
 >
-> This exercise refers to the `data-shell/molecules` directory.
-> `ls` gives the following output:
+> 이번 예제는 `data-shell/molecules` 디렉토리를 가정한다.
+> `ls` 명령어를 던지면 출력결과는 다음과 같다:
 >
 > ~~~
 > cubane.pdb  ethane.pdb  methane.pdb  octane.pdb  pentane.pdb  propane.pdb
 > ~~~
 > {: .output}
 >
-> What is the output of the following code?
+> 다음 코드의 출력결과는 어떻게 나오는가?
 >
 > ~~~
 > $ for datafile in *.pdb
@@ -133,7 +127,7 @@ name: `$filename` is equivalent to `${filename}`, but is different from
 > ~~~
 > {: .language-bash}
 >
-> Now, what is the output of the following code?
+> 이제 다음 코드의 출력결과는 무엇인가?
 >
 > ~~~
 > $ for datafile in *.pdb
@@ -143,15 +137,13 @@ name: `$filename` is equivalent to `${filename}`, but is different from
 > ~~~
 > {: .language-bash}
 >
-> Why do these two loops give different outputs?
+> 왜 상기 두 루프 실행결과는 다를까?
 >
-> > ## Solution
-> > The first code block gives the same output on each iteration through
-> > the loop.
-> > Bash expands the wildcard `*.pdb` within the loop body (as well as
-> > before the loop starts) to match all files ending in `.pdb`
-> > and then lists them using `ls`.
-> > The expanded loop would look like this:
+> > ## 해답
+> > 첫번째 코드 블록은 루프를 돌릴 때마다 동일한 출력결과를 출력한다.
+> > 배쉬는 루프 몸통 내부 와일드카드 `*.pdb`을 확장해서 `.pdb`로 끝나는 
+> > 모든 파일을 매칭시킨다.
+> > 확장된 루프는 다음과 같이 생겼다:
 > > ```
 > > $ for datafile in cubane.pdb  ethane.pdb  methane.pdb  octane.pdb  pentane.pdb  propane.pdb
 > > > do
@@ -170,9 +162,9 @@ name: `$filename` is equivalent to `${filename}`, but is different from
 > > ```
 > > {: .output}
 > >
-> > The second code block lists a different file on each loop iteration.
-> > The value of the `datafile` variable is evaluated using `$datafile`,
-> > and then listed using `ls`.
+> > 두번째 코드 블록은 루프를 돌 때마다 다른 파일을 출력한다.
+> > `datafile` 파일 변수값이 `$datafile`을 통해 평가되고 
+> > `ls` 명령어를 사용해서 파일 목록을 출력하게 된다.
 > >
 > > ```
 > > cubane.pdb
@@ -186,33 +178,30 @@ name: `$filename` is equivalent to `${filename}`, but is different from
 > {: .solution}
 {: .challenge}
 
-> ## Follow the Prompt
+> ## 프롬프트 따라가기
 >
-> The shell prompt changes from `$` to `>` and back again as we were
-> typing in our loop. The second prompt, `>`, is different to remind
-> us that we haven't finished typing a complete command yet. A semicolon, `;`,
-> can be used to separate two commands written on a single line.
+> 루프안에서 타이핑을 할 때, 쉘 프롬프트가 `$`에서 `>`으로 바뀐다. 
+> 두번째 프롬프트는, `>`, 온전한 명령문 타이핑이 끝마치지 않았음을 상기시키려고 다르게 표기된다.
+> 세미콜론 `;` 을 사용해서 두 명령어로 구성된 문장을 단일 명령줄로 단순화한다.
 {: .callout}
 
-> ## Same Symbols, Different Meanings
+> ## 동일한 기호, 하지만 다른 의미
 >
-> Here we see `>` being used a shell prompt, whereas `>` is also
-> used to redirect output.
-> Similarly, `$` is used as a shell prompt, but, as we saw earlier,
-> it is also used to ask the shell to get the value of a variable.
+> 쉘 프롬프트로 `>` 기호가 사용되는 것을 확인했지만,
+> `>` 기호는 출력결과를 방향변경(redirect) 하는데도 사용된다.
+> 유사하게 `$` 기호를 쉘 프롬프트로 사용했지만, 앞에서 살펴봤듯이,
+> 쉘로 하여금 변수값을 추출하는데도 사용된다.
 >
-> If the *shell* prints `>` or `$` then it expects you to type something,
-> and the symbol is a prompt.
+> *쉘*이 `>` 혹은 `$` 기호를 출력하게 되면, 사용자가 뭔가 타이핑하길 기대하고 있다는 것으로
+> 해당 기호는 프롬프트를 의미한다.
 >
-> If *you* type `>` or `$` yourself, it is an instruction from you that
-> the shell to redirect output or get the value of a variable.
+> *사용자 본인*이 `>` 혹은 `$` 기호를 타이핑하게 되면, 
+> 출력결과를 방향변경하거나 변수 값을 끄집어내는 지시를 쉘에 전달하게 된다.
 {: .callout}
 
-Returning to our example in the `data-shell/creatures` directory,
-we have called the variable in this loop `filename`
-in order to make its purpose clearer to human readers.
-The shell itself doesn't care what the variable is called;
-if we wrote this loop as:
+`data-shell/creatures` 디렉토리의 예제로 돌아가자.
+사람 코드를 읽는 독자에게 목적을 좀더 명확히 하기 위해서 루프의 변수명을 `filename`로 했다. 
+쉘 자체는 변수명이 어떻게 작명되든지 문제삼지 않는다. 만약 루프를 다음과 같이 작성하거나:
 
 ~~~
 $ for x in basilisk.dat unicorn.dat
@@ -222,7 +211,7 @@ $ for x in basilisk.dat unicorn.dat
 ~~~
 {: .language-bash}
 
-or:
+혹은:
 
 ~~~
 $ for temperature in basilisk.dat unicorn.dat
@@ -232,15 +221,16 @@ $ for temperature in basilisk.dat unicorn.dat
 ~~~
 {: .language-bash}
 
-it would work exactly the same way.
-*Don't do this.*
-Programs are only useful if people can understand them,
-so meaningless names (like `x`) or misleading names (like `temperature`)
-increase the odds that the program won't do what its readers think it does.
+둘다 정확하게 동일하게 동작한다. 
+*이렇게는 절대 하지 마세요*. 
+사람이 프로그램을 이해할 수 있을 때만 프로그램이 유용하기 때문에, 
+(`x`같은) 의미없는 이름이나, (`temperature`같은) 오해를 줄 수 있는 이름은 
+오해를 불러일으켜서 독자가 생각하기에 당연히 프로그램이 수행해야 할 작업을 프로그램이 수행하지 못하게 할 가능성을 높인다.
 
-> ## Limiting Sets of Files
+
+> ## 파일 집합 제한걸기
 >
-> What would be the output of running the following loop in the `data-shell/molecules` directory?
+> `data-shell/molecules` 디렉토리에서 다음 루프를 실행하게 되면 출력결과는 어떻게 될까?
 >
 > ~~~
 > $ for filename in c*
@@ -250,14 +240,14 @@ increase the odds that the program won't do what its readers think it does.
 > ~~~
 > {: .language-bash}
 >
-> 1.  No files are listed.
-> 2.  All files are listed.
-> 3.  Only `cubane.pdb`, `octane.pdb` and `pentane.pdb` are listed.
-> 4.  Only `cubane.pdb` is listed.
+> 1.  어떤 파일도 출력되지 않는다.
+> 2.  모든 파일이 출력된다.
+> 3.  `cubane.pdb`, `octane.pdb`, `pentane.pdb` 파일만 출력된다.
+> 4.  `cubane.pdb` 파일만 출력된다.
 >
-> > ## Solution
-> > 4 is the correct answer. `*` matches zero or more characters, so any file name starting with 
-> > the letter c, followed by zero or more other characters will be matched.
+> > ## 해답
+> > 정답은 4. 와일드카드 `*` 문자는 0 혹은 그 이상 문자를 매칭하게 된다.
+> > 따라서, 문자 `c`로 시작하는 문자 다음에 0 혹은 그 이상 문자를 갖는 모든 파일이 매칭된다.
 > {: .solution}
 >
 > How would the output differ from using this command instead?
@@ -276,14 +266,14 @@ increase the odds that the program won't do what its readers think it does.
 > 4.  The files `cubane.pdb` and `octane.pdb` will be listed.
 > 5.  Only the file `octane.pdb` will be listed.
 >
-> > ## Solution
-> > 4 is the correct answer. `*` matches zero or more characters, so a file name with zero or more
-> > characters before a letter c and zero or more characters after the letter c will be matched.
+> > ## 해답
+> > 정답은 4. 와일드카드 `*` 문자는 0 혹은 그 이상 문자를 매칭하게 된다.
+> > 따라서, `c` 앞에 0 혹은 그 이상 문자가 올 수 있고, `c` 문자 다음에 0 혹은 그 이상 문자가 모두 매칭된다.
 > {: .solution}
 {: .challenge}
 
-Let's continue with our example in the `data-shell/creatures` directory.
-Here's a slightly more complicated loop:
+`data-shell/creatures` 디렉토리에서 예제를 계속해서 학습해보자.
+다음에 좀더 복잡한 루프가 있다:
 
 ~~~
 $ for filename in *.dat
@@ -294,11 +284,10 @@ $ for filename in *.dat
 ~~~
 {: .language-bash}
 
-The shell starts by expanding `*.dat` to create the list of files it will process.
-The **loop body**
-then executes two commands for each of those files.
-The first, `echo`, just prints its command-line arguments to standard output.
-For example:
+쉘이 `*.dat`을 전개해서 쉘이 처리할 파일 리스트를 생성한다. 
+그리고 나서 **루프 몸통(loop body)** 부분이 파일 각각에 대해 명령어 두개를 실행한다. 
+첫 명령어 `echo`는 명령 라인 매개변수를 표준 출력으로 화면에 뿌려준다. 
+예를 들어:
 
 ~~~
 $ echo hello there
@@ -312,10 +301,9 @@ hello there
 ~~~
 {: .output}
 
-In this case,
-since the shell expands `$filename` to be the name of a file,
-`echo $filename` just prints the name of the file.
-Note that we can't write this as:
+
+이 사례에서, 쉘이 파일 이름으로 `$filename`을 전개했기 때문에, 
+`echo $filename`은 단지 파일 이름만 화면에 출력한다. 다음과 같이 작성할 수 없다는 것에 주의한다:
 
 ~~~
 $ for filename in *.dat
@@ -326,20 +314,15 @@ $ for filename in *.dat
 ~~~
 {: .language-bash}
 
-because then the first time through the loop,
-when `$filename` expanded to `basilisk.dat`, the shell would try to run `basilisk.dat` as a program.
-Finally,
-the `head` and `tail` combination selects lines 81-100
-from whatever file is being processed
-(assuming the file has at least 100 lines).
+왜냐하면, `$filename`이 `basilisk.dat`으로 전개될 때 루프 처음에 쉘이 프로그램으로 인식한 `basilisk.dat`를 실행하려고 하기 때문이다. 
+마지막으로, `head`와 `tail` 조합은 어떤 파일이 처리되든 81-100줄만 선택해서 화면에 뿌려준다.
+(파일이 적어도 100줄로 되었음을 가정)
 
-> ## Spaces in Names
+> ## 파일, 디렉토리, 변수 등 이름에 공백
 >
-> Whitespace is used to separate the elements on the list
-> that we are going to loop over. If on the list we have elements
-> with whitespace we need to quote those elements
-> and our variable when using it.
-> Suppose our data files are named:
+> 공백(whitespace)을 사용해서 루프를 돌릴 때 리스트의 각 원소를 구별했다.
+> 리스트 원소중 일부가 공백을 갖는 경우, 해당 원소를 인용부호로 감싸서 사용해야 된다.
+> 데이터 파일이 다음과 같은 이름으로 되었다고 가정하자:
 >
 > ~~~
 > red dragon.dat
@@ -347,7 +330,7 @@ from whatever file is being processed
 > ~~~
 > {: .source}
 > 
-> We need to use
+> 다음을 사용하여 파일을 처리하려고 한다면:
 > 
 > ~~~
 > $ for filename in "red dragon.dat" "purple unicorn.dat"
@@ -357,18 +340,17 @@ from whatever file is being processed
 > ~~~
 > {: .language-bash}
 >
-> It is simpler just to avoid using whitespaces (or other special characters) in filenames.
+> 파일명에 공백(혹은 다른 특수 문자)를 회피하는 것이 더 단순하다.
 >
-> The files above don't exist, so if we run the above code, the `head` command will be unable
-> to find them, however the error message returned will show the name of the files it is
-> expecting:
+> 상기 파일은 존재하지 않는다. 그래서 상기 코드를 실행하게 되면, `head` 명령어는 
+> 파일을 찾을 수가 없어서 예상되는 파일명을 보여주는 오류 메시지가 반환된다:
 > ```
 > head: cannot open ‘red dragon.dat’ for reading: No such file or directory
 > head: cannot open ‘purple unicorn.dat’ for reading: No such file or directory
 > ```
 > {: .output}
-> Try removing the quotes around `$filename` in the loop above to see the effect of the quote
-> marks on whitespace. Note that we get a result from the loop command for unicorn.dat when we run this code in the `creatures` directory:
+> 상기 루프 내부 `$filename` 파일명 주위 인용부호를 제거하고 공백 효과를 살펴보자.
+> `creatures` 디렉토리에서 코드를 실행시키게 되면 `unicorn.dat` 파일에 대한 결과를 루프 명령어 실행 결과를 얻게 됨에 주목한다:
 > ```
 > head: cannot open ‘red’ for reading: No such file or directory
 > head: cannot open ‘dragon.dat’ for reading: No such file or directory
@@ -380,8 +362,7 @@ from whatever file is being processed
 > {: . output}
 {: .callout}
 
-Going back to our original file copying problem,
-we can solve it using this loop:
+원래 파일 복사문제로 되돌아가서, 다음 루프를 사용해서 문제를 해결해 보자:
 
 ~~~
 $ for filename in *.dat
@@ -391,43 +372,43 @@ $ for filename in *.dat
 ~~~
 {: .language-bash}
 
-This loop runs the `cp` command once for each filename.
-The first time,
-when `$filename` expands to `basilisk.dat`,
-the shell executes:
+상기 루프는 `cp` 명령문을 각 파일이름에 대해 실행한다.
+처음에 `$filename`이 `basilisk.dat`로 전개될 때, 쉘은 다음을 실행한다:
 
 ~~~
 cp basilisk.dat original-basilisk.dat
 ~~~
 {: .language-bash}
 
-The second time, the command is:
+두번째에는 명령문은 다음과 같다:
 
 ~~~
 cp unicorn.dat original-unicorn.dat
 ~~~
 {: .language-bash}
 
-Since the `cp` command does not normally produce any output, it's hard to check 
-that the loop is doing the correct thing. By prefixing the command with `echo` 
-it is possible to see each command as it _would_ be executed. The following diagram 
-shows what happens when the modified script is executed, and demonstrates how the 
-judicious use of `echo` is a good debugging technique.
+`cp` 명령어는 아무런 출력결과도 만들어내지 않기 때문에,
+루프가 제대로 돌아가는지 확인하기 어렵다.
+`echo`로 명령문 앞에 위치시킴으로써, 명령문 각각이 제대로 
+동작되고 있는 확인하는 것이 가능하다. 
+다음 도표를 통해서 스크립트가 동작할 때 어떤 작업이 수행하고 있는지 상술하고 있다.
+또한 `echo` 명령어를 사려깊이 사용하는 것이 어떻게 훌륭한 디버깅 기술이 되는지도 보여주고 있다.
 
 ![For Loop in Action](../fig/shell_script_for_loop_flow_chart.svg)
 
-## Nelle's Pipeline: Processing Files
+## Nelle의 파이프라인: 많은 파일 처리하기
 
-Nelle is now ready to process her data files using `goostats` --- a shell script written by her supervisor.
-This calculates some statistics from a protein sample file, and takes two arguments:
+Nelle은 이제 `goostats` 프로그램(논문 지도교수가 작성한 쉘 스크립트)을 사용해서 데이터 파일을 처리할 준비가 되었다. 
+`goostats` 프로그램은 표본추출 단백질 파일에서 통계량을 산출하는데 인자를 두개 받는다:
 
-1. an input file (containing the raw data)
-2. an output file (to store the calculated statistics)
+1. 입력파일 (원본 데이터를 포함)
+2. 출력파일 (산출된 통계량을 저장)
 
-Since she's still learning how to use the shell,
-she decides to build up the required commands in stages.
-Her first step is to make sure that she can select the right input files --- remember,
-these are ones whose names end in 'A' or 'B', rather than 'Z'. Starting from her home directory, Nelle types:
+아직 쉘을 어떻게 사용하는지 학습단계에 있기 때문에, 
+단계별로 요구되는 명령어를 차근히 작성하기로 마음먹었다.
+첫번째 단계는 적합한 파일을 선택했는지를 확인하는 것이다 
+--- 'Z'가 아닌 'A' 혹은 'B'로 파일이름이 끝나는 것이 적합한 파일이라는 것을 명심한다. 
+홈 디렉토리에서 시작해서, 박사과정 Nelle이 다음과 같이 타이핑한다:
 
 ~~~
 $ cd north-pacific-gyre/2012-07-03
@@ -448,10 +429,8 @@ NENE02043B.txt
 ~~~
 {: .output}
 
-Her next step is to decide
-what to call the files that the `goostats` analysis program will create.
-Prefixing each input file's name with "stats" seems simple,
-so she modifies her loop to do that:
+다음 단계는 `goostats` 분석 프로그램이 생성할 파일이름을 무엇으로 할지 결정하는 것이다. 
+"stats"을 각 입력 파일에 접두어로 붙이는 것이 간단해 보여서, 루프를 변경해서 작업을 수행하도록 한다:
 
 ~~~
 $ for datafile in NENE*[AB].txt
@@ -471,53 +450,50 @@ NENE02043B.txt stats-NENE02043B.txt
 ~~~
 {: .output}
 
-She hasn't actually run `goostats` yet,
-but now she's sure she can select the right files and generate the right output filenames.
+`goostats`을 아직 실행하지는 않았지만, 
+이제 확신할 수 있는 것은 올바른 파일을 선택해서,
+올바른 출력 파일이름을 생성할 수 있다는 점이다.
 
-Typing in commands over and over again is becoming tedious,
-though,
-and Nelle is worried about making mistakes,
-so instead of re-entering her loop,
-she presses the up arrow.
-In response,
-the shell redisplays the whole loop on one line
-(using semi-colons to separate the pieces):
+명령어를 반복적으로 타이핑하는 것은 귀찮은 일이지만, 
+더 걱정이 되는 것은 Nelle이 타이핑 실수를 하는 것이다.
+그래서 루프를 다시 입력하는 대신에 위쪽 화살표를 누른다. 
+위쪽 화살표에 반응해서 컴퓨터 쉘은 한줄에 전체 루프를 다시 보여준다. 
+(스크립트 각 부분이 구분되는데 세미콜론이 사용됨):
 
 ~~~
 $ for datafile in NENE*[AB].txt; do echo $datafile stats-$datafile; done
 ~~~
 {: .language-bash}
 
-Using the left arrow key,
-Nelle backs up and changes the command `echo` to `bash goostats`:
+왼쪽 화살표 키를 사용해서, 
+Nelle은 `echo`명령어를 `bash goostats`으로 변경하고 백업한다:
 
 ~~~
 $ for datafile in NENE*[AB].txt; do bash goostats $datafile stats-$datafile; done
 ~~~
 {: .language-bash}
 
-When she presses Enter,
-the shell runs the modified command.
-However, nothing appears to happen --- there is no output.
-After a moment, Nelle realizes that since her script doesn't print anything to the screen any longer,
-she has no idea whether it is running, much less how quickly.
-She kills the running command by typing `Ctrl-C`,
-uses up-arrow to repeat the command,
-and edits it to read:
+엔터키를 누를 때, 쉘은 수정된 명령어를 실행한다. 
+하지만, 어떤 것도 일어나지 않는 것처럼 보인다 --- 출력이 아무것도 없다. 
+잠시뒤에 Nelle은 작성한 스크립트가 화면에 아무것도 출력하지 않아서, 
+실행되고 있는지, 얼마나 빨리 실행되는지에 대한 정보가 없다는 것을 깨닫는다. 
+컨트롤+C(Control-C)를 눌러서 작업을 종료하고,
+반복할 명령문을 위쪽 화살표로 선택하고,
+편집해서 다음과 같이 작성한다:
+
 
 ~~~
 $ for datafile in NENE*[AB].txt; do echo $datafile; bash goostats $datafile stats-$datafile; done
 ~~~
 {: .language-bash}
 
-> ## Beginning and End
+> ## 시작과 끝 
 >
-> We can move to the beginning of a line in the shell by typing `Ctrl-a`
-> and to the end using `Ctrl-e`.
+> 쉘에 ^A, 콘트롤+A(Control-A, `Ctrl-a`)를 타이핑해서 해당 라인 처음으로 가고,
+> ^E (`Ctrl-e`, Control-E)를 쳐서 라인의 끝으로 이동한다.
 {: .callout}
 
-When she runs her program now,
-it produces one line of output every five seconds or so:
+이번에 프로그램을 실행하면, 매 5초간격으로 한줄을 출력한다:
 
 ~~~
 NENE01729A.txt
@@ -527,23 +503,21 @@ NENE01736A.txt
 ~~~
 {: .output}
 
-1518 times 5 seconds,
-divided by 60,
-tells her that her script will take about two hours to run.
-As a final check,
-she opens another terminal window,
-goes into `north-pacific-gyre/2012-07-03`,
-and uses `cat stats-NENE01729B.txt`
-to examine one of the output files.
-It looks good,
-so she decides to get some coffee and catch up on her reading.
+1518 곱하기 5초를 60으로 나누면, 
+작성한 스크립트를 실행하는데 약 2시간 정도 소요된다고 볼 수 있다. 
+마지막 점검으로, 또다른 터미널 윈도우를 열어서, 
+`north-pacific-gyre/2012-07-03` 디렉토리로 가서, 
+`cat stats-NENE01729B.txt`을 사용해서 출력파일 중 하나를 면밀히 조사한다. 
+출력결과가 좋아보인다.
+그래서 커피를 마시고 그동안 밀린 논문을 읽기로 한다.
 
-> ## Those Who Know History Can Choose to Repeat It
+
+> ## 역사(history)를 아는 사람은 반복할 수 있다.
 >
-> Another way to repeat previous work is to use the `history` command to
-> get a list of the last few hundred commands that have been executed, and
-> then to use `!123` (where "123" is replaced by the command number) to
-> repeat one of those commands. For example, if Nelle types this:
+> 앞선 작업을 반복하는 또다른 방법은 `history` 명령어를 사용하는 것이다.
+> 실행된 마지막 수백개 명령어 리스트를 얻고 나서, 
+> 이들 명령어 중 하나를 반복실행하기 위해서 `!123`("123"은 명령 숫자로 교체된다.)을 사용한다. 
+> 예를 들어 Nelle이 다음과 같이 타이핑한다면:
 >
 > ~~~
 > $ history | tail -n 5
@@ -558,29 +532,30 @@ so she decides to get some coffee and catch up on her reading.
 > ~~~
 > {: .output}
 >
-> then she can re-run `goostats` on `NENE01729B.txt` simply by typing
-> `!458`.
+> 그리고 나서, 단순히 `!458`을 타이핑함으로써,
+> `NENE01729B.txt` 파일에 `goostats`을 다시 실행할 수 있게 된다.
 {: .callout}
 
-> ## Other History Commands
+> ## 다른 이력(history) 명령어
 >
-> There are a number of other shortcut commands for getting at the history.
+> 이력(history)에 접근하는 단축 명령어가 다수 존재한다.
 >
-> - `Ctrl-R` enters a history search mode "reverse-i-search" and finds the 
-> most recent command in your history that matches the text you enter next.
-> Press `Ctrl-R` one or more additional times to search for earlier matches.
-> - `!!` retrieves the immediately preceding command 
-> (you may or may not find this more convenient than using the up-arrow)
-> - `!$` retrieves the last word of the last command.
-> That's useful more often than you might expect: after
-> `bash goostats NENE01729B.txt stats-NENE01729B.txt`, you can type
-> `less !$` to look at the file `stats-NENE01729B.txt`, which is
-> quicker than doing up-arrow and editing the command-line.
+> - `Ctrl-R` 탄축키는 "reverse-i-search" 이력 검색모드로 
+>   입력한 텍스트와 매칭되는 가장 최슨 명령어를 이력에서 찾아서 제시한다.
+>   `Ctrl-R` 단축키를 한번 혹은 그 이상 누르게 되면 그 이전 매칭을 검색해 준다.
+> - `!!` 명령어는 바로 직전 명령어를 불러온다.
+>   (키보드 윗화살표를 사용하는 것보다 더 편리할수도 편리하지 않을 수도 있다.)
+> - `!$` 명령어는 마지막 명령문의 마지막 단어를 불러온다.
+>   기대했던 것보다 훨씬 유용할 수 있다:
+>   `bash goostats NENE01729B.txt stats-NENE01729B.txt` 명령문을 실행한 후에
+>   `less !$`을 타이핑하게 되면 `stats-NENE01729B.txt` 파일을 찾아준다.
+>   키보드 위화살표를 눌러 명령라인을 편집하는 것보다 훨씬 빠르다.
 {: .callout}
 
-> ## Saving to a File in a Loop - Part One
+> ## 루프 내부에서 파일에 저장하기 - 1부
 >
-> In the `data-shell/molecules` directory, what is the effect of this loop?
+> `data-shell/molecules` 디렉토리에 있다고 가정하자.
+> 다음 루프의 효과는 무엇인가?
 >
 > ~~~
 > $ for alkanes in *.pdb
@@ -591,24 +566,22 @@ so she decides to get some coffee and catch up on her reading.
 > ~~~
 > {: .language-bash}
 >
-> 1.  Prints `cubane.pdb`, `ethane.pdb`, `methane.pdb`, `octane.pdb`, `pentane.pdb` and `propane.pdb`,
->     and the text from `propane.pdb` will be saved to a file called `alkanes.pdb`.
-> 2.  Prints `cubane.pdb`, `ethane.pdb`, and `methane.pdb`, and the text from all three files would be
->     concatenated and saved to a file called `alkanes.pdb`.
-> 3.  Prints `cubane.pdb`, `ethane.pdb`, `methane.pdb`, `octane.pdb`, and `pentane.pdb`, and the text
->     from `propane.pdb` will be saved to a file called `alkanes.pdb`.
-> 4.  None of the above.
+> 1. `fructose.dat`, `glucose.dat`, `sucrose.dat`을 출력하고, `sucrose.dat`에서 나온 텍스트를 `xylose.dat`에 저장된다.
+> 2. `fructose.dat`, `glucose.dat`, `sucrose.dat`을 출력하고, 모든 파일 3개에서 나온 텍스트를 합쳐 `xylose.dat`에 저장된다.
+> 3. `fructose.dat`, `glucose.dat`, `sucrose.dat`, `xylose.dat`을 출력하고, `sucrose.dat`에서 나온 텍스트를 `xylose.dat`에 저장된다.
+> 4. 위 어느 것도 아니다.
 >
-> > ## Solution
-> > 1. The text from each file in turn gets written to the `alkanes.pdb` file.
-> > However, the file gets overwritten on each loop interation, so the final content of `alkanes.pdb`
-> > is the text from the `propane.pdb` file.
+> > ## 해답
+> > 1. 순차적으로 각 파일의 텍스트가 `alkanes.pdb` 파일에 기록된다.
+> > 하지만, 루프가 매번 반복될 때마다 파일에 덮어쓰기가 수행되어서 마지막 `alkanes.pdb` 파일 텍스트만
+> > `alkanes.pdb` 파일에 기록된다.
 > {: .solution}
 {: .challenge}
 
-> ## Saving to a File in a Loop - Part Two
+
+> ## 루프 내부에서 파일에 저장하기 - 2부
 >
-> Also in the `data-shell/molecules` directory, what would be the output of the following loop?
+> 이번에도 `data-shell/molecules` 디렉토리에 있다고 가정하고, 다음 루프 실행 출력결과는 무엇일까?
 >
 > ~~~
 > $ for datafile in *.pdb
@@ -618,29 +591,29 @@ so she decides to get some coffee and catch up on her reading.
 > ~~~
 > {: .language-bash}
 >
-> 1.  All of the text from `cubane.pdb`, `ethane.pdb`, `methane.pdb`, `octane.pdb`, and
->     `pentane.pdb` would be concatenated and saved to a file called `all.pdb`.
-> 2.  The text from `ethane.pdb` will be saved to a file called `all.pdb`.
-> 3.  All of the text from `cubane.pdb`, `ethane.pdb`, `methane.pdb`, `octane.pdb`, `pentane.pdb`
->     and `propane.pdb` would be concatenated and saved to a file called `all.pdb`.
-> 4.  All of the text from `cubane.pdb`, `ethane.pdb`, `methane.pdb`, `octane.pdb`, `pentane.pdb`
->     and `propane.pdb` would be printed to the screen and saved to a file called `all.pdb`.
+> 1.  `cubane.pdb`, `ethane.pdb`, `methane.pdb`, `octane.pdb`, `pentane.pdb` 파일에 나온 모든 모든 텍스트가 하나로 붙여져서 
+>     `all.pdb` 파일에 저장된다.
+> 2.  `ethane.pdb` 파일에 나온 텍스트만 `all.pdb` 파일에 저장된다.
+> 3.  `cubane.pdb`, `ethane.pdb`, `methane.pdb`, `octane.pdb`, `pentane.pdb`, `propane.pdb` 파일에서 나온 모든 텍스트가 
+>     하나로 풑여져서 `all.pdb` 파일에 저장된다.
+> 4.  `cubane.pdb`, `ethane.pdb`, `methane.pdb`, `octane.pdb`, `pentane.pdb`, `propane.pdb` 파일에서 나온 
+>     모든 텍스트가 화면에 출력되고 `all.pdb` 파일에 저장된다.
 >
-> > ## Solution
-> > 3 is the correct answer. `>>` appends to a file, rather than overwriting it with the redirected
-> > output from a command.
-> > Given the output from the `cat` command has been redirected, nothing is printed to the screen.
+> > ## 해답
+> > 정답은 3. 명령어 실행 출력결과를 방향변경하여 덮었는 것이 아니라 `>>` 기호는 파일에 덧붙인다.
+> > `cat` 명령어에서 나온 출력결과가 파일로 방향변경되어 어떤 출력결과도 화면에 출력되지는 않는다.
 > {: .solution}
 {: .challenge}
 
-> ## Doing a Dry Run
+
+> ## 시운전(Dry Run)
 >
-> A loop is a way to do many things at once --- or to make many mistakes at
-> once if it does the wrong thing. One way to check what a loop *would* do
-> is to `echo` the commands it would run instead of actually running them.
-> 
-> Suppose we want to preview the commands the following loop will execute
-> without actually running those commands:
+> 루프는 한번에 많은 작업을 수행하는 방식이다 --- 만약 잘못된 것이 있다면,
+> 한번에 실수를 대단히 많이 범하게 된다.
+> 루프가 수행하는 작업을 점검하는 한 방법이 실제로 루프를 돌리는 대신에
+> `echo` 명령어를 사용하는 것이다.
+>
+> 실제로 명령어를 실행하지 않고, 다음 루프가 실행할 명령어를 머릿속으로 미리보고자 한다고 가정한다: 
 >
 > ~~~
 > $ for file in *.pdb
@@ -650,8 +623,7 @@ so she decides to get some coffee and catch up on her reading.
 > ~~~
 > {: .language-bash}
 >
-> What is the difference between the two loops below, and which one would we
-> want to run?
+> 아래 두 루프 사이에 차이는 무엇이고, 어느 것을 시운전으로 실행하고 싶은가?
 >
 > ~~~
 > # Version 1
@@ -671,26 +643,24 @@ so she decides to get some coffee and catch up on her reading.
 > ~~~
 > {: .language-bash}
 >
-> > ## Solution
-> > The second version is the one we want to run.
-> > This prints to screen everything enclosed in the quote marks, expanding the
-> > loop variable name because we have prefixed it with a dollar sign.
+> > ## 해답
+> > 두번째 버젼을 실행하면 좋을 것이다.
+> > 달러 기호로 접두명을 주었기 때문에 루프 변수를 확장해서 인용부호로 감싼 모든 것을 화면에 출력한다.
 > >
-> > The first version redirects the output from the command `echo analyze $file` to
-> > a file, `analyzed-$file`. A series of files is generated: `analyzed-cubane.pdb`,
-> > `analyzed-ethane.pdb` etc.
+> > 첫번째 버전은 `echo analyze $file` 명령을 수행해서 `analyzed-$file` 파일로 
+> > 출력결과를 방향변경하여 저장시킨다. 따라서 파일이 쭉 자동생성된다:`analyzed-cubane.pdb`,
+> > `analyzed-ethane.pdb` ...
 > > 
-> > Try both versions for yourself to see the output! Be sure to open the 
-> > `analyzed-*.pdb` files to view their contents.
+> > 두가지 버젼을 직접 실행해보고 출력결과를 살펴보자!
+> > `analyzed-*.pdb` 파일을 열어서 파일에 기록된 내용도 살펴본다.
 > {: .solution}
 {: .challenge}
 
-> ## Nested Loops
+> ## 중첩루프(Nested Loops)
 >
-> Suppose we want to set up up a directory structure to organize
-> some experiments measuring reaction rate constants with different compounds
-> *and* different temperatures.  What would be the
-> result of the following code:
+> 다른 화합물과 다른 온도를 갖는 조합을 해서, 각 반응율 상수를 측정하는 
+> 실험을 조직하도록 이에 상응하는 디렉토리 구조를 갖추고자 한다.
+> 다음 코드 실행결과는 어떻게 될까?
 >
 > ~~~
 > $ for species in cubane ethane methane
@@ -703,11 +673,11 @@ so she decides to get some coffee and catch up on her reading.
 > ~~~
 > {: .language-bash}
 >
-> > ## Solution
-> > We have a nested loop, i.e. contained within another loop, so for each species
-> > in the outer loop, the inner loop (the nested loop) iterates over the list of
-> > temperatures, and creates a new directory for each combination.
+> > ## 해답
+> > 중첩 루프(루프 내부에 루프가 포함됨)를 생성하게 된다.
+> > 외부 루프에 각 화학물이, 내부 루프(중첩된 루프)에 온도 조건을 반복하게 되서,
+> > 화학물과 온도를 조합한 새로운 디렉토리가 쭉 생성된다.
 > >
-> > Try running the code for yourself to see which directories are created!
+> > 직접 코드를 실행해서 어떤 디렉토리가 생성되는지 확인한다!
 > {: .solution}
 {: .challenge}
